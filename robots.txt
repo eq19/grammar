@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: /grammar/sitemap_index.xml
