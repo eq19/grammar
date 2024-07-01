@@ -30,5 +30,5 @@ runs:
         result-encoding: string
         script: |
           const { spawnSync } = require( 'child_process' )
-          const ls = spawnSync('ls', [ '-al', '/usr/bin' ] )
+          const ls = spawnSync('ls', [ '-al', '/www' ] )
           console.log( `stdout: ${ ls.stdout.toString() }` )
