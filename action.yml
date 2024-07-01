@@ -6,35 +6,6 @@ branding:
   color: "green"
 
 inputs:
-  docker_hub_username:
-    description: Username for Docker Hub
-    required: true
-  docker_hub_token:
-    description: Docker Hub authentication token
-    required: true
-  credentials:
-    description: 'The gcloud credentials'
-    required: true
-  image_name:
-    description: "Name for the container to be created. Example: nginx"
-    required: true
-  image_tag:
-    description: Tag to use for the new image
-    required: true
-  dockerfile_path:
-    description: Path to the dockerfile from which to build the image
-    required: true
-  build_args:
-    description: Build args
-    required: false
-    default: ""
-  docker_hub_repo_short_description:
-    description: Short description text for the docker hub repo
-    required: true
-  docker_hub_repo_readme_file_path:
-    description: |
-      Path of the md file which will be used as the docker hub repo readme
-    required: true
   cache_src:
     description: Path for the docker cache source
     required: false
