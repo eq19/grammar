@@ -159,8 +159,8 @@ runs:
         python3 -m pip install --upgrade pip pytest psycopg furl
         python3 -m pytest -vv test_action.py
       env:
-        CONNECTION_URI: ${{ outputs.connection-uri }}
-        SERVICE_NAME: ${{ outputs.service-name }}
+        CONNECTION_URI: ${{ steps.set-outputs.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.set-outputs.outputs.service-name }}
         EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@localhost:5432/postgres
         EXPECTED_SERVICE_NAME: postgres
       shell: bash
