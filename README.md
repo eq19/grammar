@@ -1,4 +1,4 @@
-# setup-postgres
+# [setup-postgres](https://github.com/ikalnytskyi/action-setup-postgres)
 
 This action sets up a PostgreSQL server for the rest of the job. Here are some
 key features:
