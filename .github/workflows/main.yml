@@ -66,7 +66,7 @@ jobs:
         with:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
   
-      - name: 🚀 Setup Lexer on Cloud
+      - name: 🔧 Setup Lexer on Cloud
         uses: eq19/lexer@v1
         id: set-runner
         with:
@@ -95,19 +95,13 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: 🚀 Setup Parser
-        #if: runner.os != 'Windows'
+      - name: ⚙️ Setup Parser
         uses: eq19/parser@v1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: 🪂 Evaluate Syntax
-        if: runner.os == 'Windows'
+      - name: ⚠️ Evaluate Syntax
         uses: eq19/syntax@v2
-        with:
-          wsl-conf: |
-            [automount]
-            root = /
 
-      - name: 🪂 Set Grammar Rules
-        uses: eq19/grammar@v3
+      - name: 🏃‍♂️ Set Grammar Rules
+        uses: eq19/grammar@v1
