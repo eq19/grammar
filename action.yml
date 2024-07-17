@@ -90,17 +90,16 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
-        # Create a dedicated user:
-        #sudo adduser postgres
-
-        # Give access to the new user
-        #sudo usermod -aG postgres postgres
 
         # Switch to new user account and log out from the root account
-        if [ "$RUNNER_OS" == "Linux" ]; then su - postgres; fi
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          #sudo adduser postgres
+          #sudo usermod -aG postgres postgres
+          su - postgres
+          id
+        fi
 
         # Initialize the database, and run the 'initdb' command:
-        id
         initdb \
           --username="${{ inputs.username }}" \
           --pwfile="$PWFILE" \
