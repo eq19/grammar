@@ -90,6 +90,16 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
+        # Create a dedicated user:
+        sudo adduser postgres
+
+        # Give access to the new user
+        sudo usermod -aG postgres postgres
+
+        # Now, using su command switch to new user account and log out from the root account
+        su - postgres
+
+        # Initialize the ApacheAGE database, and run the 'initdb' command:
         initdb \
           --username="${{ inputs.username }}" \
           --pwfile="$PWFILE" \
