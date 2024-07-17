@@ -94,7 +94,7 @@ runs:
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
           #sudo adduser postgres
-          #sudo usermod -aG postgres postgres
+          usermod -aG postgres postgres
           su - postgres
           id
         fi
