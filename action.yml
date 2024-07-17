@@ -95,7 +95,7 @@ runs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           #sudo adduser postgres
           sudo usermod -aG postgres postgres
-          sudo su - postgres
+          sudo -u postgres
           id
         fi
 
