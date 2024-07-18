@@ -93,7 +93,7 @@ runs:
 
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo su - postgres
+          sudo su -l postgres
           id
         fi
 
