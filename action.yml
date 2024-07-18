@@ -97,8 +97,16 @@ runs:
           id
         fi
 
+        #Convert backslashes to forward slashes in RUNNER_TEMP for Windows Git Bash
+        export PGHOST="${RUNNER_TEMP//\\//}/postgres"
+        export PGDATA="$PGHOST/pgdata"
+        mkdir -p "$PGDATA"
+
+        # initdb requires file for password in non-interactive mode
+        export PWFILE="$RUNNER_TEMP/pwfile"
+          
         # Initialize the database, and run the 'initdb' command:
-        initdb \
+        initdb --pgdata="$PGDATA" \
           --username="${{ inputs.username }}" \
           --pwfile="$PWFILE" \
           --auth="scram-sha-256" \
