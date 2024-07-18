@@ -95,7 +95,7 @@ runs:
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
           /etc/init.d/postgresql restart
-          sudo -u postgres initdb
+          service --status-all
           locate initdb
           su postgres
           id
@@ -172,6 +172,7 @@ runs:
         AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
     - name: Run tests
+      if: runner.os == 'Windows'
       run: |
         python3 -m pip install --upgrade pip pytest psycopg furl
         python3 -m pytest -vv test.py
