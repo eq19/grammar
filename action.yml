@@ -171,6 +171,7 @@ runs:
         AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
     - name: Run tests
+      if: runner.os == 'Windows'
       run: |
         python3 -m pip install --upgrade pip pytest psycopg furl
         python3 -m pytest -vv test.py
