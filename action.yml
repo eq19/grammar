@@ -94,7 +94,7 @@ runs:
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
           /etc/init.d/postgresql restart
-          sudo su -l postgres
+          su -l postgres
           id
         fi
 
