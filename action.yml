@@ -93,7 +93,8 @@ runs:
 
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo postgresql-setup initdb
+          sudo service postgresql initdb
+          sudo service postgresql start
           sudo su -l postgres
           id
         fi
