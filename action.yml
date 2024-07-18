@@ -60,7 +60,7 @@ runs:
       shell: bash
 
     - name: Setup and start PostgreSQL
-      if: runner.os == 'Windows'
+      #if: runner.os == 'Windows'
       run: |
         export PGDATA="$RUNNER_TEMP/pgdata"
         export PWFILE="$RUNNER_TEMP/pwfile"
@@ -95,6 +95,7 @@ runs:
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
           /etc/init.d/postgresql restart
+          locate initdb
           sudo -u postgres initdb
           su postgres
           id
@@ -163,8 +164,8 @@ runs:
 
     - name: Run setup-python
       uses: actions/setup-python@v5
-      #with:
-        #python-version: "3.10"
+      with:
+        python-version: "3.10"
 
     - name: Run tests
       run: |
