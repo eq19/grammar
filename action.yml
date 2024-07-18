@@ -97,7 +97,7 @@ runs:
           /etc/init.d/postgresql restart
           apt-cache show supervisor
           service --status-all
-          locate initdb
+          #locate initdb
           su postgres
           id
         fi
