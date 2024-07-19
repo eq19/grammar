@@ -95,9 +95,6 @@ runs:
         # Switch to new user account and log out from the root account
         if [ "$RUNNER_OS" == "Linux" ]; then
           /etc/init.d/postgresql restart
-          apt-cache show supervisor
-          service --status-all
-          locate initdb
           su postgres
           id
         fi
