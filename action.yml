@@ -60,7 +60,7 @@ runs:
       shell: bash
 
     - name: Setup and start PostgreSQL
-      #if: runner.os == 'Windows'
+      if: runner.os == 'Windows'
       run: |
         export PGDATA="$RUNNER_TEMP/pgdata"
         export PWFILE="$RUNNER_TEMP/pwfile"
@@ -91,13 +91,6 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
-
-        # Switch to new user account and log out from the root account
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          /etc/init.d/postgresql restart
-          su postgres
-          id
-        fi
 
         # Initialize the database, and run the 'initdb' command:
         mkdir -p "$PGDATA"
