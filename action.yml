@@ -91,22 +91,27 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
-        if [ "$RUNNER_OS" == "Linux" ]; then
-          #adduser runneradmin
-          sudo -u postgres /usr/lib/postgresql/16/bin/initdb
-          whoami
-          id
-        fi
-
         # Initialize the database, and run the 'initdb' command:
         mkdir -p "$PGDATA"
-        initdb --pgdata="$PGDATA" \
-          --username="${{ inputs.username }}" \
-          --pwfile="$PWFILE" \
-          --auth="scram-sha-256" \
-          --encoding="$DEFAULT_ENCODING" \
-          --locale="$DEFAULT_LOCALE" \
-          --no-instructions
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+            --pgdata="$PGDATA" \
+            --username="${{ inputs.username }}" \
+            --pwfile="$PWFILE" \
+            --auth="scram-sha-256" \
+            --encoding="$DEFAULT_ENCODING" \
+            --locale="$DEFAULT_LOCALE" \
+            --no-instructions
+        else
+          initdb \
+            --pgdata="$PGDATA" \
+            --username="${{ inputs.username }}" \
+            --pwfile="$PWFILE" \
+            --auth="scram-sha-256" \
+            --encoding="$DEFAULT_ENCODING" \
+            --locale="$DEFAULT_LOCALE" \
+            --no-instructions
+        fi
 
         # Do not create unix sockets since they are created by default in the
         # directory we have no permissions to (owned by system postgres user).
