@@ -160,27 +160,28 @@ runs:
       shell: bash
 
     - name: Set action outputs
+      id: set-outputs
+      shell: bash
       run: |
         CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
-
         echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
         echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
-      shell: bash
-      id: set-outputs
 
     - name: Run setup-python
+      if: runner.os == 'Windows'
       uses: actions/setup-python@v5
       with:
         python-version: "3.10"
 
     - name: Run tests
-      #if: runner.os == 'Windows'
-      run: |
-        python3 -m pip install --upgrade pip pytest psycopg furl
-        python3 -m pytest -vv test.py
       env:
         CONNECTION_URI: ${{ steps.set-outputs.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.set-outputs.outputs.service-name }}
         EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@localhost:5432/postgres
         EXPECTED_SERVICE_NAME: postgres
       shell: bash
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          python3 -m pip install --upgrade pip pytest psycopg furl
+        fi
+        python3 -m pytest -vv test.py
