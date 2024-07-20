@@ -60,7 +60,7 @@ runs:
       shell: bash
 
     - name: Setup and start PostgreSQL
-      if: runner.os == 'Windows'
+      #if: runner.os == 'Windows'
       run: |
         export PGDATA="$RUNNER_TEMP/pgdata"
         export PWFILE="$RUNNER_TEMP/pwfile"
