@@ -92,6 +92,8 @@ runs:
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
         if [ "$RUNNER_OS" == "Linux" ]; then
+          pts m root
+          pts m postgres
           adduser runneradmin
           su - runneradmin
           whoami
