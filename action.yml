@@ -118,7 +118,7 @@ runs:
         # directory we have no permissions to (owned by system postgres user).
         echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
         echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
-        sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start
+        sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
 
         # Save required connection parameters for created superuser to the
         # connection service file [1]. This allows using these connection
