@@ -60,7 +60,6 @@ runs:
       shell: bash
 
     - name: Setup and start PostgreSQL
-      #if: runner.os == 'Windows'
       run: |
         export PGDATA="$RUNNER_TEMP/pgdata"
         export PWFILE="$RUNNER_TEMP/pwfile"
@@ -118,7 +117,11 @@ runs:
         # directory we have no permissions to (owned by system postgres user).
         echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
         echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
-        sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
+        else
+          pg_ctl start
+        fi
 
         # Save required connection parameters for created superuser to the
         # connection service file [1]. This allows using these connection
@@ -166,13 +169,12 @@ runs:
       id: set-outputs
 
     - name: Run setup-python
-      if: runner.os == 'Windows'
       uses: actions/setup-python@v5
       with:
         python-version: "3.10"
 
     - name: Run tests
-      if: runner.os == 'Windows'
+      #if: runner.os == 'Windows'
       run: |
         python3 -m pip install --upgrade pip pytest psycopg furl
         python3 -m pytest -vv test.py
