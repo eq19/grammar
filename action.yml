@@ -92,8 +92,12 @@ runs:
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
         if [ "$RUNNER_OS" == "Linux" ]; then
-          getent passwd
           getent group
+          getent passwd
+          cat /etc/group | awk -F: '{print $1, $3, $4}' | while read group gid members; do
+            members=$members,$(awk -F: "\$4 == $gid {print \",\" \$1}" /etc/passwd);
+            echo "$group: $members" | sed 's/,,*/ /g';
+          done
           adduser runneradmin
           su - runneradmin
           whoami
