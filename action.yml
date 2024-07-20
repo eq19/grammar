@@ -92,8 +92,6 @@ runs:
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
         if [ "$RUNNER_OS" == "Linux" ]; then
-          getent group
-          getent passwd
           #adduser runneradmin
           su - runneradmin
           whoami
