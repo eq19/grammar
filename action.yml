@@ -93,7 +93,7 @@ runs:
         # [1] https://www.postgresql.org/docs/15/reference-client.html
         if [ "$RUNNER_OS" == "Linux" ]; then
           #adduser runneradmin
-          sudo -u postgres initdb
+          sudo -u postgres /usr/lib/postgresql/16/bin/initdb
           whoami
           id
         fi
