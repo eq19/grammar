@@ -91,6 +91,10 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          adduser runneradmin
+          
+        fi
 
         # Initialize the database, and run the 'initdb' command:
         mkdir -p "$PGDATA"
