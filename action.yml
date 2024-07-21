@@ -186,5 +186,6 @@ runs:
           python3 -m pytest -vv test.py
         else
           python3 -m pytest -vv test.py
+          cat /etc/os-release
           df -h 
         fi
