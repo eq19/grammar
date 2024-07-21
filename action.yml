@@ -93,7 +93,7 @@ runs:
         # Initialize the database, and run the 'initdb' command:
         if [ "$RUNNER_OS" == "Linux" ]; then
           mkdir -p "$PGDATA" && ls -alR $PGDATA
-          #sudo chown postgres:postgres "$PGDATA"
+          sudo chown postgres:postgres "$PGDATA"
           sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
             --pgdata="$PGDATA" \
             --username="${{ inputs.username }}" \
@@ -118,7 +118,8 @@ runs:
         echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
         echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
         if [ "$RUNNER_OS" == "Linux" ]; then
-          cat $PGDATA/postgresql.conf
+          sudo -u postgres ls -alR $PGDATA
+          sudo -u postgres cat $PGDATA/postgresql.conf
           sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
         else
           type $PGDATA/postgresql.conf
