@@ -185,7 +185,6 @@ runs:
           python3 -m pip install --upgrade pip pytest psycopg furl
           python3 -m pytest -vv test.py
         else
-          find / -type f -name "Dockerfile"
           docker history  gcr.io/deeplearning-platform-release/tf-cpu:m96 --format  " {{.CreatedBy}}" --no-trunc
           python3 -m pytest -vv test.py
         fi
