@@ -152,6 +152,7 @@ runs:
           password=${{ inputs.password }}
           dbname=${{ inputs.database }}
           EOF
+          sudo -u postgres cat $PGDATA/pg_service.conf
           echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         else
           cat <<EOF > "$PGDATA/pg_service.conf"
