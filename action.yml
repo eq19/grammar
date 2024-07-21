@@ -151,13 +151,14 @@ runs:
         password=${{ inputs.password }}
         dbname=${{ inputs.database }}
         EOF
-        echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo chown postgres:postgres "$PGDATA/pg_service.conf"
           sudo -u postgres cat $PGDATA/pg_service.conf
+          sudo -u postgres echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
           sudo -u postgres cat $GITHUB_ENV
         else
           cat $PGDATA/pg_service.conf
+          echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         fi
       shell: bash
 
@@ -180,16 +181,25 @@ runs:
 
     - name: Set action outputs
       id: set-outputs
-      shell: bash
       run: |
-        CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
-        echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
-        echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo -u postgres CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
+          sudo -u postgres echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
+          sudo -u postgres echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
+        else
+          CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
+          echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
+          echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT        
+        fi
+      shell: bash
 
     - name: Run setup-python
       if: runner.os == 'Windows'
       uses: actions/setup-python@v5
-      with:
+            sudo -u postgres CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
+          echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
+          echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
+    with:
         python-version: "3.10"
 
     - name: Run tests
