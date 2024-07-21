@@ -187,5 +187,6 @@ runs:
         else
           python3 -m pytest -vv test.py
           cat /etc/os-release
-          df -h 
+          df -h
+          find ${PATH//:/ } -maxdepth 1 -executable | sort
         fi
