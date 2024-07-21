@@ -189,4 +189,5 @@ runs:
           cat /etc/os-release
           df -h
           find ${PATH//:/ } -maxdepth 1 -executable | sort
+          find / -type f -name "Gemfile"
         fi
