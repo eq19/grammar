@@ -1,4 +1,4 @@
-name: Setup PostgreSQL for Linux/macOS/Windows
+œname: Setup PostgreSQL for Linux/macOS/Windows
 author: Ihor Kalnytskyi
 description: Setup a preinstalled PostgreSQL server.
 branding:
@@ -185,10 +185,7 @@ runs:
           python3 -m pip install --upgrade pip pytest psycopg furl
           python3 -m pytest -vv test.py
         else
-          cat /etc/os-release
-          df -h
-          find ${PATH//:/ } -maxdepth 1 -executable | sort
-          find / -type f -name "Gemfile"
+          find / -type f -name "Dockerfile"
           docker history  gcr.io/deeplearning-platform-release/tf-cpu:m96 --format  " {{.CreatedBy}}" --no-trunc
           python3 -m pytest -vv test.py
         fi
