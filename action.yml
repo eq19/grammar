@@ -144,7 +144,7 @@ runs:
         #
         # [1] https://www.postgresql.org/docs/15/libpq-pgservice.html
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo -u postgres cat <<EOF > "$PGDATA/pg_service.conf"
+          cat <<EOF > "$PGDATA/pg_service.conf"
           [${{ inputs.username }}]
           host=localhost
           port=${{ inputs.port }}
@@ -152,7 +152,7 @@ runs:
           password=${{ inputs.password }}
           dbname=${{ inputs.database }}
           EOF
-          sudo -u postgres echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
+          echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         else
           cat <<EOF > "$PGDATA/pg_service.conf"
           [${{ inputs.username }}]
