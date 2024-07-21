@@ -119,6 +119,7 @@ runs:
         echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo -u postgres ls -alR $PGDATA
+          sudo -u postgres cat $PGDATA/pg_hba.conf
           sudo -u postgres cat $PGDATA/postgresql.conf
           sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
         else
