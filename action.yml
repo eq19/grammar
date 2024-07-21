@@ -120,7 +120,7 @@ runs:
           sudo -u postgres echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
           sudo -u postgres echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
           sudo -u postgres echo "# Allow connections from the API endpoint" >> "$PGDATA/pg_hba.conf"
-          sudo -u postgres echo "host      all             all             0.0.0.0/0               md5" >> "$PGDATA/pg_hba.conf"
+          sudo -u postgres echo "host    all             all             0.0.0.0/0               md5" >> "$PGDATA/pg_hba.conf"
           sudo -u postgres cat $PGDATA/pg_hba.conf
           sudo -u postgres cat $PGDATA/postgresql.conf
           sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
@@ -143,15 +143,27 @@ runs:
         # parametrized via action input parameters.
         #
         # [1] https://www.postgresql.org/docs/15/libpq-pgservice.html
-        cat <<EOF > "$PGDATA/pg_service.conf"
-        [${{ inputs.username }}]
-        host=localhost
-        port=${{ inputs.port }}
-        user=${{ inputs.username }}
-        password=${{ inputs.password }}
-        dbname=${{ inputs.database }}
-        EOF
-        echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo -u postgres cat <<EOF > "$PGDATA/pg_service.conf"
+          [${{ inputs.username }}]
+          host=localhost
+          port=${{ inputs.port }}
+          user=${{ inputs.username }}
+          password=${{ inputs.password }}
+          dbname=${{ inputs.database }}
+          EOF
+          sudo -u postgres echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
+        else
+          cat <<EOF > "$PGDATA/pg_service.conf"
+          [${{ inputs.username }}]
+          host=localhost
+          port=${{ inputs.port }}
+          user=${{ inputs.username }}
+          password=${{ inputs.password }}
+          dbname=${{ inputs.database }}
+          EOF
+          echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
+        fi
       shell: bash
 
     - name: Setup PostgreSQL database
@@ -161,7 +173,11 @@ runs:
         # parametrize the name, so all we can do is to avoid creating a
         # database if provided name is 'postgres'.
         if [ "${{ inputs.database }}" != "postgres" ]; then
-          createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo -u postgres createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+          else
+            createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+          fi
         fi
       env:
         PGSERVICE: ${{ inputs.username }}
