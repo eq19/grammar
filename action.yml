@@ -121,6 +121,7 @@ runs:
           cat $PGDATA/postgresql.conf
           sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
         else
+          type $PGDATA/postgresql.conf
           pg_ctl start
         fi
 
