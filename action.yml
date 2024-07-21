@@ -153,7 +153,7 @@ runs:
         EOF
         echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo chown postgres:postgres "PGDATA/pg_service.conf"
+          sudo chown postgres:postgres "$PGDATA/pg_service.conf"
           sudo -u postgres cat $PGDATA/pg_service.conf
           sudo -u postgres cat $GITHUB_ENV
         else
