@@ -183,7 +183,7 @@ runs:
       id: set-outputs
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo -u postgres CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
+          CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
           sudo -u postgres echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
           sudo -u postgres echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
         else
