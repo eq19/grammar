@@ -186,10 +186,11 @@ runs:
           CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
           sudo -u postgres echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
           sudo -u postgres echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
+          sudo -u postgres cat $GITHUB_OUTPUT
         else
           CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
           echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
-          echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT        
+          echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT 
         fi
       shell: bash
 
