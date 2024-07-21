@@ -127,7 +127,7 @@ runs:
         else
           echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
           echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
-          type $PGDATA/postgresql.conf
+          cat $PGDATA/postgresql.conf
           pg_ctl start
         fi
 
