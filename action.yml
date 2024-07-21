@@ -184,7 +184,7 @@ runs:
       run: |
         if [ "$RUNNER_OS" == "Linux" ]; then
           #sudo DUMMY=test su postgres -c 'echo "$DUMMY"'
-          sudo CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}" -u postgres echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
+          sudo CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}" su postgres -c 'echo "connection-uri=$CONNECTION_URI"' >> $GITHUB_OUTPUT
           sudo -u postgres echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
           sudo -u postgres cat $GITHUB_OUTPUT
         else
