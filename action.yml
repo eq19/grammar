@@ -115,14 +115,16 @@ runs:
 
         # Do not create unix sockets since they are created by default in the
         # directory we have no permissions to (owned by system postgres user).
-        echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
-        echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo -u postgres ls -alR $PGDATA
+          sudo -u postgres echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
+          sudo -u postgres echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
           sudo -u postgres cat $PGDATA/pg_hba.conf
           sudo -u postgres cat $PGDATA/postgresql.conf
           sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
         else
+          echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
+          echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
           type $PGDATA/postgresql.conf
           pg_ctl start
         fi
@@ -189,5 +191,5 @@ runs:
           python3 -m pip install --upgrade pip pytest psycopg furl
           python3 -m pytest -vv test.py
         else
-          python3 -m pytest -vv test.py
+          sudo -u postgres python3 -m pytest -vv test.py
         fi
