@@ -92,7 +92,7 @@ runs:
         # [1] https://www.postgresql.org/docs/15/reference-client.html
         # Initialize the database, and run the 'initdb' command:
         if [ "$RUNNER_OS" == "Linux" ]; then
-          mkdir -p "$PGDATA"
+          mkdir -p "$PGDATA" && ls -alR $PGDATA
           sudo chown postgres:postgres "$PGDATA"
           sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
             --pgdata="$PGDATA" \
