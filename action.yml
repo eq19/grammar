@@ -96,7 +96,7 @@ runs:
           sudo chown postgres:postgres "$PGDATA"
           sudo chown postgres:postgres "$PWFILE"
           #sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
-          sudo DEFAULT_ENCODING=$DEFAULT_ENCODING DEFAULT_LOCALE=$DEFAULT_LOCALE su postgres -c '/usr/lib/postgresql/16/bin/initdb --pgdata="$PGDATA" --username="${{ inputs.username }}" --pwfile="$PWFILE" --auth="scram-sha-256" --encoding="$DEFAULT_ENCODING" --locale="$DEFAULT_LOCALE" --no-instructions'
+          sudo PGDATA=$PGDATA PWFILE=$PWFILE DEFAULT_ENCODING=$DEFAULT_ENCODING DEFAULT_LOCALE=$DEFAULT_LOCALE su postgres -c '/usr/lib/postgresql/16/bin/initdb --pgdata="$PGDATA" --username="${{ inputs.username }}" --pwfile="$PWFILE" --auth="scram-sha-256" --encoding="$DEFAULT_ENCODING" --locale="$DEFAULT_LOCALE" --no-instructions'
         else
           initdb \
             --pgdata="$PGDATA" \
