@@ -183,6 +183,7 @@ runs:
       shell: bash
 
     - name: Set action outputs
+      if: runner.os == 'Windows'
       id: set-outputs
       run: |
         CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
