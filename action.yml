@@ -215,5 +215,5 @@ runs:
           sudo -u postgres echo "CONNECTION_URI=$CONNECTION_URI"
           sudo -u postgres echo "SERVICE_NAME=$SERVICE_NAME"
           #sudo -u postgres python3 -m pytest -vv test.py
-          python3 -m pytest -vv test.py
+          sudo CONNECTION_URI=$CONNECTION_URI SERVICE_NAME=$SERVICE_NAME su postgres -c 'python3 -m pytest -vv test.py'
         fi
