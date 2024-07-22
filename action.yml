@@ -200,6 +200,8 @@ runs:
           python3 -m pytest -vv test.py
         else
           sudo \
+            RUNNER_TEMP=$RUNNER_TEMP \
+            PGSERVICEFILE=$PGDATA/pg_service.conf \
             CONNECTION_URI=$CONNECTION_URI \
             SERVICE_NAME=$SERVICE_NAME \
             EXPECTED_CONNECTION_URI=$EXPECTED_CONNECTION_URI \
