@@ -169,6 +169,8 @@ runs:
         if [ "${{ inputs.database }}" != "postgres" ]; then
           if [ "$RUNNER_OS" == "Linux" ]; then
             sudo \
+              PGSERVICE=$PGSERVICE \
+              PGSERVICEFILE=$PGSERVICEFILE \
               USERNAME=${{ inputs.username }} \
               DATABASE=${{ inputs.database }} \
               su postgres -c 'createdb -O "$USERNAME" "$DATABASE"'
