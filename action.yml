@@ -149,13 +149,8 @@ runs:
         EOF
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo chown postgres:postgres "$PGDATA/pg_service.conf"
-          #sudo PGDATA=$PGDATA su postgres -c 'mv -f pg_service.conf $PGDATA/pg_service.conf'
-          sudo PGDATA=$PGDATA GITHUB_ENV=$GITHUB_ENV su postgres -c 'echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV'
-          sudo -u postgres cat $GITHUB_ENV
-        else
-          #mv -f pg_service.conf $PGDATA/pg_service.conf
-          echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         fi
+        echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
       shell: bash
 
     - name: Setup PostgreSQL database
