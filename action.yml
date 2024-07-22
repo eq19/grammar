@@ -112,14 +112,15 @@ runs:
         # directory we have no permissions to (owned by system postgres user).
         if [ "$RUNNER_OS" == "Linux" ]; then
           #sudo -u postgres ls -alR $PGDATA
-          sudo -u postgres echo "unix_socket_directories = ''" >> "GDATA/postgresql.conf"
+          sudo -u postgres echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
           sudo -u postgres echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
           sudo -u postgres echo "# Allow connections from the API endpoint" >> "$PGDATA/pg_hba.conf"
           sudo -u postgres echo "host    all             all             0.0.0.0/0               md5" >> "$PGDATA/pg_hba.conf"
           #sudo -u postgres cat $PGDATA/pg_hba.conf
           #sudo -u postgres cat $PGDATA/postgresql.conf
           #sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
-          sudo PGDATA=$PGDATA su postgres -c '/usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA'
+          sudo PGDATA=$PGDATA su postgres -c |
+            /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
         else
           echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
           echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
