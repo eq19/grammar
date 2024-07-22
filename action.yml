@@ -185,7 +185,7 @@ runs:
     - name: Set action outputs
       id: set-outputs
       run: |
-        CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@postgres:${{ inputs.port }}/${{ inputs.database }}"
+        CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
         echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
         echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT 
       shell: bash
@@ -200,7 +200,7 @@ runs:
       env:
         CONNECTION_URI: ${{ steps.set-outputs.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.set-outputs.outputs.service-name }}
-        EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@postgres:5432/postgres
+        EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@localhost:5432/postgres
         EXPECTED_SERVICE_NAME: postgres
       shell: bash
       run: |
