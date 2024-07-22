@@ -161,7 +161,10 @@ runs:
         # database if provided name is 'postgres'.
         if [ "${{ inputs.database }}" != "postgres" ]; then
           if [ "$RUNNER_OS" == "Linux" ]; then
-            sudo -u postgres createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+            sudo \
+              USERNAME=${{ inputs.username }} \
+              DATABASE=${{ inputs.database }} \
+              su postgres -c 'createdb -O "$USERNAME" "$DATABASE"'
           else
             createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
           fi
