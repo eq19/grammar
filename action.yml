@@ -212,6 +212,7 @@ runs:
           python3 -m pip install --upgrade pip pytest psycopg furl
           python3 -m pytest -vv test.py
         else
+          sudo -u postgres echo "CONNECTION_URI=$CONNECTION_URI"
           sudo -u postgres echo "SERVICE_NAME=$SERVICE_NAME"
           #sudo -u postgres python3 -m pytest -vv test.py
           python3 -m pytest -vv test.py
