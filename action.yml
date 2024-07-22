@@ -96,14 +96,7 @@ runs:
           sudo chown postgres:postgres "$PGDATA"
           sudo chown postgres:postgres "$PWFILE"
           #sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
-          sudo DEFAULT_ENCODING=$DEFAULT_ENCODING DEFAULT_LOCALE=$DEFAULT_LOCALE su postgres -c /usr/lib/postgresql/16/bin/initdb \
-            --pgdata="$PGDATA" \
-            --username="${{ inputs.username }}" \
-            --pwfile="$PWFILE" \
-            --auth="scram-sha-256" \
-            --encoding="$DEFAULT_ENCODING" \
-            --locale="$DEFAULT_LOCALE" \
-            --no-instructions
+          sudo DEFAULT_ENCODING=$DEFAULT_ENCODING DEFAULT_LOCALE=$DEFAULT_LOCALE su postgres -c '/usr/lib/postgresql/16/bin/initdb --pgdata="$PGDATA" --username="${{ inputs.username }}" --pwfile="$PWFILE" --auth="scram-sha-256" --encoding="$DEFAULT_ENCODING" --locale="$DEFAULT_LOCALE" --no-instructions'
         else
           initdb \
             --pgdata="$PGDATA" \
@@ -119,7 +112,7 @@ runs:
         # directory we have no permissions to (owned by system postgres user).
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo -u postgres ls -alR $PGDATA
-          sudo -u postgres echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
+          sudo -u postgres echo "unix_socket_directories = ''" >> "GDATA/postgresql.conf"
           sudo -u postgres echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
           sudo -u postgres echo "# Allow connections from the API endpoint" >> "$PGDATA/pg_hba.conf"
           sudo -u postgres echo "host    all             all             0.0.0.0/0               md5" >> "$PGDATA/pg_hba.conf"
