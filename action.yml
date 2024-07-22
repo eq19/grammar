@@ -139,7 +139,7 @@ runs:
         # parametrized via action input parameters.
         #
         # [1] https://www.postgresql.org/docs/15/libpq-pgservice.html
-        cat <<EOF > "$PGDATA/pg_service.conf"
+        cat <<EOF > "pg_service.conf"
         [${{ inputs.username }}]
         host=localhost
         port=${{ inputs.port }}
@@ -148,12 +148,12 @@ runs:
         dbname=${{ inputs.database }}
         EOF
         if [ "$RUNNER_OS" == "Linux" ]; then
-          sudo chown postgres:postgres "$PGDATA/pg_service.conf"
-          sudo -u postgres cat $PGDATA/pg_service.conf
-          sudo -u postgres echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
+          sudo chown postgres:postgres "pg_service.conf"
+          sudo PGDATA=$PGDATA su postgres -c 'mv -f pg_service.conf $PGDATA/pg_service.conf'
+          sudo PGDATA=$PGDATA GITHUB_ENV=$GITHUB_ENV su postgres -c 'echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV'
           sudo -u postgres cat $GITHUB_ENV
         else
-          cat $PGDATA/pg_service.conf
+          mv -f pg_service.conf $PGDATA/pg_service.conf
           echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
         fi
       shell: bash
