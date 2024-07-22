@@ -94,7 +94,9 @@ runs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           mkdir -p "$PGDATA" && ls -alR $PGDATA
           sudo chown postgres:postgres "$PGDATA"
-          sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+          sudo chown postgres:postgres "$PWFILE"
+          #sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+          sudo DEFAULT_ENCODING=$DEFAULT_ENCODING DEFAULT_LOCALE=$DEFAULT_LOCALE su postgres -c /usr/lib/postgresql/16/bin/initdb \
             --pgdata="$PGDATA" \
             --username="${{ inputs.username }}" \
             --pwfile="$PWFILE" \
