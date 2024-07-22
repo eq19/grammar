@@ -213,5 +213,6 @@ runs:
           python3 -m pytest -vv test.py
         else
           sudo -u postgres echo "SERVICE_NAME=$SERVICE_NAME"
-          sudo -u postgres python3 -m pytest -vv test.py
+          #sudo -u postgres python3 -m pytest -vv test.py
+          python3 -m pytest -vv test.py
         fi
