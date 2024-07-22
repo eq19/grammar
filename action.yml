@@ -201,7 +201,9 @@ runs:
         else
           sudo \
             RUNNER_TEMP=$RUNNER_TEMP \
-            PGSERVICEFILE=$PGDATA/pg_service.conf \
+            DEFAULT_ENCODING="UTF-8" \
+            DEFAULT_LOCALE="en_US.$DEFAULT_ENCODING" \
+            PGSERVICEFILE=$PGSERVICEFILE \
             CONNECTION_URI=$CONNECTION_URI \
             SERVICE_NAME=$SERVICE_NAME \
             EXPECTED_CONNECTION_URI=$EXPECTED_CONNECTION_URI \
