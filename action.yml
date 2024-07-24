@@ -147,4 +147,16 @@ runs:
         echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
         echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
       shell: bash
-      id: set-outputs
+      id: postgres
+
+    - name: Run tests
+      run: |
+        #python3 -m pip install --upgrade pip pytest psycopg furl
+        python3 -m pytest -vv test.py
+      env:
+        CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
+        EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@localhost:5432/postgres
+        EXPECTED_SERVICE_NAME: postgres
+      shell: bash
+
