@@ -90,19 +90,49 @@ runs:
         # package vendors.
         #
         # [1] https://www.postgresql.org/docs/15/reference-client.html
-        initdb \
-          --username="${{ inputs.username }}" \
-          --pwfile="$PWFILE" \
-          --auth="scram-sha-256" \
-          --encoding="$DEFAULT_ENCODING" \
-          --locale="$DEFAULT_LOCALE" \
-          --no-instructions
+        # Initialize the database, and run the 'initdb' command:
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          mkdir -p "$PGDATA" && ls -alR $PGDATA
+          sudo chown postgres:postgres "$PGDATA"
+          sudo chown postgres:postgres "$PWFILE"
+          #sudo -u postgres /usr/lib/postgresql/16/bin/initdb \
+          sudo \
+            PGDATA=$PGDATA \
+            PWFILE=$PWFILE \
+            DEFAULT_ENCODING=$DEFAULT_ENCODING \
+            DEFAULT_LOCALE=$DEFAULT_LOCALE \
+            su postgres -c '/usr/lib/postgresql/16/bin/initdb --pgdata="$PGDATA" --username="${{ inputs.username }}" --pwfile="$PWFILE" --auth="scram-sha-256" --encoding="$DEFAULT_ENCODING" --locale="$DEFAULT_LOCALE" --no-instructions'
+        else
+          initdb \
+            --pgdata="$PGDATA" \
+            --username="${{ inputs.username }}" \
+            --pwfile="$PWFILE" \
+            --auth="scram-sha-256" \
+            --encoding="$DEFAULT_ENCODING" \
+            --locale="$DEFAULT_LOCALE" \
+            --no-instructions
+        fi
 
         # Do not create unix sockets since they are created by default in the
         # directory we have no permissions to (owned by system postgres user).
-        echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
-        echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
-        pg_ctl start
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          #sudo -u postgres ls -alR $PGDATA
+          sudo PGDATA=$PGDATA QUOTE="''" su postgres -c 'echo "unix_socket_directories = $QUOTE" >> "$PGDATA/postgresql.conf"'
+          sudo PGDATA=$PGDATA PORT=${{ inputs.port }} su postgres -c 'echo "port = $PORT" >> "$PGDATA/postgresql.conf"'
+          sudo PGDATA=$PGDATA su postgres -c 'echo "# Allow connections from the API endpoint" >> "$PGDATA/pg_hba.conf"'
+          sudo PGDATA=$PGDATA su postgres -c 'echo "host    all             all             0.0.0.0/0               md5" >> "$PGDATA/pg_hba.conf"'
+          #sudo -u postgres cat $PGDATA/pg_hba.conf
+          #sudo -u postgres cat $PGDATA/postgresql.conf
+          #sudo -u postgres /usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA
+          sudo \
+            PGDATA=$PGDATA \
+            su postgres -c '/usr/lib/postgresql/16/bin/pg_ctl start -D $PGDATA'
+        else
+          echo "unix_socket_directories = ''" >> "$PGDATA/postgresql.conf"
+          echo "port = ${{ inputs.port }}" >> "$PGDATA/postgresql.conf"
+          cat $PGDATA/postgresql.conf
+          pg_ctl start
+        fi
 
         # Save required connection parameters for created superuser to the
         # connection service file [1]. This allows using these connection
@@ -124,6 +154,9 @@ runs:
         password=${{ inputs.password }}
         dbname=${{ inputs.database }}
         EOF
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo chown postgres:postgres "$PGDATA/pg_service.conf"
+        fi
         echo "PGSERVICEFILE=$PGDATA/pg_service.conf" >> $GITHUB_ENV
       shell: bash
 
@@ -134,29 +167,55 @@ runs:
         # parametrize the name, so all we can do is to avoid creating a
         # database if provided name is 'postgres'.
         if [ "${{ inputs.database }}" != "postgres" ]; then
-          createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo \
+              PGSERVICE=$PGSERVICE \
+              PGSERVICEFILE=$PGSERVICEFILE \
+              USERNAME=${{ inputs.username }} \
+              DATABASE=${{ inputs.database }} \
+              su postgres -c 'createdb -O "$USERNAME" "$DATABASE"'
+          else
+            createdb -O "${{ inputs.username }}" "${{ inputs.database }}"
+          fi
         fi
       env:
         PGSERVICE: ${{ inputs.username }}
       shell: bash
 
     - name: Set action outputs
+      id: set-outputs
       run: |
         CONNECTION_URI="postgresql://${{ inputs.username }}:${{ inputs.password }}@localhost:${{ inputs.port }}/${{ inputs.database }}"
-
         echo "connection-uri=$CONNECTION_URI" >> $GITHUB_OUTPUT
-        echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT
+        echo "service-name=${{ inputs.username }}" >> $GITHUB_OUTPUT 
       shell: bash
-      id: postgres
+
+    - name: Run setup-python
+      if: runner.os == 'Windows'
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
 
     - name: Run tests
-      run: |
-        #python3 -m pip install --upgrade pip pytest psycopg furl
-        python3 -m pytest -vv test.py
       env:
-        CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
-        SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
+        CONNECTION_URI: ${{ steps.set-outputs.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.set-outputs.outputs.service-name }}
         EXPECTED_CONNECTION_URI: postgresql://postgres:postgres@localhost:5432/postgres
         EXPECTED_SERVICE_NAME: postgres
       shell: bash
-
+      run: |
+        if [ "$RUNNER_OS" != "Linux" ]; then
+          python3 -m pip install --upgrade pip pytest psycopg furl
+          python3 -m pytest -vv test.py
+        else
+          sudo \
+            RUNNER_TEMP=$RUNNER_TEMP \
+            DEFAULT_ENCODING="UTF-8" \
+            DEFAULT_LOCALE="en_US.$DEFAULT_ENCODING" \
+            PGSERVICEFILE=$PGSERVICEFILE \
+            CONNECTION_URI=$CONNECTION_URI \
+            SERVICE_NAME=$SERVICE_NAME \
+            EXPECTED_CONNECTION_URI=$EXPECTED_CONNECTION_URI \
+            EXPECTED_SERVICE_NAME=$EXPECTED_SERVICE_NAME \
+            su postgres -c 'python3 -m pytest -vv test.py'
+        fi
