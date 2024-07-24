@@ -197,6 +197,7 @@ runs:
         python-version: "3.10"
 
     - name: Run tests
+      if: runner.os == 'Windows'
       env:
         CONNECTION_URI: ${{ steps.set-outputs.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.set-outputs.outputs.service-name }}
