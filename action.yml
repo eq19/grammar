@@ -43,10 +43,12 @@ runs:
     # For more information, see https://docs.npmjs.com/cli/ci.html
     - name: Install dependencies
       env:
-        POSTGRES_PORT: 5432
-        POSTGRES_HOST: localhost
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
+        # use postgres for the host here because we have specified a container for the job.
+        # If we were running the job on the VM this would be localhost
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
       shell: bash
       run: |
         npm install --package-lock-only pg
