@@ -42,5 +42,6 @@ runs:
       shell: bash
       run: |
         npm install --package-lock-only pg
-        npm ci && sudo -u postgres -i
+        npm
+        #sudo -u postgres -i
         node client.js
