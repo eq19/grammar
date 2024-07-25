@@ -35,14 +35,10 @@ runs:
     # For more information, see https://docs.npmjs.com/cli/ci.html
     - name: Install dependencies
       shell: bash         
-      run: npm ci
-
-    - name: Connect to PostgreSQL
-      # Runs a script that creates a PostgreSQL table, populates
-      # the table with data, and then retrieves the data.
-      run: node client.js
-      shell: bash
-      # Environment variables used by the `client.js` script to create a new PostgreSQL table.
+      run: |
+        npm install --package-lock-only pg
+        npm ci && sudo -u postgres -i
+        node client.js
       env:
         # The hostname used to communicate with the PostgreSQL service container
         POSTGRES_HOST: postgres
