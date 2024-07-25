@@ -35,9 +35,9 @@ runs:
       with:
         node-version: 20
         
-    - uses: docker://postgres
-      with:
-        args: psql -U postgres -c 'SHOW config_file'
+    #- uses: docker://postgres
+      #with:
+        #args: psql -U postgres -c 'SHOW config_file'
     
     # Performs a clean installation of all dependencies in the `package.json` file
     # For more information, see https://docs.npmjs.com/cli/ci.html
