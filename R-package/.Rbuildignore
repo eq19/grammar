@@ -1,8 +1,0 @@
-^.*\.Rproj$
-^\.Rproj\.user$
-^man-roxygen/
-scripts
-^cran-comments\.md$
-^docs/
-^index.*$
-^pkgdown$
