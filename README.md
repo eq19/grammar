@@ -1,4 +1,4 @@
-# IREE Higher-Level Runtime API
+# [IREE Higher-Level Runtime API](https://github.com/iree-org/iree/tree/main/runtime/src/iree/runtime)
 
 This directory implements a higher-level runtime API on top of the low level
 APIs split across `iree/base/api.h`, `iree/hal/api.h`, and `iree/vm/api.h`.
