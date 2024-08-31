@@ -7,6 +7,7 @@ set_target() {
   # Get Structure
   if [[ $2 == *"github.io"* ]]; then
     [[ -n "$CELL" ]] && SPIN=$(( $CELL * 13 ))
+    gem install nokogiri --platform=ruby --use-system-libraries
     pinned_repos.rb ${OWNER} public | yq eval -P | sed "s/ /, /g" > /tmp/pinned_repo
     [[ "${OWNER}" != "eq19" ]] && sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" /tmp/pinned_repo
     IFS=', '; array=($(cat /tmp/pinned_repo))
