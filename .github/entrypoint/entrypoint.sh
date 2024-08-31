@@ -7,7 +7,6 @@ set_target() {
   # Get Structure
   if [[ $2 == *"github.io"* ]]; then
     [[ -n "$CELL" ]] && SPIN=$(( $CELL * 13 ))
-    gem install nokogiri --platform=ruby --use-system-libraries
     pinned_repos.rb ${OWNER} public | yq eval -P | sed "s/ /, /g" > /tmp/pinned_repo
     [[ "${OWNER}" != "eq19" ]] && sed -i "1s|^|maps, feed, lexer, parser, syntax, grammar, |" /tmp/pinned_repo
     IFS=', '; array=($(cat /tmp/pinned_repo))
@@ -120,10 +119,10 @@ jekyll_build() {
 }
 
 # Get structure on gist files
-HEADER="Accept: application/vnd.github+json"
-echo ${TOKEN} | gh auth login --with-token
 PATTERN='sort_by(.created_at)|.[] | select(.public == true).files.[] | select(.filename != "README.md").raw_url'
+HEADER="Accept: application/vnd.github+json && echo ${TOKEN} | gh auth login --with-token
 gh api -H "${HEADER}" /users/eq19/gists --jq "${PATTERN}" > /tmp/gist_files
+gem install nokogiri --platform=ruby --use-system-libraries
 
 # Capture the string and return status
 if [[ "${OWNER}" != "${USER}" ]]; then ENTRY=$(set_target ${OWNER} ${USER}); else ENTRY=$(set_target ${OWNER}); fi
