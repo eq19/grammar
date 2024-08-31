@@ -19,13 +19,13 @@ runs:
     - name: 💎 Update workflow conveniently
       id: update
       shell: bash
-      env: |
-        RUN=${{ github.run_id }}
-        USER=${{ github.actor }}
-        TOKEN=${{ inputs.token }}
-        REPO=${{ github.repository }}
-        ACTOR=${{ github.triggering_actor }}
-        OWNER=${{ github.repository_owner }}
+      env:
+        RUN: ${{ github.run_id }}
+        USER: ${{ github.actor }}
+        TOKEN: ${{ inputs.token }}
+        REPO: ${{ github.repository }}
+        ACTOR: ${{ github.triggering_actor }}
+        OWNER: ${{ github.repository_owner }}
       run: |
         git config --global user.name "${{ inputs.actor }}"
         git config --global user.email "${{ inputs.actor }}@users.noreply.github.com"
