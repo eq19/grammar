@@ -103,8 +103,9 @@ jekyll_build() {
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
   
   echo -e "\n$hr\nWORKSPACE\n$hr"
-  mkdir ${RUNNER_TEMP}/workdir/_data && mv -f ${RUNNER_TEMP}/orgs.json ${RUNNER_TEMP}/workdir/_data/orgs.json
-  cp -R ${RUNNER_TEMP}/gistdir/* . && cd ${GITHUB_WORKSPACE} && mv -f ${RUNNER_TEMP}/workdir . && ls -al . && ls -al workdir
+  cp -R ${RUNNER_TEMP}/gistdir/* .
+  mkdir ${RUNNER_TEMP}/workdir/_data
+  mv -f ${RUNNER_TEMP}/orgs.json ${RUNNER_TEMP}/workdir/_data/orgs.json
            
 }
 
