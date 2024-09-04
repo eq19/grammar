@@ -46,7 +46,7 @@ runs:
         push: always
         runCmd: ls -alR /home/terraform
         skipContainerUserIdUpdate: true
-        imageTag: build-${{ env.SITEID }}
+        imageTag: spin-${{ env.SITEID }}
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         imageName: ${{ inputs.hub_username }}/${{ inputs.image_name }}
 

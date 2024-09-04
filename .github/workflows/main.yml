@@ -82,21 +82,23 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          build_id: ${{ steps.feed-mapping.outputs.output_2 }}
           
     outputs:
-      output_1: ${{ steps.build-parser.outputs.output_1 }}
-      output_2: ${{ steps.feed-mapping.outputs.output_2 }}
-      output_3: ${{ steps.set-lexering.outputs.output_3 }}
+      id: ${{ steps.build-parser.outputs.id }}
+      spin: ${{ steps.feed-mapping.outputs.spin }}
+      target: ${{ steps.set-lexering.outputs.target }}
 
   setup-parser:
     needs: lexering
     strategy:
       matrix:
         config:
-          - { os: self-hosted, id: 3 }
-            
-    # ♻️ Simulate Gell-Mann           
+          - { os: self-hosted, id: 3 }           
+
+    env:
+      # ♻️ Simulate Gell-Mann Matrices    
+      GELL_MANN: ${{ toJSON(needs.lexering.outputs) }}
+
     runs-on: ${{ matrix.config.os }}
 
     steps:
@@ -111,7 +113,6 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
-          lexering_outputs: ${{ toJSON(needs.lexering.outputs) }}
   
       - name: 🔧 Evaluate Syntax
         uses: eq19/syntax@v2
