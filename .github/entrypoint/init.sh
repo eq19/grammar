@@ -55,6 +55,7 @@ set_target() {
       CELLPLUS=$(($CELL + 0))
     fi
     
+    echo "SPIN=[${CELLPLUS}, ${SPANPLUS}]" >> ${GITHUB_ENV}
     echo "  spin: [${CELLPLUS}, ${SPANPLUS}]" >> ${RUNNER_TEMP}/_config.yml
     echo "  pinned: [$(cat ${RUNNER_TEMP}/pinned_repo)]" >> ${RUNNER_TEMP}/_config.yml
     echo "  organization: [$(cat ${RUNNER_TEMP}/user_orgs)]" >> ${RUNNER_TEMP}/_config.yml
