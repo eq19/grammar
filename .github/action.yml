@@ -58,6 +58,12 @@ runs:
 
         if [ $? -eq 0 ]; then exit 1; fi
 
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.hub_username }}
+        password: ${{ inputs.hub_token }} 
+        
     - uses: actions/setup-python@v5
       if: runner.os != 'Windows'
       with:
