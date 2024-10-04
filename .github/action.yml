@@ -101,21 +101,10 @@ runs:
         if (( $TOTAL_COUNT != 0 )); then gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
 
     - name: 💎 Set ID Token
-      #if: runner.os == 'Windows'
-      id: 'auth'
+      if: runner.os == 'Windows'
       uses: 'google-github-actions/auth@v2'
       with:
-        token_format: 'id_token'
         credentials_json: ${{ inputs.credentials }}
-        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
-
-    #Ref: https://github.com/google-github-actions/auth/blob/main/docs/EXAMPLES.md#generating-an-id-token-jwt
-    - name: Run identity
-      if: runner.os != 'Windows'
-      shell: bash
-      run: |
-        curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
-          -H "Authorization: Bearer ${{ steps.auth.outputs.id_token }}" -H "Content-Type: application/json" -d '{}'
 
     - name: 💎 Setup Gcloud
       if: runner.os == 'Windows'
@@ -128,21 +117,6 @@ runs:
       if: runner.os == 'Windows'
       shell: bash
       run: |
-        for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
-          instance_name=${instance_uri##*/}
-          instance_zone_uri=${instance_uri/\/instances\/${instance_name}/}
-          instance_zone=${instance_zone_uri##*/}
-          if [ -n "${instance_name}" ] && [ -n "${instance_zone}" ] && gcloud compute instances delete ${instance_name} --zone ${instance_zone} --quiet; then
-            echo "deleted: ${instance_zone}/${instance_name}"
-          fi
-        done
-
-    # Ref: https://cloud.google.com/compute/docs/instances/create-start-instance
-    - name: 💎 Remove Existing Self-Hosted Runner
-      if: runner.os == 'Windows'
-      shell: bash
-      run: |
-        YQ=$(choco install yq)      
         BASE="D:/a/_actions/eq19/eq19/v1/.github"
         $BASE/entrypoint/init.sh
 
