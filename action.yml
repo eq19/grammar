@@ -40,7 +40,8 @@ runs:
   
   steps:
 
-    - name: Authentication    
+    - name: Authentication
+      if: runner.os != 'macOS'
       uses: 'google-github-actions/auth@v2'
       id: 'auth'
       with:
