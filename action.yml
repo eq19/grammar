@@ -40,13 +40,6 @@ runs:
   
   steps:
 
-    - name: Authentication
-      if: runner.os != 'macOS'
-      uses: 'google-github-actions/auth@v2'
-      id: 'auth'
-      with:
-        credentials_json: '${{ inputs.credentials }}'
-
     - name: ⏪ Rewind all jobs
       if: failure() || (runner.os == 'macOS' && contains(needs.*.result, 'failure'))
       shell: bash
