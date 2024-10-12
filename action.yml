@@ -48,8 +48,7 @@ runs:
         credentials_json: '${{ inputs.credentials }}'
 
     - name: ⏪ Rewind all jobs
-      if: (runner.os != 'macOs' && failure()) ||
-        (runner.os == 'macOs' && contains(needs.*.result, 'failure'))
+      if: failure() || (runner.os == 'macOS' && contains(needs.*.result, 'failure'))
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
