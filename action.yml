@@ -39,6 +39,14 @@ runs:
   using: composite
   
   steps:
+    - name: 🏗️ Collect output
+      if: runner.os != 'macOS'
+      uses: mathiasvr/command-output@v2.0.0
+      id: command
+      with:
+        run: |
+          date +'%Y-%m-%d'
+
     - name: ⏪ Rewind all jobs
       shell: bash
       run: |
