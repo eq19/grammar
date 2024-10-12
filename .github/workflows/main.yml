@@ -115,7 +115,6 @@ jobs:
           token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: 🕸️ Setup Parser
-        if: runner.os != 'macOS'
         uses: eq19/parser@v2
         id: set-parser
         with:
@@ -124,7 +123,6 @@ jobs:
           gell_mann: ${{ toJSON(needs.lexering.outputs) }}
 
       - name: 🔧 Evaluate Syntax
-        if: runner.os != 'macOS'
         uses: eq19/syntax@v2
         id: eval-syntax
         with:
