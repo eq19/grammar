@@ -48,7 +48,8 @@ runs:
         credentials_json: '${{ inputs.credentials }}'
 
     - name: ⏪ Rewind all jobs
-      if: runner.os == 'macOs' && contains(needs.*.result, 'failure')
+      if: (runner.os != 'macOs' && failure()) ||
+        (runner.os == 'macOs' && contains(needs.*.result, 'failure'))
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
@@ -59,4 +60,3 @@ runs:
 
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git remote set-url origin ${REMOTE_REPO} && git add . && git commit --allow-empty -m "rerun actions due to job failure" && git push
-          
