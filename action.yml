@@ -39,9 +39,7 @@ runs:
   using: composite
   
   steps:
-
     - name: ⏪ Rewind all jobs
-      if: failure() || (runner.os == 'macOS' && contains(needs.*.result, 'failure'))
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
