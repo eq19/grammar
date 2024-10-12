@@ -132,10 +132,12 @@ jobs:
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           gell_mann: ${{ toJSON(steps.set-parser.outputs) }}
   
-      - name: 🚀 Set Grammar Rules 
+      - name: 🚀 Set Grammar Rules
         uses: eq19/grammar@v1
         id: grammar-rules
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           gell_mann: ${{ toJSON(steps.eval-syntax.outputs) }}
+        if: failure() || 
+            (runner.os == 'macOS' && contains(needs.*.result, 'failure'))              
