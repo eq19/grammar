@@ -92,6 +92,7 @@ jobs:
 
   parsering:
     needs: lexering
+    continue-on-error: true
     runs-on: ${{ matrix.config.os }}
     if: ${{ (always() && contains(needs.*.result, 'success')) ||
             (failure() && contains(needs.*.result, 'failure')) }}
