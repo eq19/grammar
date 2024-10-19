@@ -56,5 +56,8 @@ runs:
         git config --global --add safe.directory "${GITHUB_WORKSPACE}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
+        #git config --global credential.helper store
+        #echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
+
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         git remote set-url origin ${REMOTE_REPO} && git add . && git commit --allow-empty -m "rerun actions due to job failure" && git push
