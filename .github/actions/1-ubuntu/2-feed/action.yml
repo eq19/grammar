@@ -1,0 +1,143 @@
+name: 'Docker Deploy Action'
+
+description: >
+  🪂  A Github Action to deploy pages conveniently
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  docker_hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}       
+    required: true
+  docker_hub_password:
+    description: Docker Hub authentication token
+    required: true
+  docker_hub_token:
+    description: Docker Hub authentication token
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: Tag to use for the new image
+    default: ${{ github.action_repository }}
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  provider:
+    description: 'The deploy provider'
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  repository:
+    description: 'The deploy repository'
+    default: ${{ github.repository }}
+    required: false
+
+outputs:
+  spin:
+    description: 'The spin of current repository'
+    value: ${{ steps.set_output.outputs.runCmdOutput }}
+  private_key:
+    description: 'The generated key to connect to VM'
+    value: ${{ steps.matadata.outputs.private_key }}
+
+runs:
+  using: composite
+  steps:
+    - name: 💎 Set Artifact
+      if: runner.os != 'Windows'
+      id: artifact
+      shell: bash
+      env:
+        TMP: ${{ inputs.tmp }}
+        RUN: ${{ github.run_id }}
+        USER: ${{ github.actor }}
+        TOKEN: ${{ inputs.token }}
+        REPO: ${{ github.repository }}
+        ACTOR: ${{ github.triggering_actor }}
+        OWNER: ${{ github.repository_owner }}
+      run: |      
+        rm -rf ${{ github.action_path }}/.git
+        mv -f ${{ github.action_path }}/_config.yml ${RUNNER_TEMP}/
+        export PATH=$GITHUB_WORKSPACE/.github/entrypoint:$PATH && artifact.sh
+        shopt -s dotglob && mv -f ${RUNNER_TEMP}/workdir/* ${{ github.action_path }}/
+        mkdir -p ${{ github.workspace }}/_site && cp -R ${{ github.action_path }}/. ${{ github.workspace }}/_site/       
+
+    - name: 💎 Set ID Token
+      if: runner.os != 'Windows'
+      id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        token_format: 'id_token'
+        credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
+
+    #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
+    - name: Run identity
+      if: runner.os != 'Windows'
+      shell: bash
+      run: >
+        curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function 
+        -H "Authorization: Bearer ${{ steps.auth.outputs.id_token }}" -H "Content-Type: application/json"
+        --data @./.github/entrypoint/artifact/python/manual_v2.ipynb | jq '.'
+    
+    - uses: ikalnytskyi/action-setup-postgres@v6 
+      if: runner.os != 'Windows'
+      id: postgres
+      with:
+        username: yoda
+        password: GrandMaster
+        database: test
+        port: 34837
+
+    - name: 🪂 Test postgres
+      if: runner.os != 'Windows'
+      run: |
+        cp ./.github/entrypoint/test.py .
+        python3 -m pytest -vv test.py
+      env:
+        CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
+        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/test
+        EXPECTED_SERVICE_NAME: yoda
+      shell: bash
+
+    - name: 🚀 Initiate Feed Container
+      if: runner.os != 'Windows'
+      uses: devcontainers/ci@v0.3
+      id: set_output
+      with:
+        push: always
+        runCmd: ls -al /
+        skipContainerUserIdUpdate: true
+        imageName: ${{ inputs.image_name }}
+        imageTag: spin-${{ env.ID }}
+        configFile: ${{ github.action_path }}/.devcontainer.json
