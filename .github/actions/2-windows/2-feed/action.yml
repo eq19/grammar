@@ -8,27 +8,30 @@ branding:
   color: 'red'
 
 inputs:
-  docker_hub_username:
+  hub_username:
     description: Username for Docker Hub
-    default: ${{ github.actor }}       
+    default: ${{ github.actor }}
     required: true
-  docker_hub_password:
+  hub_password:
     description: Docker Hub authentication token
     required: true
-  docker_hub_token:
+  hub_token:
     description: Docker Hub authentication token
     required: true
   credentials:
     description: 'The gcloud credentials'
     required: true
   image_name:
+    description: "Name for the container to be created. Example: nginx"
+    default: 'prime'
+    required: false
+  image_tag:
     description: Tag to use for the new image
-    default: ${{ github.action_repository }}
     required: true
   dockerfile_path:
     description: Path to the dockerfile from which to build the image
     required: true
-  initiate_pauli_sum:
+  build_args:
     description: Build args
     required: false
     default: ""
@@ -56,10 +59,17 @@ inputs:
   token:
     description: 'The deploy token'
     required: false
+  action_path:
+    description: 'The action path'
+    required: false
   repository:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
 
 outputs:
   spin:

@@ -8,15 +8,18 @@ branding:
   color: 'red'
 
 inputs:
-  docker_hub_username:
+  hub_username:
     description: Username for Docker Hub
     default: ${{ github.actor }}       
     required: true
-  docker_hub_password:
+  hub_password:
     description: Docker Hub authentication token
     required: true
-  docker_hub_token:
+  hub_token:
     description: Docker Hub authentication token
+    required: true
+  action_path:
+    description: Path to the dockerfile from which to build the image
     required: true
   credentials:
     description: 'The gcloud credentials'
@@ -85,11 +88,11 @@ runs:
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
       run: |      
-        rm -rf ${{ github.action_path }}/.git
-        mv -f ${{ github.action_path }}/_config.yml ${RUNNER_TEMP}/
+        rm -rf ${{ inputs.action_path }}/.git
+        mv -f ${{ inputs.action_path }}/_config.yml ${RUNNER_TEMP}/
         export PATH=$GITHUB_WORKSPACE/.github/entrypoint:$PATH && artifact.sh
-        shopt -s dotglob && mv -f ${RUNNER_TEMP}/workdir/* ${{ github.action_path }}/
-        mkdir -p ${{ github.workspace }}/_site && cp -R ${{ github.action_path }}/. ${{ github.workspace }}/_site/       
+        shopt -s dotglob && mv -f ${RUNNER_TEMP}/workdir/* ${{ inputs.action_path }}/
+        mkdir -p ${{ github.workspace }}/_site && cp -R ${{ inputs.action_path }}/. ${{ github.workspace }}/_site/       
 
     - name: 💎 Set ID Token
       if: runner.os != 'Windows'
@@ -140,4 +143,4 @@ runs:
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         imageTag: spin-${{ env.ID }}
-        configFile: ${{ github.action_path }}/.devcontainer.json
+        configFile: ${{ inputs.action_path }}/.devcontainer.json
