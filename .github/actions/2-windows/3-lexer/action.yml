@@ -92,9 +92,9 @@ runs:
       id: setup_runner
       shell: bash
       run: >
-        curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function 
+        echo 'functions='$(curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function 
         -H "Authorization: Bearer $(gcloud auth print-identity-token)" -H "Content-Type: application/json"
-        -d '${{ steps.describe.outputs.instances }}' | jq '.'
+        -d '${{ steps.describe.outputs.instances }}' | jq '.') >> ${GITHUB_OUTPUT}
 
     #Ref: https://blog.benoitblanchon.fr/github-action-run-ssh-commands/
     - name: Configure SSH
@@ -112,7 +112,7 @@ runs:
           StrictHostKeyChecking no
         EOL
         #Ref: https://github.com/cloudkite-io/google-container-optimized-os-tools
-        ssh staging 'sudo whoami && sudo ls -al /'
+        ssh staging "sudo whoami && sudo echo '${{ steps.setup_runner.outputs.functions }}' > /home/runner/.ssh/functions.json && sudo ls -alR /home/runner"
 
     - name: 💎 Set Access Token
       if: runner.os == '-Windows'
