@@ -48,7 +48,8 @@ runs:
           date +'%Y-%m-%d'
 
     - name: ⏪ Rewind all jobs on failure
-      if: ${{ inputs.failure_status == true }}
+      if: ${{ inputs.failure_status == true ||
+          contains(steps.*.conclusion, 'failure') }}
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
