@@ -17,7 +17,7 @@ inputs:
   repository:
     description: 'The deploy repository'
     required: false
-  branch:
+  failure_status:
     description: 'The deploy branch'
     required: false
   actor:
@@ -47,7 +47,8 @@ runs:
         run: |
           date +'%Y-%m-%d'
 
-    - name: ⏪ Rewind all jobs
+    - name: ⏪ Rewind all jobs on failure
+      if: ${{ inputs.failure_status }}
       shell: bash
       run: |
         cd ${GITHUB_WORKSPACE}
