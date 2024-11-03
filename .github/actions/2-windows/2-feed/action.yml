@@ -138,7 +138,7 @@ runs:
             Restart=always
             ExecStop=/usr/bin/docker exec myredis -s quit
             ExecStart=/usr/bin/docker run --rm \
-              --name=myredis -p 6379:6379 --pull=always eq19/maps:target-${{ github.run_number }}
+              --env-file ${GITHUB_OUTPUT} --name=myredis -p 6379:6379 --pull=always eq19/maps:target-${{ github.run_number }}
 
         - path: /etc/systemd/system/postgres.service
           permissions: 0644
@@ -156,7 +156,7 @@ runs:
               -e POSTGRES_DB=postgres \
               -e POSTGRES_USER=postgres \
               -e POSTGRES_PASSWORD=postgres \
-              --name=mydb -p 5432:5432 --pull=always eq19/feed:spin-${{ env.IMAGE_TAG }}
+              --env-file ${GITHUB_OUTPUT} --name=mydb -p 5432:5432 --pull=always eq19/feed:spin-${{ env.IMAGE_TAG }}
 
         - path: /etc/systemd/system/runner.service
           permissions: 0644
@@ -181,7 +181,7 @@ runs:
               -e GITHUB_ACCESS_TOKEN=${{ inputs.token }} \
               -v /var/run/docker.sock:/var/run/docker.sock \
               -v /mnt:/mnt -v /home/runner/.docker:/home/runner/.docker \
-              --name myrunner --pull=always eq19/lexer:id-${{ env.IMAGE_TAG }}
+              --env-file ${GITHUB_OUTPUT} --name myrunner --pull=always eq19/lexer:id-${{ env.IMAGE_TAG }}
 
         runcmd:
         - systemctl daemon-reload
