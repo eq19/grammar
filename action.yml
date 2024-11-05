@@ -35,8 +35,10 @@ branding:
   color: 'red'
 
 outputs:
-  description: 'The command.outputs'
-  value: ${{ steps.*.outputs.* }}
+  exponentiation:
+    value: ${{ join(steps.exponentiation.outputs.*, '\n') }}
+  identition:
+    value: ${{ join(steps.identition.outputs.*, '\n') }}
 
 runs:
   #using: 'node20'
