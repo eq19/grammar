@@ -35,10 +35,9 @@ branding:
   color: 'red'
 
 outputs:
-  exponentiation:
-    value: ${{ join(steps.exponentiation.outputs.*, '\n') }}
-  identition:
-    value: ${{ join(steps.identition.outputs.*, '\n') }}
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
 
 runs:
   #using: 'node20'
