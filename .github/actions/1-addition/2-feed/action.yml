@@ -65,10 +65,12 @@ inputs:
     required: false
 
 outputs:
-  init:
-    value: ${{ join(steps.init.outputs.*, '\n') }}
-  variables:
-    value: ${{ join(steps.variables.outputs.*, '\n') }}
+  artifact:
+    description: Collect artifact outputs
+    value: ${{ toJSON(steps.artifact.outputs.repo) }}
+  set_output:
+    description: Collect set_output outputs
+    value: ${{ toJSON(steps.set_output.outputs) }}
 
 runs:
   using: composite

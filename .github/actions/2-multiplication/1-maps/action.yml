@@ -66,10 +66,9 @@ branding:
   color: 'yellow'
 
 outputs:
-  init:
-    value: ${{ join(steps.init.outputs.*, '\n') }}
-  variables:
-    value: ${{ join(steps.variables.outputs.*, '\n') }}
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
 
 runs:
   using: composite
