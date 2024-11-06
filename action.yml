@@ -65,7 +65,7 @@ runs:
         #git config --global credential.helper store
         #git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN = ${{ inputs.token }}
+        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN=${{ inputs.token }}
         #echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
