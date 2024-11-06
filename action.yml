@@ -60,14 +60,13 @@ runs:
       if: inputs.failure_status == 'true'
       shell: bash
       run: |
-        cd ${GITHUB_WORKSPACE}
-
         git config --global user.name "${GITHUB_ACTOR}"
-        git config --global --add safe.directory "${GITHUB_WORKSPACE}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
         #git config --global credential.helper store
+        #git config --global --add safe.directory "${GITHUB_WORKSPACE}"
         #echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
 
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git remote set-url origin ${REMOTE_REPO} && git add . && git commit --allow-empty -m "rerun actions due to job failure" && git push
+        git clone --single-branch --branch 'gh-pages' ${REMOTE_REPO} gh-pages && cd gh-pages
+        git add . && git commit --allow-empty -m "rerun due to job failure" && git push
