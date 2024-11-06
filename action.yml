@@ -66,6 +66,8 @@ runs:
         #git config --global --add safe.directory "${GITHUB_WORKSPACE}"
         #echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
 
+        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN = ${{ inputs.token }}
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
         git clone --single-branch --branch 'gh-pages' ${REMOTE_REPO} gh-pages && cd gh-pages
         git add . && git commit --allow-empty -m "rerun due to job failure" && git push
