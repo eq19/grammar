@@ -1,38 +1,40 @@
 name: 'Jekyll Deploy Action'
+
 description: >
   A Github Action to deploy the Jekyll site conveniently for GitHub Pages
-inputs:
-  provider:
-    description: 'The deploy provider'
-    required: true
-  owner:
-    description: 'The deploy owner'
-    required: false
-  token:
-    description: 'The deploy token'
-    required: false
-  credentials:
-    description: 'The gcloud credentials'
-    required: true
-  repository:
-    description: 'The deploy repository'
-    required: false
-  failure_status:
-    description: 'The deploy branch'
-    required: false
-  actor:
-    description: 'The github username creating the commit'
-    required: false
-  gell_mann:
-    description: 'The pre-build configuration'
-    required: true
-  id:
-    description: The id according to os
-    required: true
 
 branding:
   icon: 'command'
   color: 'red'
+
+inputs:
+  id:
+    description: The id according to os
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  actor:
+    description: 'The github username creating the commit'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  provider:
+    description: 'The deploy provider'
+    required: true
+  repository:
+    description: 'The deploy repository'
+    required: false
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  pauli_sum:
+    description: 'The pre-build configuration'
+    required: true
+  failure_status:
+    description: 'The deploy branch'
+    required: false
 
 outputs:
   all_outputs:
