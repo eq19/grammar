@@ -74,14 +74,7 @@ runs:
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       run: |
-        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
-
-          if [[ ${{ inputs.id }} == 4 ]]; then
-            git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
-            git add . && git commit --allow-empty -m "rerun due to job failure" && git push
-          fi
-
-        else
+        if [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
  
           git config --global credential.helper store
           echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
@@ -89,4 +82,9 @@ runs:
           cd "${{ github.workspace }}"
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
  
+        elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'true' ]]; then
+      
+          git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
+          git add . && git commit --allow-empty -m "rerun due to job failure" && git push
+  
         fi
