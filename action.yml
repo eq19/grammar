@@ -16,6 +16,7 @@ inputs:
     required: false
   actor:
     description: 'The github username creating the commit'
+    default: '${GITHUB_ACTOR}'
     required: false
   token:
     description: 'The deploy token'
@@ -57,24 +58,33 @@ runs:
         run: |
           date +'%Y-%m-%d'
 
+    - name: 💎 Get the latest commit message
+      id: commit
+      shell: bash
+      run: |
+        git config --global user.name "${{ inputs.actor }}"
+        git config --global user.email "${{ inputs.actor }}@users.noreply.github.com"
+
+        git config --global core.autocrlf false
+        git config --global --add safe.directory "${{ github.workspace }}"       
+       
+        echo 'REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
+        echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
+
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       run: |
-        git config --global user.name "${GITHUB_ACTOR}"
-        git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN=${{ inputs.token }} 
-        REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-
         if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
-          git clone --single-branch --branch 'gh-pages' ${REMOTE_REPO} gh-pages && cd gh-pages
+
+          git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
           git add . && git commit --allow-empty -m "rerun due to job failure" && git push
+ 
         else
-          cd "${GITHUB_WORKSPACE}"
-          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-
+ 
           git config --global credential.helper store
-          echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
+          echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
 
-          git add . && git commit --allow-empty -m ${LATEST_COMMIT} && git push
+          cd "${{ github.workspace }}"
+          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
+ 
         fi
