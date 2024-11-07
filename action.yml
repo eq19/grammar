@@ -58,18 +58,23 @@ runs:
           date +'%Y-%m-%d'
 
     - name: ⏪ Rewind all jobs on failure
-      if: inputs.failure_status == 'true'
       shell: bash
       run: |
         git config --global user.name "${GITHUB_ACTOR}"
         git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-        #git config --global credential.helper store
-        #git config --global --add safe.directory "${GITHUB_WORKSPACE}"
-
-        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN=${{ inputs.token }}
-        #echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
+        [[ -z "$GITHUB_ACCESS_TOKEN" ]] && GITHUB_ACCESS_TOKEN=${{ inputs.token }} 
         REMOTE_REPO="https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-        git clone --single-branch --branch 'gh-pages' ${REMOTE_REPO} gh-pages
-        cd gh-pages && git add . && git commit --allow-empty -m "rerun due to job failure" && git push
+        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
+          git clone --single-branch --branch 'gh-pages' ${REMOTE_REPO} gh-pages && cd gh-pages
+          git add . && git commit --allow-empty -m "rerun due to job failure" && git push
+        else
+          cd "${GITHUB_WORKSPACE}"
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+
+          git config --global credential.helper store
+          echo "https://${GITHUB_ACTOR}:${GITHUB_ACCESS_TOKEN}@github.com" > ~/.git-credentials
+
+          git add . && git commit --allow-empty -m ${LATEST_COMMIT} && git push
+        fi
