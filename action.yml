@@ -68,6 +68,9 @@ runs:
         git config --global core.autocrlf false
         git config --global --add safe.directory "${{ github.workspace }}"       
        
+        git config --global credential.helper store
+        echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
+
         echo 'REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
         echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
 
@@ -76,9 +79,6 @@ runs:
       run: |
         if [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
  
-          git config --global credential.helper store
-          echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
-
           cd "${{ github.workspace }}"
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
  
