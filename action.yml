@@ -74,12 +74,13 @@ runs:
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       run: |
-        if [[ '${{ inputs.failure_status }}' == 'true' && inputs.id == 4 ]]; then
+        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
 
-          if [[ ]]
+          if [[ inputs.id == 4 ]]; then
             git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
             git add . && git commit --allow-empty -m "rerun due to job failure" && git push
- 
+          fi
+
         else
  
           git config --global credential.helper store
