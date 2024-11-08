@@ -90,8 +90,8 @@ runs:
  
         elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'false' ]]; then
 
-          git clone --single-branch --branch 'gh-pages' ${{ env.TARGET_REPO }} "${TMPDIR}/gh-pages"
-          cp -TRv "${{ github.workspace }}/" "${TMPDIR}/gh-pages/" && cd "${TMPDIR}/gh-pages/"
+          git clone --single-branch --branch 'gh-pages' ${{ env.TARGET_REPO }} "${RUNNER_TEMP}\gh-pages"
+          cp -TRv "${{ github.workspace }}\" "${RUNNER_TEMP}\gh-pages\" && cd "${RUNNER_TEMP}\gh-pages"
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
         
         fi
