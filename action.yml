@@ -80,6 +80,9 @@ runs:
         if [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
  
           cd "${{ github.workspace }}"
+          mv -f ${{ inputs.action_path }}/docs ${RUNNER_TEMP}/ && rm -rf ${{ inputs.action_path }}/*
+          mv -f ${{ github.workspace }}/_site/* ${{ inputs.action_path }}/_site/
+          mv -f ${RUNNER_TEMP}/docs ${{ inputs.action_path }}/_site/
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
  
         elif [[ '${{ inputs.failure_status }}' == 'true' ]]; then
