@@ -71,20 +71,27 @@ runs:
         git config --global credential.helper store
         echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
 
+        echo 'TARGET_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${TARGET_REPOSITORY}.git"' >> ${GITHUB_ENV}
         echo 'REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
         echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
 
     - name: ⏪ Rewind all jobs on failure
       shell: bash
       run: |
-        if [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
- 
-          cd ${{ github.workspace }} && rm -rf * && mv -f /home/runner/_site/* .
-          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
- 
-        elif [[ '${{ inputs.failure_status }}' == 'true' ]]; then
+        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
       
           git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
           git add . && git commit --allow-empty -m "rerun due to job failure" && git push
   
+        elif [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
+ 
+          cd ${{ github.workspace }} && rm -rf * && mv -f /home/runner/_site/* .
+          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
+ 
+        elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'false' ]]; then
+
+          git clone --single-branch --branch 'gh-pages' ${{ env.TARGET_REPO }} gh-pages && cd gh-pages
+          rm -rf * && mv -f '${{ github.workspace }}\*' .
+          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
+        
         fi
