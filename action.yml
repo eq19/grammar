@@ -12,28 +12,28 @@ inputs:
     description: The id according to os
     required: true
   owner:
-    description: 'The deploy owner'
+    description: The deploy owner
     required: false
   actor:
-    description: 'The github username creating the commit
+    description: The github username creating the commit
     required: false
   token:
-    description: 'The deploy token'
+    description: The deploy token
     required: false
   provider:
-    description: 'The deploy provider'
+    description: The deploy provider
     required: true
   repository:
-    description: 'The deploy repository'
+    description: The deploy repository
     required: false
   credentials:
-    description: 'The gcloud credentials'
+    description: The gcloud credentials
     required: true
   pauli_sum:
-    description: 'The pre-build configuration'
+    description: The pre-build configuration
     required: true
   failure_status:
-    description: 'The deploy branch'
+    description: The deploy branch
     required: false
 
 outputs:
