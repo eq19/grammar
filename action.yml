@@ -12,28 +12,25 @@ inputs:
     description: The id according to os
     required: true
   owner:
-    description: The deploy owner
+    description: 'The deploy owner'
     required: false
   actor:
-    description: The github username creating the commit
+    description: 'The github username creating the commit'
     required: false
   token:
-    description: The deploy token
+    description: 'The deploy token'
     required: false
   provider:
-    description: The deploy provider
+    description: 'The deploy provider'
     required: true
-  repository:
-    description: The deploy repository
-    required: false
   credentials:
-    description: The gcloud credentials
+    description: 'The gcloud credentials'
     required: true
   pauli_sum:
-    description: The pre-build configuration
+    description: 'The pre-build configuration'
     required: true
   failure_status:
-    description: The deploy branch
+    description: 'The deploy branch'
     required: false
 
 outputs:
@@ -49,48 +46,30 @@ runs:
   using: composite
   
   steps:
-    - name: 🏗️ Collect output
-      if: runner.os != 'macOS'
-      uses: mathiasvr/command-output@v2.0.0
-      id: command
+    - name: Target Configuration
+      uses: eq19/eq19/.github/actions/3-exponentiation/6-grammar@v1
+      if: inputs.id == 3
+      id: exponentiation
       with:
-        run: |
-          date +'%Y-%m-%d'
+        hub_username: ${{ inputs.docker_hub_username }}
+        hub_password: ${{ inputs.docker_hub_password }}
+        failure_status: ${{ inputs.failure_status }}
+        hub_token: ${{ inputs.docker_hub_token }}
+        credentials: ${{ inputs.credentials }}
+        action_path: ${{ github.action_path }}
+        image_name: ${{ inputs.image_name }}
+        token: ${{ inputs.token }}
 
-    - name: 💎 Get the latest commit message
-      id: commit
-      shell: bash
-      run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
-        git config --global core.autocrlf false
-        git config --global --add safe.directory "${{ github.workspace }}"
-       
-        git config --global credential.helper store
-        echo "https://${{ github.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
-
-        echo 'TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/${TARGET_REPOSITORY}.git"' >> ${GITHUB_ENV}
-        echo 'REMOTE_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
-        echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
-
-    - name: ⏪ Rewind all jobs on failure
-      shell: bash
-      run: |
-        if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
-      
-          git clone --single-branch --branch gh-pages ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
-          git add . && git commit --allow-empty -m "rerun due to job failure" && git push
-  
-        elif [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
- 
-          cd ${{ github.workspace }} && rm -rf * && mv -f /home/runner/_site/* .
-          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
- 
-        elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'false' ]]; then
-
-          cd $RUNNER_TEMP && git clone --single-branch --branch gh-pages ${{ env.TARGET_REPO }} gh-pages
-          cd gh-pages && rm -rf * && mv -f ${GITHUB_WORKSPACE//\\//}/* .
-          git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
-        
-        fi
+    - name: Profiling Feedback
+      uses: eq19/eq19/.github/actions/4-identition/6-grammar@v1
+      if: inputs.id == 4
+      id: identition
+      with:
+        token: ${{ inputs.token }}
+        image_name: ${{ inputs.image_name }}
+        credentials: ${{ inputs.credentials }}
+        workspace: ${GITHUB_WORKSPACE//\\//}
+        action_path: ${GITHUB_ACTION_PATH//\\//}
+        hub_token: ${{ inputs.docker_hub_token }} 
+        failure_status: ${{ inputs.failure_status }}
+        hub_username: ${{ inputs.docker_hub_username }}
