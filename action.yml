@@ -89,8 +89,8 @@ runs:
  
         elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'false' ]]; then
 
-          cd /tmp && git clone --single-branch --branch gh-pages ${{ env.TARGET_REPO }} gh-pages
-          rm -rf gh-pages/* && mv -f ${{ github.workspace }}/* gh-pages/ && cd /tmp/gh-pages
+          cd $RUNNER_TEMP && git clone --single-branch --branch gh-pages ${{ env.TARGET_REPO }} gh-pages
+          cd gh-pages && rm -rf * && mv -f ${{ github.workspace }}/* .
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
         
         fi
