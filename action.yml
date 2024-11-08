@@ -15,8 +15,7 @@ inputs:
     description: 'The deploy owner'
     required: false
   actor:
-    description: 'The github username creating the commit'
-    default: '${GITHUB_ACTOR}'
+    description: 'The github username creating the commit
     required: false
   token:
     description: 'The deploy token'
@@ -62,17 +61,17 @@ runs:
       id: commit
       shell: bash
       run: |
-        git config --global user.name "${{ inputs.actor }}"
-        git config --global user.email "${{ inputs.actor }}@users.noreply.github.com"
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
         git config --global core.autocrlf false
-        git config --global --add safe.directory "${{ github.workspace }}"       
+        git config --global --add safe.directory "${{ github.workspace }}"
        
         git config --global credential.helper store
-        echo "https://${{ inputs.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
+        echo "https://${{ github.actor }}:${{ inputs.token }}@github.com" > ~/.git-credentials
 
-        echo 'TARGET_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${TARGET_REPOSITORY}.git"' >> ${GITHUB_ENV}
-        echo 'REMOTE_REPO="https://${{ inputs.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
+        echo 'TARGET_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/${TARGET_REPOSITORY}.git"' >> ${GITHUB_ENV}
+        echo 'REMOTE_REPO="https://${{ github.actor }}:${{ inputs.token }}@github.com/${{ github.repository }}.git"' >> ${GITHUB_ENV}
         echo 'LATEST_COMMIT='$(curl -s "https://api.github.com/users/eq19/events/public" | jq ".[0].payload.commits[0].message") >> ${GITHUB_ENV}
 
     - name: ⏪ Rewind all jobs on failure
@@ -80,7 +79,7 @@ runs:
       run: |
         if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
       
-          git clone --single-branch --branch 'gh-pages' ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
+          git clone --single-branch --branch gh-pages ${{ env.REMOTE_REPO }} gh-pages && cd gh-pages
           git add . && git commit --allow-empty -m "rerun due to job failure" && git push
   
         elif [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
@@ -90,8 +89,8 @@ runs:
  
         elif [[ ${{ inputs.id }} == 4 && '${{ inputs.failure_status }}' == 'false' ]]; then
 
-          git clone --single-branch --branch 'gh-pages' ${{ env.TARGET_REPO }} "$RUNNER_TEMP/gh-pages"
-          cp -TRv "${{ github.workspace }}\" "$RUNNER_TEMP/gh-pages/" && cd "$RUNNER_TEMP/gh-pages"
+          git clone --single-branch --branch gh-pages ${{ env.TARGET_REPO }} "$RUNNER_TEMP/gh-pages"
+          cp -TRv "${{ github.workspace }}/" "$RUNNER_TEMP/gh-pages/" && cd "$RUNNER_TEMP/gh-pages"
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
         
         fi
