@@ -79,7 +79,7 @@ runs:
       run: |
         if [[ ${{ inputs.id }} == 3 && '${{ inputs.failure_status }}' == 'false' ]]; then
  
-          cd "${{ github.workspace }}" && mv -f docs ${RUNNER_TEMP}/
+          cd ${{ github.workspace }} && mv -f docs ${RUNNER_TEMP}/
           rm -rf * && mv -f /home/runner/_site/* . && mv -f ${RUNNER_TEMP}/docs .
           git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
  
