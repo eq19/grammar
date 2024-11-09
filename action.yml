@@ -48,7 +48,7 @@ runs:
   steps:
     - name: Target Configuration
       uses: eq19/eq19/.github/actions/3-exponentiation/6-grammar@v1
-      if: inputs.id == 3
+      if: ${{ inputs.id == 3 && env.PASS == 'true' }}
       id: exponentiation
       with:
         hub_username: ${{ inputs.docker_hub_username }}
