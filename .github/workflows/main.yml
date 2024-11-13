@@ -95,8 +95,6 @@ jobs:
             steps.feed-mapping.outputs.addition ||
             steps.set-lexering.outputs.multiplication }}
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
-          #output_3=${{ steps.set-lexering.outputs.function }};
-          #echo "output_3=$output_3" >> $GITHUB_OUTPUT
 
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
