@@ -69,7 +69,7 @@ runs:
         image_name: ${{ inputs.image_name }}
         credentials: ${{ inputs.credentials }}
         workspace: ${GITHUB_WORKSPACE//\\//}
-        action_path: ${GITHUB_ACTION_PATH//\\//}
+        action_path: '${GITHUB_ACTION_PATH//\\//}'
         hub_token: ${{ inputs.docker_hub_token }} 
         failure_status: ${{ inputs.failure_status }}
         hub_username: ${{ inputs.docker_hub_username }}
