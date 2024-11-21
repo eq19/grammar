@@ -93,8 +93,8 @@ runs:
         CPPFLAGS: "-I/opt/homebrew/opt/qt@5/include"
         PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
       run: |
-        brew install --quiet coreutils gsl qt@5 texlive imagemagick octave
-        export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/qt@5/bin:$PATH"
+        brew install --quiet doxygen
+        #export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/qt@5/bin:$PATH"
         #cd ${{ inputs.action_path }} && mkdir build && cd build && cmake .. && make && sudo make install && ctest
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
