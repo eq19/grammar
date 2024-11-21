@@ -93,7 +93,7 @@ runs:
         CPPFLAGS: "-I/opt/homebrew/opt/qt@5/include"
         PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
       run: |
-        git clone https://github.com/sourcey/moxygen.git && cd moxygen && npm install && npm test
+        #git clone https://github.com/sourcey/moxygen.git && cd moxygen && npm install && npm test
 
         ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
         sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
