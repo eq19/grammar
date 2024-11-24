@@ -93,7 +93,7 @@ runs:
         CPPFLAGS: "-I/opt/homebrew/opt/qt@5/include"
         PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
       run: |
-        cd ${{ inputs.action_path }} && ls -al && doxygen
+        cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1 && ls -alR xml
         #ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
         #sed -i.backup "1s|^|runner: |" $HOME/.ssh/google_compute_engine.pub && gh secret set GCP_ID_RSA < $HOME/.ssh/google_compute_engine
 
