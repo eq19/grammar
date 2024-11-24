@@ -94,9 +94,9 @@ runs:
         PKG_CONFIG_PATH: "/opt/homebrew/opt/qt@5/lib/pkgconfig"
       run: |
         cd ${{ inputs.action_path }} && doxygen > /dev/null 2>&1
-        mv -f xml ${{ github.workspace }} && cd ${{ github.workspace }}
+        rm -rf ${{ github.workspace }}/xml && mv -f xml ${{ github.workspace }}/
 
-        rm -rf cloud-config gha-creds-*.json
+        cd ${{ github.workspace }} && rm -rf cloud-config gha-creds-*.json
         git add . && git commit --allow-empty -m ${{ env.LATEST_COMMIT }} && git push
 
         #ssh-keygen -t rsa -b 3072 -N '' -f $HOME/.ssh/google_compute_engine -C root
