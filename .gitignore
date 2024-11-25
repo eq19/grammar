@@ -31,6 +31,7 @@ $RECYCLE.BIN/
 #.jekyll-cache
 #.jekyll-metadata
 
+
 # bundler
 *.gem
 vendor/
@@ -49,6 +50,7 @@ package-lock.json
 
 # lighthouse
 *.report.html
+gha-creds-*.json
 
 
 # build
