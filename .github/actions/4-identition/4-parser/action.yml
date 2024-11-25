@@ -99,13 +99,15 @@ runs:
     - name: Run identity  
       shell: bash
       env:
-        BASE: "D:/a/_actions/eq19/eq19/v1/.github"
         GCP_TOKEN: ${{ steps.auth.outputs.id_token }}
+        BASE_GIT: "/D/a/_actions/eq19/eq19/v1/.github"
+        WIKI: "https://github.com/$TARGET_REPOSITORY.wiki.git"
+        BASE: "https://github.com/eq19/eq19.github.io.wiki.git"
       run: |
         curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
           -H "Authorization: Bearer ${GCP_TOKEN}" -H "Content-Type: application/json" \
           --data @${{ inputs.workspace }}/docs/data.json | jq '.'
-        $BASE/entrypoint/init.sh
+        export PATH=$BASE_GIT/entrypoint:$PATH && init.sh
         
     - name: View context attributes
       uses: actions/github-script@v7

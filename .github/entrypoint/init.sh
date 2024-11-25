@@ -67,6 +67,10 @@ if [[ "${JOB_ID}" == "3" ]]; then
   find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
   find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
 
+elif [[ "${JOB_ID}" == "4" ]]; then
+
+  echo -e "\n$hr\nWORKSPACE\n$hr"
+
 fi
 
 if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
