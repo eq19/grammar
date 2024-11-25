@@ -62,7 +62,7 @@ runs:
 
     - name: Profiling Feedback
       uses: eq19/eq19/.github/actions/4-identition/6-grammar@v1
-      if: inputs.id == 4
+      if: inputs.id == 5
       id: identition
       with:
         token: ${{ inputs.token }}
