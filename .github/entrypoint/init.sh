@@ -25,18 +25,6 @@ else
   echo 'LATEST_COMMIT='$LATEST_COMMIT >> ${GITHUB_ENV}
 fi
 
-if [[ "${JOB_ID}" == "1" ]]; then
-
-  cd "${GITHUB_WORKSPACE}" && rm -rf .github
-  cp -r /home/runner/work/_actions/eq19/eq19/v1/.github .
-  chown -R "$(whoami)" .github
-
-  git remote set-url origin ${REMOTE_REPO}        
-  git add . && git commit -m "update workflows" && git push
-  if [ $? -eq 0 ]; then exit 1; fi
-
-fi
-
 if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
   echo -e "\n$hr\nENVIRONTMENT\n$hr"
@@ -53,30 +41,44 @@ if [[ -z ${PASS} ]] || [[ "${PASS}" == "true" ]]; then
 
 fi
 
-if [[ "${JOB_ID}" == "3" ]]; then
+echo -e "\n$hr\nWORKSPACE\n$hr"
+if [[ "${JOB_ID}" == "1" ]]; then
 
-  echo -e "\n$hr\nWORKSPACE\n$hr"
+  cd ${GITHUB_WORKSPACE} && rm -rf .github
+  cp -r /home/runner/work/_actions/eq19/eq19/v1/.github .
+  chown -R "$(whoami)" .github
+
+  git remote set-url origin ${REMOTE_REPO}        
+  git add . && git commit -m "update workflows" && git push
+  if [ $? -eq 0 ]; then exit 1; else ls -al ${GITHUB_WORKSPACE};fi
+
+elif [[ "${JOB_ID}" == "2" ]]; then
+
+  ls -alR ${GITHUB_WORKSPACE}
+
+elif [[ "${JOB_ID}" == "3" ]]; then
+
   gist.sh ${TARGET_REPOSITORY} ${FOLDER}
 
-  if [[ "${WIKI}" != "${BASE}" ]]; then
-    git clone $WIKI ${RUNNER_TEMP}/wikidir
-    mv -f ${RUNNER_TEMP}/wikidir/Home.md ${RUNNER_TEMP}/wikidir/README.md
-    find ${RUNNER_TEMP}/gistdir -type d -name "${FOLDER}" -prune -exec sh -c 'wiki.sh "$1"' sh {} \;
-  fi
-
   find ${RUNNER_TEMP}/gistdir -type d -name .git -prune -exec rm -rf {} \;
-  
   mv -f ${RUNNER_TEMP}/workdir/* /home/runner/_site/
+
   rm -rf ${RUNNER_TEMP}/Sidebar.md && cp _Sidebar.md ${RUNNER_TEMP}/Sidebar.md
   sed -i 's/0. \[\[//g' ${RUNNER_TEMP}/Sidebar.md && sed -i 's/\]\]//g' ${RUNNER_TEMP}/Sidebar.md
 
-  cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* .
-  find . -iname '*.md' -print0 | sort -zn | xargs -0 -I '{}' front.sh '{}'
-  find . -type d -name "${FOLDER}" -prune -exec sh -c 'cat ${RUNNER_TEMP}/README.md >> $1/README.md' sh {} \;
+  cd /home/runner/_site && cp -R ${RUNNER_TEMP}/gistdir/* . && ls -lR .
 
-elif [[ "${JOB_ID}" == "4" ]]; then
+else
 
-  echo -e "\n$hr\nWORKSPACE\n$hr"
+  cd ${RUNNER_TEMP//\\//} && rm -rf gh-source
+  git clone --single-branch --branch gh-source $TARGET_REPO gh-source
+  
+  cd ${GITHUB_WORKSPACE//\\//}
+  #find -not -path "./.git/*" -not -name ".git" | grep git
+  find -not -path "./.git/*" -not -name ".git" -delete
+
+  rm -rf ${RUNNER_TEMP//\\//}/gh-source/.git
+  shopt -s dotglob && mv -f ${RUNNER_TEMP//\\//}/gh-source/* . && ls -lR .
 
 fi
 

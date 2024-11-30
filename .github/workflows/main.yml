@@ -46,6 +46,7 @@ jobs:
           - { os: macos-latest, id: 2 }
     env:
       ID: ${{ matrix.config.id }}
+      DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
 
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
@@ -58,8 +59,7 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
-          ref: ${{ env.ID != 1 && 'gh-source' || '' }}
-          repository: ${{ env.ID != 1 && env.TARGET_REPOSITORY || '' }}
+          repository: ${{ env.ID != 1 && env.DOC || '' }}
 
       - name: ⚙️ Build Maps
         uses: eq19/maps@v2
@@ -136,10 +136,10 @@ jobs:
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
-          ref: 'gh-source'                  
           submodules: recursive
           token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.TARGET_REPOSITORY }}
+          ref: ${{ matrix.config.id == 3 && 'gh-source' || 'gh-pages' }}                  
 
       - name: 🚀 Setup Parser
         if: ${{ env.PASS == 'true' }}

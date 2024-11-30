@@ -79,7 +79,6 @@ runs:
   using: composite
   steps:
     - name: 💎 Set ID Token
-      if: runner.os != 'Windows'
       id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
@@ -89,7 +88,6 @@ runs:
         id_token_audience: 'https://us-central1-feedmapping.cloudfunctions.net/function'
 
     - name: 💎 Set Artifact
-      if: runner.os != 'Windows'
       id: artifact
       shell: bash
       env:
@@ -114,7 +112,7 @@ runs:
         mkdir -p ${{ inputs.action_path }}/_data
         mv -f ${RUNNER_TEMP}/*.json ${{ inputs.action_path }}/_data/
 
-        mv ${{ inputs.action_path }} ${{ github.workspace }}/_site
+        mv -f ${{ inputs.action_path }} ${{ github.workspace }}/_site
         mkdir -p ${{ inputs.action_path }} && cp -R ${{ github.workspace }}/_site/. ${{ inputs.action_path }}/
 
     - uses: ikalnytskyi/action-setup-postgres@v6 
