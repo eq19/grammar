@@ -1,4 +1,4 @@
-Prime Unit Identity|Home|
+Prime Identity|Home|
 Addition Zones (0-18)|1|
 True Prime Pairs|2|
 Primes Platform|3|

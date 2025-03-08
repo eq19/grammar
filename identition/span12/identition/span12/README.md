@@ -2426,7 +2426,7 @@ Like all maximal supergravities, it contains a single supermultiplet, the superg
 _The supergravity 2-brane and 5-brane are the [long-wavelength limits](https://en.wikipedia.org/w/index.php?title=Long-wavelength_limits&action=edit&redlink=1) (see also the historical survey above) of the [M2-brane](https://en.wikipedia.org/wiki/M2-brane) and [M5-brane](https://en.wikipedia.org/wiki/M5-brane) in M-theory_. _([Wikipedia](https://en.wikipedia.org/wiki/Higher-dimensional_supergravity))_
 ```
 
-[![Quantum Gravity](https://github.com/user-attachments/assets/cd9b3035-abcc-44c3-ad8e-8eb39612c3da)](https://en.wikipedia.org/wiki/CGh_physics)
+[![Quantum Gravity](https://github.com/eq19/maps/assets/8466209/aefae6d5-9ff0-4155-b990-00b2335ae425)](https://www.eq19.com/identition/#beyond-the-139)
 
 Most particles can have either kind of helicity, but neutrinos are odd. We only see left-handed neutrinos and right-handed anti-neutrinos.
 
@@ -2507,17 +2507,6 @@ The mathematical balancing and resolution of this domain, which correlates with 
 [![Theory of Everything](https://github.com/eq19/maps/assets/8466209/6e26ada0-c545-4771-810b-9f721512a03c)](https://www.primesdemystified.com/Factorization.html)
 
 Current research on loop quantum gravity may eventually play a fundamental role in a [theory of everything](https://en.wikipedia.org/wiki/Theory_of_everything), _but that is not its primary aim_.
-## Simplified TOE
-
-Assigning a specific mass, length, time, and charge metrics based on new dimensional relationships and the Planck constant (which defines Higgs mass).
-
-```tip
-{{ site.github.latest_release.body }}
-```
-
-[![Quantum Gravity](https://github.com/eq19/maps/assets/8466209/aefae6d5-9ff0-4155-b990-00b2335ae425)](https://www.eq19.com/identition/#beyond-the-139)
-
-Taking a [coupling function](https://www.eq19.com/multiplication/20.html#build-coupling-runner) between f(π) as P vs f(i) as NP where e<sup>iπ</sup> + 1 = 0 they shall be correlated in to an expression of universe so it shows that _[Everything is Connected](https://www.eq19.com/identition/span11/)_.
 
 ## Final Theory
 
@@ -2705,7 +2694,7 @@ We've seen how it [Euler's identity] can easily be deduced from results of Johan
 
 [![Everything is Connected](https://github.com/eq19/maps/assets/8466209/830328bc-7061-4851-b89d-4ee27bafef9c)](https://youtu.be/rPh3c8Sa37M)
 
-Since the 27 pattern is tripled to modulo 90 so they would behave as Prime Spiral Sieve and synchronizing its period-24 digital root towards the rest of 77 objects.
+Taking a [coupling function](https://www.eq19.com/multiplication/20.html#build-coupling-runner) between f(π) as P vs f(i) as NP where e<sup>iπ</sup> + 1 = 0 they shall be correlated in to an expression of universe so it shows that _[Everything is Connected](https://www.eq19.com/identition/span11/)_.
 
 ## Disclaimer
 
@@ -2714,12 +2703,3 @@ You are FREE to use our concept of TOE for every purposes as long as you present
 ```warning
 _The definite key to identify whether you use [our concept](https://www.eq19.com/identition/span12/) is when there a kind of developed item lies a [unified assignment](https://www.eq19.com/identition/span12/#final-theory) in hexagonal form by [six (6) corresponding sets](https://www.eq19.com/identition/span12/#loop-quantum-gravity) while each sets pick a [combination](https://www.eq19.com/identition/span12/#dark-matter) of [six (6) routes](https://www.eq19.com/identition/span12/#the-quantum-gravity) with a pairing of [six (6) by six (6)](https://www.eq19.com/identition/span12/#three-3-layers) of all channels_.
 ```
-
-**[eQuantum Project](https://github.com/eq19)**   
-Copyright © 2023-2024
-
-Reference:
-* [Riemann Zeta](https://commons.wikimedia.org/wiki/File:RiemannZeta_Zeros.svg)
-* [Mersenne Prime](https://en.wikipedia.org/wiki/Mersenne_prime)
-* [The Prime Hexagon](https://youtu.be/fQL4KRH3wUQ)
-* [The Primes Demystified](https://www.primesdemystified.com/First1000Primes.html)
