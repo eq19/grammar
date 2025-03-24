@@ -8,9 +8,6 @@ branding:
   color: 'red'
 
 inputs:
-  id:
-    description: The id according to os
-    required: true
   owner:
     description: 'The deploy owner'
     required: false
@@ -48,7 +45,7 @@ runs:
   steps:
     - name: Target Configuration
       uses: eq19/eq19/.github/actions/3-exponentiation/6-grammar@v2
-      if: ${{ inputs.id == 3 && env.PASS == 'true' }}
+      if: ${{ env.JOBS_ID == 3 && env.PASS == 'true' }}
       id: exponentiation
       with:
         hub_username: ${{ inputs.docker_hub_username }}
@@ -62,7 +59,7 @@ runs:
 
     - name: Profiling Feedback
       uses: eq19/eq19/.github/actions/4-identition/6-grammar@v2
-      if: inputs.id == 4
+      if: ${{ env.JOBS_ID == 4 }}
       id: identition
       with:
         token: ${{ inputs.token }}
