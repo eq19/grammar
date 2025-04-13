@@ -53,8 +53,9 @@ inputs:
     description: Path for the docker cache destination
     required: false
     default: /tmp/.buildx-cache-new
-  provider:
-    description: 'The deploy provider'
+  rerun_runner:
+    description: Redeploy hosted runner
+    default: 'false'
     required: true
   owner:
     description: 'The deploy owner'
@@ -66,6 +67,24 @@ inputs:
     description: 'The deploy repository'
     default: ${{ github.repository }}
     required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
 
 outputs:
   artifact:
@@ -94,11 +113,19 @@ runs:
         TMP: ${{ inputs.tmp }}
         RUN: ${{ github.run_id }}
         USER: ${{ github.actor }}
-        GH_TOKEN: ${{ inputs.token }}
         REPO: ${{ github.repository }}
+        ACCESS_API: ${{ inputs.api_key }}
+        ACCESS_KEY: ${{ inputs.api_secret }}
+        ACCESS_TOKEN: ${{ inputs.token }}
+        MESSAGE_API: ${{ inputs.chat_id }}
+        MONITOR_TOKEN: ${{ inputs.bot_token }}
+        WARNING_TOKEN: ${{ inputs.logs_token }}
+        PYPI_TOKEN: ${{ inputs.pypi_token }}        
         ACTOR: ${{ github.triggering_actor }}
         OWNER: ${{ github.repository_owner }}
-        BEARER: ${{ steps.auth.outputs.id_token }}
+        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
+        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
+        GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |      
         shopt -s dotglob
         rm -rf ${{ inputs.action_path }}/.git
@@ -114,37 +141,58 @@ runs:
 
         mv -f ${{ inputs.action_path }} ${{ github.workspace }}/_site
         mkdir -p ${{ inputs.action_path }} && cp -R ${{ github.workspace }}/_site/. ${{ inputs.action_path }}/
-
-    - uses: ikalnytskyi/action-setup-postgres@v6 
+  
+    - uses: ikalnytskyi/action-setup-postgres@v7
       id: postgres
       with:
         username: yoda
         password: GrandMaster
-        database: test
+        database: jedi_order
         port: 34837
+        postgres-version: "17"
+        ssl: true
 
     - name: 🪂 Test postgres
-      run: |
-        cp ./.github/entrypoint/test.py .
-        python3 -m pytest -vv test.py
       env:
         CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
-        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/test
+        CERTIFICATE_PATH: ${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/jedi_order?sslmode=verify-ca&sslrootcert=${{ steps.postgres.outputs.certificate-path }}
         EXPECTED_SERVICE_NAME: yoda
+        EXPECTED_SERVER_VERSION: 17
+        EXPECTED_SSL: true
       shell: bash
+      run: |
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/tensorflow
+        ##pip install -e python_projects/* && iree-import-tflite -h && iree-import-tf -h
 
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/pjrt
+        ##pip install -e ctstools python_packages/iree_cpu_plugin
+  
+        ##pip install -r requirements.txt && cd python_packages/iree_cpu_plugin/build/cmake && ninja
+        ##JAX_PLATFORMS=iree-cpu pytest -n4 --max-worker-restart=9999 -p openxla_pjrt_artifacts --openxla-pjrt-artifact-dir=/tmp/foobar test/test_simple.py
+
+        #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
+        #python ${{ github.workspace }}/web_programming/cc_exchanges.py
+        
     - name: 🚀 Initiate Feed Container
       if: runner.os != 'Windows'
       uses: devcontainers/ci@v0.3
       id: set_output
       with:
         push: always
-        runCmd: ls -al /
         imageTag: spin-${{ env.ID }}
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
-        configFile: ${{ github.workspace }}/_site/.devcontainer.json
+        configFile: _site/.devcontainer.json
+        env: |
+          ID=${{ env.ID }}
+          GH_TOKEN=${{ env.GH_TOKEN }}
+          REMOTE_REPO=${{ env.REMOTE_REPO }}
+          RERUN_RUNNER=${{ inputs.rerun_runner }}
+          BEARER=${{ steps.auth.outputs.id_token }}
+          TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
+        runCmd: bash user_data/ft_client/test_client/test_rest_client.sh
 
     - name: 🪂 Remove existing images
       id: variables

@@ -28,7 +28,6 @@ set_target() {
       if [[ "$i" -lt "${#array[@]}-1" ]]; then echo "," >> ${RUNNER_TEMP}/orgs.json; fi
     done
     echo "]" >> ${RUNNER_TEMP}/orgs.json
-    curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function -H "Authorization: Bearer ${BEARER}" -H "Content-Type: application/json" --data @${RUNNER_TEMP}/orgs.json | jq '.' > ${RUNNER_TEMP}/gist.json 
   fi
   
   # Iterate the Structure
@@ -76,8 +75,6 @@ set_target() {
 }
 
 jekyll_build() {
-
-  echo -e "\n$hr\nCONFIG\n$hr"
   
   [[ $1 == *"github.io"* ]] && OWNER=$2
   if [[ $1 != "eq19.github.io" ]]; then SITEID=$(( $3 + 2 )); else SITEID=1; fi
@@ -95,7 +92,7 @@ jekyll_build() {
   sed -i "1s|^|repository: ${OWNER}/$1\n|" ${RUNNER_TEMP}/_config.yml
   [[ $1 != *"github.io"* ]] && sed -i "1s|^|baseurl: /$1\n|" ${RUNNER_TEMP}/_config.yml
   
-  FOLDER="span$(( 17 - $3 ))"
+  FOLDER="span$(( 19 - $SITEID ))"
   TARGET_REPOSITORY=${OWNER}/$1
   gh variable set FOLDER --body "$FOLDER"
   echo 'FOLDER='${FOLDER} >> ${RUNNER_TEMP}/.env
@@ -109,13 +106,18 @@ jekyll_build() {
   sed -i "1s|^|id: ${SITEID}\n|" ${RUNNER_TEMP}/_config.yml
 
   echo 'ID='${SITEID} >> ${GITHUB_ENV}
+
+  echo -e "\n$hr\nCONFIG\n$hr"
   cat ${RUNNER_TEMP}/_config.yml
-   
+
+  echo -e "\n$hr\nSET TOKEN\n$hr"
+  sync.sh ${REPO} ${TARGET_REPOSITORY} ${GH_TOKEN}
+  
 }
 
 # Get structure on gist files
 PATTERN='sort_by(.created_at)|.[] | select(.public == true).files.[] | select(.filename != "README.md").raw_url'
-HEADER="Accept: application/vnd.github+json" && echo ${GH_TOKEN} | gh auth login --with-token
+HEADER="Accept: application/vnd.github+json" #&& echo ${TOKEN} | gh auth login --with-token
 gh api -H "${HEADER}" "/users/eq19/gists" --jq "${PATTERN}" > ${RUNNER_TEMP}/gist_files
 
 # Capture the string and return status

@@ -8,9 +8,6 @@ branding:
   color: 'red'
 
 inputs:
-  id:
-    description: The deploy id
-    required: false
   hub_username:
     description: Username for Docker Hub
     default: ${{ github.actor }}       
@@ -79,13 +76,9 @@ runs:
   steps:
     - name: Remove Existing Connection
       shell: bash
-      env:
-        JOB_ID: ${{ inputs.id }}
-        GH_TOKEN: ${{ inputs.token }}
-        #TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
       run: |
         HEADER="Accept: application/vnd.github+json"
-        /home/runner/work/_actions/eq19/eq19/v1/.github/entrypoint/init.sh
+        /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
 
         #See: https://docs.github.com/en/rest/actions/self-hosted-runners
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
@@ -103,31 +96,44 @@ runs:
         username: ${{ inputs.hub_username }}
         password: ${{ inputs.hub_token }}
         
-    - uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
-        allow-prereleases: true
+    #- uses: actions/setup-python@v5
+      #with:
+        #python-version: 3.12
+        #allow-prereleases: true
 
-    - uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip
+    #- uses: actions/cache@v4
+      #with:
+        #path: ~/.cache/pip
+        #key: ${{ runner.os }}-pip
 
-    - name: Install dependencies
-      shell: bash
-      run: |
-        python -m pip -q install --upgrade pip setuptools six wheel
-        python -m pip -q install -r ${{ inputs.action_path }}/requirements-dev.txt
+    #- name: Install dependencies
+      #shell: bash
+      #run: |
+        #python -m pip -q install --upgrade pip
+        #python -m pip -q install -r ${{ inputs.action_path }}/dataFile/requirements.txt
+  
+        ##python -m pip -q install -e ./.github/entrypoint/artifact/python
+        ##iree-compile --iree-llvmcpu-list-targets && iree-run-module --list_drivers
 
+        ##Ref: https://github.com/iree-org/iree-experimental
+        ##python ${{ inputs.action_path }}/pythonCode/testIREE.py
+        
+        ##Ref: https://github.com/tsoding/JelloVM
+        #cd ${{ inputs.action_path }} && javac javaCode/Main.java
+
+        ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
+        ##python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
+        ##cd ${{ inputs.action_path }}/pythonCode && python npreader.py -h && python map.py -h
+        
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
       with:
         push: always
-        runCmd: ls -alR /data
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         imageTag: target-${{ github.run_number }}
         configFile: ${{ inputs.action_path }}/.devcontainer.json
+        runCmd: ls -al /
 
     - name: 💎 Variables
       id: variables

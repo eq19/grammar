@@ -8,9 +8,6 @@ branding:
   color: 'red'
 
 inputs:
-  id:
-    description: The deploy id
-    required: false
   hub_username:
     description: Username for Docker Hub
     default: ${{ github.actor }}       
@@ -83,11 +80,8 @@ runs:
   steps:
     - name: Run identity  
       shell: bash
-      env:
-        JOB_ID: ${{ inputs.id }}
-        GH_TOKEN: ${{ inputs.token }}
       run: |
-        /d/a/_actions/eq19/eq19/v1/.github/entrypoint/init.sh
+        /d/a/_actions/eq19/eq19/v2/.github/entrypoint/init.sh
         
     - name: View context attributes
       uses: actions/github-script@v7
