@@ -7,7 +7,7 @@ on:
     types: [completed]
     workflows: ["pages-build-deployment"]
   repository_dispatch:
-    types: [trigger_action]
+    types: [trigger_action, retry_workflow]
 
 # 🕸️ Allow concurrent
 concurrency:
