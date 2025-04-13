@@ -63,7 +63,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     #git clone --single-branch --branch gh-pages $REMOTE_REPO gh-pages && cd gh-pages
     #git add . && git commit --allow-empty -m "rerun due to job update" && git push
-    curl -X POST \
+    curl -s -X POST \
       -H "Authorization: token $GH_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/dispatches" \
