@@ -110,7 +110,7 @@ runs:
       shell: bash
       run: |
         mkdir my-project
-        cd my-project && git init
+        cd my-project && git init -q
 
         # Set up remotes
         git remote add source $REMOTE_REPO

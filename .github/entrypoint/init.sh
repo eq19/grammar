@@ -72,6 +72,11 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
   else
 
+    # Fetch SHA, encode new content, and update in one step
+    gh api --method PUT /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml \
+      -f sha="$(gh api /repos/${TARGET_REPOSITORY}/contents/.github/workflows/main.yml --jq '.sha')" \
+      -f message="Update file" -f content="$(base64 -w0 .github/workflows/main.yml)" > /dev/null
+
     PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
     echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
