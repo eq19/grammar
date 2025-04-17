@@ -2,7 +2,7 @@
 name: COmpendium of RElations – Modulo 6
 
 on:
-  #push:
+  push:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
@@ -118,7 +118,7 @@ jobs:
     needs: lexering
     strategy:
       matrix:
-        config: ${{ fromJson(fromBase64(needs.lexering.outputs.matrix)) }
+        config: ${{ fromJson(fromBase64(needs.lexering.outputs.matrix)) }}
 
       # 💢 Completeness relations
       max-parallel: 1
