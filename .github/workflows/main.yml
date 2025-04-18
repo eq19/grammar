@@ -90,34 +90,24 @@ jobs:
       - name: 📋 Generate Outputs
         id: gen_outputs
         shell: bash
-        env:
-          OWNER: ${{ github.repository_owner }}
         run: |
           output=${{ env.JOBS_ID == 1 &&
             steps.feed-mapping.outputs.addition ||
             steps.set-lexering.outputs.multiplication }}
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
 
-          type=$(curl -s -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/users/$OWNER | jq -r .type)
-          if [[ "$type" != "Organization" ]]; then
-            matrix='[{"os":"windows-latest","jobs_id":3}]'
-          else
-            matrix='[{"os":"self-hosted","jobs_id":3},{"os":"windows-latest","jobs_id":4}]'
-          fi
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
-      matrix: ${{ steps.gen_outputs.outputs.matrix }}
       target: ${{ steps.gen_outputs.outputs.output_1 }}
       address: ${{ steps.gen_outputs.outputs.output_2 }}
       function: ${{ steps.set-lexering.outputs.function }}
-      
+
   parsering:
-    needs: lexering
     strategy:
       matrix:
-        config: ${{ fromJson(needs.lexering.outputs.matrix) }}
+        config:
+          - { os: self-hosted, jobs_id: 3 }
+          - { os: windows-latest, jobs_id: 4 }
 
       # 💢 Completeness relations
       max-parallel: 1
@@ -129,6 +119,7 @@ jobs:
       PASS: ${{ contains(needs.lexering.result, 'success') }}
 
     ## ✔️ Completeness status
+    needs: lexering
     runs-on: ${{ matrix.config.os }}
     #if: ${{ (needs.lexering.result == 'success') }}
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
