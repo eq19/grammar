@@ -206,7 +206,7 @@ runs:
         - mount --bind /mnt/disks/deeplearning/var/lib/docker/cos /var/lib/docker
         - systemctl daemon-reload
         - systemctl start docker
-        - systemctl start runner.service
+        - systemctl start runner2.service
         EOL
         
     # Ref: https://stackoverflow.com/a/47018417/4058484
