@@ -81,8 +81,8 @@ runs:
     - name: 🪂 Adapt feed mapping
       shell: bash
       run: |
-        cd ${{ github.workspace }}/_site
-        rm -rf .git .devcontainer.json Dockerfile*
+        mv -f .github/entrypoint/dockerfile/* .
+        cd ${{ github.workspace }}/_site && rm -rf .git .devcontainer.json Dockerfile*
         git clone --single-branch -b gh-pages ${TARGET_REPO} ${{ inputs.action_path }}/_site &>/dev/null
 
         cd ${{ inputs.action_path }}/_site
