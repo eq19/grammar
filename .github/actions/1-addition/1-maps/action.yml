@@ -79,7 +79,8 @@ runs:
       run: |
         HEADER="Accept: application/vnd.github+json"
         /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
-
+        mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
+            
         #See: https://docs.github.com/en/rest/actions/self-hosted-runners
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
         RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
