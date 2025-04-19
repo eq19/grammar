@@ -89,7 +89,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     fi
 
     cd ${GITHUB_WORKSPACE}
-    mv -f .github/entrypoint/dockerfile/* .
+    mv -f .github/entrypoint/dockerfile/* $1/
     rm -rf user_data && mv -f $1/user_data . && ls -al .
     if [[ "${RERUN_RUNNER}" != "false" ]]; then gh variable set RERUN_RUNNER --body "false"; fi
 
