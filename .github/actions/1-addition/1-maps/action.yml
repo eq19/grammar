@@ -91,7 +91,7 @@ runs:
         elif [ "$STATUS" == "offline" ]; then
           gh variable set RERUN_RUNNER --body "true"
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
-          gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
+          gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}
         fi
 
     - name: View context attributes
