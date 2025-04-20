@@ -49,6 +49,7 @@ fi
 echo -e "\n$hr\nWORKSPACE\n$hr"
 RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
+echo 'RERUN_RUNNER='${RERUN_RUNNER} >> ${GITHUB_ENV}
 
 if [[ "${JOBS_ID}" == "1" ]]; then
 
@@ -90,7 +91,6 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     cd ${GITHUB_WORKSPACE}
     rm -rf user_data && mv -f $1/user_data . && ls -al .
-    if [[ "${RERUN_RUNNER}" != "false" ]]; then gh variable set RERUN_RUNNER --body "false"; fi
 
   fi
 

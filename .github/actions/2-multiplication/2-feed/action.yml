@@ -110,6 +110,7 @@ runs:
 
     # See https://github.com/thesofproject/sof/blob/main/zephyr/docker-run.sh
     - name: 🪂 Cloud Config
+      if: env.RERUN_RUNNER == 'true'
       id: metadata
       shell: bash
       run: |
@@ -211,7 +212,7 @@ runs:
         
     # Ref: https://stackoverflow.com/a/47018417/4058484
     - name: 🪂 Setup Runner by Gcloud
-      #if: runner.os == 'Windows'
+      if: env.RERUN_RUNNER == 'true'
       id: instances
       shell: bash
       run: >

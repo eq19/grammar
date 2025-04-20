@@ -77,18 +77,21 @@ runs:
     - name: Remove Existing Connection
       shell: bash
       run: |
-        HEADER="Accept: application/vnd.github+json"
+        gh variable set RERUN_RUNNER --body "false"
         /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
         mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
             
-        #See: https://docs.github.com/en/rest/actions/self-hosted-runners
+        HEADER="Accept: application/vnd.github+json"
         RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
-        STATUS=$(echo "$RESPONSE" | jq -r --arg name "$RUNNER_NAME" '.runners[] | select(.name == $name).status')
+        TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
+        STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_NAME }}" '.runners[] | select(.name == $NAME).status')
 
-        if [ "$STATUS" == "offline" ]; then
+        if (( $TOTAL_COUNT == 0 )); then 
+          gh variable set RERUN_RUNNER --body "true"
+        elif [ "$STATUS" == "offline" ]; then
+          gh variable set RERUN_RUNNER --body "true"
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
-          TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
-          if (( $TOTAL_COUNT != 0 )); then gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
+          gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}; fi 
         fi
 
     - name: View context attributes
