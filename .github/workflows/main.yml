@@ -2,7 +2,7 @@
 name: COmpendium of RElations – Modulo 6
 
 on:
-  push:
+  #push:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
@@ -20,6 +20,7 @@ permissions: write-all
 # 🕸️ Global Environment
 env:
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  RUNNER_NAME: "Google-optimized-instance"
   TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
 
 jobs:
