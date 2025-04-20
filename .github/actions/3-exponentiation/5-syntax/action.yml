@@ -97,6 +97,7 @@ runs:
     - name: 💎 Connect to Redis
       # Runs a script that creates a Redis client, populates
       # the client with data, and retrieves data
+      if: runner.os == 'Redis'
       env:
         # The hostname used to communicate with the Redis client service container
         # Ref: https://gitlab.com/NamingThingsIsHard/crypto/freqtrade/clients
