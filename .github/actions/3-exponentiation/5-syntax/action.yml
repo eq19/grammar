@@ -110,6 +110,7 @@ runs:
         echo '${{ inputs.pauli_sum }}'
     
     - name: 💎 Connect to postgres
+      if: env.RERUN_RUNNER == 'true'
       env:
         # use the internal host here because we have specified a container for the job.
         # If we were running the job on the VM this would be localhost

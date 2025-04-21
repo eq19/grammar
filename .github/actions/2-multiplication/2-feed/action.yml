@@ -151,7 +151,7 @@ runs:
             ExecStop=/usr/bin/docker stop runner1
             ExecStopPost=/usr/bin/docker rm runner1
             ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
-            ExecStart=/usr/bin/docker run --rm -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_NAME }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ env.TARGET_REPOSITORY }} -e GITHUB_ACCESS_TOKEN=${{ inputs.token }} -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --name runner1 --pull=always eq19/maps:target-${{ github.run_number }}
+            ExecStart=/usr/bin/docker run --rm -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_NAME }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ env.TARGET_REPOSITORY }} -e GITHUB_ACCESS_TOKEN=${{ inputs.token }} -e CONTAINER_NAME=runner1 -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --name runner1 --pull=always eq19/maps:target-${{ github.run_number }}
 
         - path: /etc/systemd/system/mydb.service
           permissions: "0644"
@@ -185,7 +185,7 @@ runs:
             ExecStop=/usr/bin/docker stop runner2
             ExecStopPost=/usr/bin/docker rm runner2
             ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
-            ExecStart=/usr/bin/docker run --rm -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_NAME }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ inputs.repository }} -e GITHUB_ACCESS_TOKEN=${{ inputs.token }} -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --name runner2 --pull=always eq19/lexer:id-${{ env.IMAGE_TAG }}
+            ExecStart=/usr/bin/docker run --rm -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_NAME }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ inputs.repository }} -e GITHUB_ACCESS_TOKEN=${{ inputs.token }}  -e CONTAINER_NAME=runner2 -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --name runner2 --pull=always eq19/lexer:id-${{ env.IMAGE_TAG }}
 
         bootcmd:
         - fsck.ext4 -tvy /dev/sdb1

@@ -78,21 +78,25 @@ runs:
       shell: bash
       run: |
         gh variable set RERUN_RUNNER --body "false"
-        /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
-        mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
-            
+
         HEADER="Accept: application/vnd.github+json"
         RESPONSE=$(gh api -H "${HEADER}" repos/${{ github.repository }}/actions/runners)
         TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.total_count')
         STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_NAME }}" '.runners[] | select(.name == $NAME).status')
+        echo "$RESPONSE"
+        echo "TOTAL=$TOTAL_COUNT"
+        echo "STATUS=$STATUS"
 
-        if (( $TOTAL_COUNT == 0 )); then 
+        if [[ "$TOTAL_COUNT" -eq 0 ]]; then
           gh variable set RERUN_RUNNER --body "true"
-        elif [ "$STATUS" == "offline" ]; then
+        elif [[ "$STATUS" == "offline" ]]; then
           gh variable set RERUN_RUNNER --body "true"
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
           gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}
         fi
+
+        /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
+        mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
 
     - name: View context attributes
       uses: actions/github-script@v7

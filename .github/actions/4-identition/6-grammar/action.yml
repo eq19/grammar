@@ -90,7 +90,6 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         BASE: "D:/a/_actions/eq19/eq19/v2/.github"
       run: |
-        #gh variable set RERUN_RUNNER --body "false"
         if [[ '${{ inputs.failure_status }}' == 'true' ]]; then
       
           git config --global user.name "$GITHUB_ACTOR"

@@ -36,9 +36,6 @@ inputs:
     description: Path for the docker cache destination
     required: false
     default: /tmp/.buildx-cache-new
-  rerun_runner:
-    description: 'Redeploy of runner'
-    required: true
   owner:
     description: 'The deploy owner'
     required: false

@@ -2,7 +2,7 @@
 name: COmpendium of RElations – Modulo 6
 
 on:
-  push:
+  #push:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
@@ -54,7 +54,6 @@ jobs:
         id: build-parser
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          rerun_runner: ${{ vars.RERUN_RUNNER }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
@@ -68,7 +67,6 @@ jobs:
           chat_id: ${{ secrets.MESSAGE_API }}
           api_key: ${{ secrets.ACCESS_API }}
           api_secret: ${{ secrets.ACCESS_KEY }}
-          rerun_runner: ${{ vars.RERUN_RUNNER }}
           pypi_token: ${{ secrets.PYPI_TOKEN }}
           bot_token: ${{ secrets.MONITOR_TOKEN }}
           logs_token: ${{ secrets.WARNING_TOKEN }}

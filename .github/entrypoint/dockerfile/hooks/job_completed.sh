@@ -15,8 +15,21 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   /mnt/disks/deeplearning/usr/bin/docker network inspect bridge
 
   echo -e "\n$hr\nStart Network\n$hr"
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
+  RERUN_RUNNER=$(curl -s \
+    -H "Authorization: token $GH_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
+
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
+  else
+    if [[ "$CONTAINER_NAME" == "runner1" ]]; then
+      /mnt/disks/deeplearning/usr/bin/docker exec runner2 /home/runner/scripts/exitpoint.sh
+    elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
+      /mnt/disks/deeplearning/usr/bin/docker exec runner1 /home/runner/scripts/exitpoint.sh
+    fi
+  fi
 
 fi
 

@@ -53,10 +53,6 @@ inputs:
     description: Path for the docker cache destination
     required: false
     default: /tmp/.buildx-cache-new
-  rerun_runner:
-    description: Redeploy hosted runner
-    default: 'false'
-    required: true
   owner:
     description: 'The deploy owner'
     required: false
@@ -189,7 +185,6 @@ runs:
           ID=${{ env.ID }}
           GH_TOKEN=${{ env.GH_TOKEN }}
           REMOTE_REPO=${{ env.REMOTE_REPO }}
-          RERUN_RUNNER=${{ inputs.rerun_runner }}
           BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
         runCmd: bash user_data/ft_client/test_client/test_rest_client.sh
