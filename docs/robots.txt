@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: /syntax/sitemap_index.xml
+Sitemap: /grammar/sitemap_index.xml
