@@ -83,6 +83,7 @@ runs:
   steps:
     #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
     - name: Run identity
+      if: runner.os == 'Redis'
       shell: bash
       run: |
         TOKEN=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
