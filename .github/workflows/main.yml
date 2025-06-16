@@ -2,10 +2,11 @@
 name: COmpendium of RElations – Modulo 6
 
 on:
-  push:
+  #push:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
+  workflow_dispatch:
   repository_dispatch:
     types: [trigger_action, retry_workflow]
 
