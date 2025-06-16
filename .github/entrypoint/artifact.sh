@@ -79,8 +79,14 @@ set_target() {
 jekyll_build() {
   
   [[ $1 == *"github.io"* ]] && OWNER=$2
-  [[ $1 == "Chetabahana.github.io" ]] && SITEID=1 || 
-    { [[ $1 == "eq19.github.io" ]] && SITEID=170 || SITEID=$(( $3 + 2 )) }  
+
+  if [[ $1 == "Chetabahana.github.io" ]]; then
+    SITEID=1
+  elif [[ $1 == "eq19.github.io" ]]; then
+    SITEID=170
+  else
+    SITEID=$(( $3 + 2 ))
+  fi
 
   if  [[ "${OWNER}" == "eq19" ]]; then
     sed -i "1s|^|description: An attempt to discover the Final Theory\n\n|" ${RUNNER_TEMP}/_config.yml
