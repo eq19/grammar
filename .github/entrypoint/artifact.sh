@@ -55,7 +55,14 @@ set_target() {
   fi
   
   # Generate id from the Structure
-  [[ -z "$SPIN" ]] && if [[ "$1" != "$2" ]]; then SPIN=13; else SPIN=13; fi
+  if [[ -z "$SPIN" ]]; then
+    if [[ -z "$2" ]] || [[ "$1" == "$2" ]]; then
+        SPIN=13
+    else
+        SPIN=-1
+    fi
+  fi
+
   if [[ -n "$CELL" ]]; then
     SPANPLUS=$(($SPAN + 1))
     if (( $CELL == 0 )); then MOD=7; else MOD=13; fi
