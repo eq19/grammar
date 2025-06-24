@@ -226,10 +226,8 @@ runs:
         ./.github/entrypoint/remote.sh
 
     - name: ⚧️ Rerun workflow if failed
-      if: always()
+      if: ${{ failure() }}
       shell: bash
       run: |
-        if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
-          [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml"
-          exit 1
-        fi
+        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml"
+        exit 1

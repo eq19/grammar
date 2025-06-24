@@ -98,10 +98,12 @@ jobs:
         env:
           LOSS: ${{ fromJson(inputs.matrix_json).loss }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
+          SCORE: ${{ fromJson(inputs.matrix_json).score }}
         run: |
           echo "Running hyperopt..."
           echo "Loss: $LOSS"
           echo "Space: $SPACE"
+          echo "Score: $SCORE"
           bash user_data/ft_client/test_client/feed.sh
 
           # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
