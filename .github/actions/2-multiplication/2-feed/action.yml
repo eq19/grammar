@@ -222,3 +222,12 @@ runs:
         --zone=us-central1-a --machine-type=e2-micro --enable-display-device --tags=https-server
         --boot-disk-device-name=cos --image-project cos-cloud --image-family cos-stable --metadata-from-file=user-data=cloud-config
         --create-disk=boot=no,auto-delete=yes,name=tensorflow,device-name=deeplearning,mode=rw,size=50,type=pd-standard,image=projects/ml-images/global/images/c0-deeplearning-common-cpu-v20250325-debian-11-py310-conda
+
+    - name: ⚧️ Rerun workflow if failed
+      if: always()
+      shell: bash
+      run: |
+        if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
+          [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml"
+          exit 1
+        fi

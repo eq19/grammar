@@ -1,4 +1,4 @@
-name: 'Jekyll Deploy Action'
+Iname: 'Jekyll Deploy Action'
 
 description: >
   A Github Action to deploy the Jekyll site conveniently for GitHub Pages
@@ -95,3 +95,12 @@ runs:
       with:
         run: |
           date +'%Y-%m-%d'
+
+    - name: ⚧️ Rerun workflow if failed
+      if: always()
+      shell: bash
+      run: |
+        if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
+          [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml"
+          exit 1
+        fi
