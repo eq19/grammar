@@ -114,10 +114,8 @@ runs:
           --data @${{ inputs.workspace }}/_data/orgs.json | jq '.'                
 
     - name: ⚧️ Rerun workflow if failed
-      if: always()
+      if: ${{ failure() }}
       shell: bash
       run: |
-        if [[ "${{ contains(join(steps.*.conclusion, ','), 'failure') }}" == "true" ]]; then
-          [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml"
-          exit 1
-        fi
+        [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml"
+        exit 1
