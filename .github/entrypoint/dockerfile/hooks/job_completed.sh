@@ -33,7 +33,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   echo -e "\n$hr\nStart Network\n$hr"
   if [[ "$RERUN_RUNNER" == "true" ]]; then
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_live
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_dry
     /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
 
   #Check if ✅ $APP is running inside $CONTAINER

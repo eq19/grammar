@@ -73,6 +73,7 @@ jobs:
           api_key: ${{ secrets.ACCESS_API }}
           api_secret: ${{ secrets.ACCESS_KEY }}
           pypi_token: ${{ secrets.PYPI_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
           bot_token: ${{ secrets.MONITOR_TOKEN }}
           logs_token: ${{ secrets.WARNING_TOKEN }}
           credentials: ${{ secrets.GCP_CREDENTIALS }}
