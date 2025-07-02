@@ -12,6 +12,10 @@ set_config() {
   cat $RUNNER_TEMP/orgs.json > $1/user_data/ft_client/test_client/results/orgs.json
   gh variable set JEKYLL_CONFIG --body "$(cat $RUNNER_TEMP/_config.yml)"
 
+  PARAMS_DRY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_DRY" | jq -r '.value')
+  PARAMS_LIVE=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_LIVE" | jq -r '.value')
   PARAMS_JSON=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/PARAMS_JSON" | jq -r '.value')
   echo "${PARAMS_JSON}" | jq '.' > $1/user_data/strategies/fibbo.json
@@ -19,6 +23,8 @@ set_config() {
   if jq empty < $1/user_data/strategies/fibbo.json; then
     echo -e "\n$hr\nPARAMETERS\n$hr"
     cat $1/user_data/strategies/fibbo.json
+    gh variable set PARAMS_DRY --repo ${TARGET_REPOSITORY} --body "${PARAMS_DRY}"
+    gh variable set PARAMS_LIVE --repo ${TARGET_REPOSITORY} --body "${PARAMS_LIVE}"
     gh variable set PARAMS_JSON --repo ${TARGET_REPOSITORY} --body "${PARAMS_JSON}"
     gh variable set REMOVE_REPOSITORY --repo ${TARGET_REPOSITORY} --body "${GITHUB_REPOSITORY}"
   else
