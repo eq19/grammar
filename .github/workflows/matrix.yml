@@ -37,6 +37,7 @@ jobs:
         env:
           JOBS_ID: 1
           PARAM: ${{ matrix.params }}
+          EPOCHS: ${{ fromJson(inputs.matrix_json).epochs }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}

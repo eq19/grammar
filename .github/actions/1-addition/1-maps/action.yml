@@ -167,7 +167,7 @@ runs:
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
         #pip uninstall -y iree-base-compiler iree-base-runtime iree-compiler iree-tools-tf
         python -m pip -q install --pre iree-base-compiler iree-base-runtime iree-tools-tf -f https://iree.dev/pip-release-links.html
-        python user_data/ft_client/test_client/app.py orgs.json ${{ env.ID }} ${{ env.PARAM || 'nil' }}
+        python user_data/ft_client/test_client/app.py orgs.json ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}
   
         ##python -m pip -q install -e ./.github/entrypoint/artifact/python
         ##iree-compile --iree-llvmcpu-list-targets && iree-run-module --list_drivers
