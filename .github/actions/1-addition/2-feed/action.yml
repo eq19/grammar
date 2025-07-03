@@ -115,7 +115,7 @@ runs:
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
         pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
         cd ${{ github.workspace }} && cat user_data/config_examples/config_exchange.example.json > user_data/config.json
-        freqtrade download-data --help && freqtrade download-data --timeframes $TIMEFRAMES --timerange="$(date -u -d "13 days ago" +%Y%m%d)-$(date -u +%Y%m%d)" --verbose
+        freqtrade download-data --help && freqtrade download-data --timeframes $TIMEFRAMES --timerange="$(date -u -d "30 days ago" +%Y%m%d)-$(date -u +%Y%m%d)" --verbose
 
     - name: Upload downloaded data as artifact
       uses: actions/upload-artifact@v4
