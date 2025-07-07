@@ -106,7 +106,7 @@ runs:
       if: env.RERUN_RUNNER == 'false'
       shell: bash
       env:
-        TIMEFRAMES: '15m 1h'
+        TIMEFRAMES: '1m 15m'
       run: |
         cd user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
         curl -s https://api.github.com/repos/freqtrade/freqtrade/contents | jq -r '.[] | select(.name | test("^requirements(-.*)?\\.txt$")) | .download_url' | xargs -n1 curl -sO
