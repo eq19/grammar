@@ -169,7 +169,8 @@ runs:
           # Commit and push changes
           git add . && git commit --allow-empty -m "$MESSAGE" && git push
 
-          if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
+          if [[ "$TARGET_REPOSITORY" == *"eq19/"* ]]; then
+          #if [[ "$TARGET_REPOSITORY" != *"eq19/"* ]]; then
             # Unpublish existing GitHub Pages
             curl -s -X DELETE \
               -H "Authorization: token $GH_TOKEN" \
