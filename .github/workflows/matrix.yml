@@ -36,7 +36,6 @@ jobs:
         id: build-parser
         env:
           JOBS_ID: 1
-          HYPEROPTS: ${{ matrix.hyperopts }}
           EPOCHS: ${{ fromJson(inputs.matrix_json).epochs }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
@@ -97,6 +96,7 @@ jobs:
 
       - name: 🧠 Run Hyperopt
         env:
+          HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
         run: |
