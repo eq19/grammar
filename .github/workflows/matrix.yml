@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        params: ${{ fromJson(inputs.matrix_json).params }}
+        hyperopts: ${{ fromJson(inputs.matrix_json).hyperopts }}
 
     env:
       GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
@@ -36,7 +36,7 @@ jobs:
         id: build-parser
         env:
           JOBS_ID: 1
-          PARAM: ${{ matrix.params }}
+          HYPEROPTS: ${{ matrix.hyperopts }}
           EPOCHS: ${{ fromJson(inputs.matrix_json).epochs }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
@@ -97,12 +97,10 @@ jobs:
 
       - name: 🧠 Run Hyperopt
         env:
-          LOSS: ${{ fromJson(inputs.matrix_json).loss }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
         run: |
           echo "Running hyperopt..."
-          echo "Loss: $LOSS"
           echo "Space: $SPACE"
           echo "Score: $SCORE"
           bash user_data/ft_client/test_client/feed.sh
