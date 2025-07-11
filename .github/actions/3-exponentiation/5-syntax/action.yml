@@ -57,7 +57,7 @@ inputs:
     required: true
   api_secret:
     description: 'The api secret'
-    required: false
+    required: true
   token:
     description: 'The deploy token'
     required: false
@@ -83,13 +83,12 @@ runs:
   steps:
     #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
     - name: Run identity
-      if: runner.os == 'Redis'
       shell: bash
       run: |
         TOKEN=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
-        curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
-          -H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
-          --data @${{ github.workspace }}/docs/data.json | jq '.'
+        #curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
+          #-H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
+          #--data @${{ github.workspace }}/docs/data.json | jq '.'
 
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
         /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|${{ inputs.api_key }}|g" /home/runner/data_live/config.json
