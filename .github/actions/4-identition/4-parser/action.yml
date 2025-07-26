@@ -94,4 +94,3 @@ runs:
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml"
-        exit 1

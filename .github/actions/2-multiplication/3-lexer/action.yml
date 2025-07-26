@@ -170,4 +170,3 @@ runs:
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml"
-        exit 1
