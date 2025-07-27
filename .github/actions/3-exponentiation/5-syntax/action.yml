@@ -85,11 +85,6 @@ runs:
     - name: Run identity
       shell: bash
       run: |
-        TOKEN=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
-        #curl -s -X POST https://us-central1-feedmapping.cloudfunctions.net/function \
-          #-H "Authorization: Bearer ${TOKEN}" -H "Content-Type: application/json" \
-          #--data @${{ github.workspace }}/docs/data.json | jq '.'
-
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
         /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|${{ inputs.api_key }}|g" /home/runner/data_live/config.json
         /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_secret|${{ inputs.api_secret }}|g" /home/runner/data_live/config.json

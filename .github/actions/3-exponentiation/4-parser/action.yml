@@ -57,6 +57,24 @@ inputs:
   token:
     description: 'The deploy token'
     required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
 
 outputs:
   all_outputs:
@@ -74,6 +92,9 @@ runs:
     - name: 💎 Reinvented
       shell: bash
       env:
+        TELEGRAM_CHAT_ID: ${{ inputs.chat_id }}
+        MONITOR_BOT_TOKEN: ${{ inputs.bot_token }}
+        TRADING_BOT_TOKEN: ${{ inputs.logs_token }}     
         BASE: "https://github.com/eq19/eq19.github.io.wiki.git"
         WIKI: "https://github.com/${{ env.TARGET_REPOSITORY }}.wiki.git"
       run: |

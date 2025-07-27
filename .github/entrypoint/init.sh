@@ -212,16 +212,13 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
-  echo "🚀 All files updated (forced overwrite)!"
-  exit 0
-
   # Setup freqtrade config.json
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
-    
+
   if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASE"; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
@@ -236,6 +233,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_dry/strategies|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_live/strategies|g" $CONFIG_LIVE
+    echo "🚀 All files updated (forced overwrite)!"
   fi
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb \
@@ -256,6 +254,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     | jq -r '.value' > _config.yml
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
+  BEARER=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
   /mnt/disks/deeplearning/usr/bin/docker exec mydb \
     curl -s -X POST -H "Authorization: Bearer ${BEARER}" -H "Content-Type: application/json" \
     https://us-central1-feedmapping.cloudfunctions.net/function \
@@ -263,6 +262,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_dry
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_live
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
