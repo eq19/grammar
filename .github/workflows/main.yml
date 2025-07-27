@@ -93,7 +93,7 @@ jobs:
           initiate_pauli_sum: ${{ toJSON(steps.feed-mapping.outputs) }}
 
       - name: 📋 Generate Outputs
-        if: ${{ JOBS_ID == 2 }}
+        if: ${{ env.JOBS_ID == 2 }}
         id: gen_outputs
         shell: bash
         run: |
