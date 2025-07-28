@@ -103,9 +103,9 @@ jobs:
 
           REPO_NAME=${{ github.repository }}
           HEADER="Accept: application/vnd.github+json"
-          RESPONSE=$(gh api -H "${HEADER}" repos//actions/runners)
-          TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${REPO_NAME%.wiki}/actions/runners --jq '.total_count')
-          STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
+          #RESPONSE=$(gh api -H "${HEADER}" repos//actions/runners)
+          #TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${REPO_NAME%.wiki}/actions/runners --jq '.total_count')
+          #STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
           #if [[ "$TOTAL_COUNT" -eq 0 ]] || [[ "$STATUS" == "offline" ]]; then gh workflow run "main.yml"; fi
 
     outputs:
