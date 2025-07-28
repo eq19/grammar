@@ -219,7 +219,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
 
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb rm "$CONFIG" && ls -al /home/runner/user_data
   if /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASE"; then
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -al /home/runner/user_data
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
