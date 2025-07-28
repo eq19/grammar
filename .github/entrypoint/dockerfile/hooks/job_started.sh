@@ -115,6 +115,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
       /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_live
     fi
-  
+
+  fi
 fi
 
