@@ -228,9 +228,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY"
     /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE"
 
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -al /home/runner/data_dry
-    /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -al /home/runner/data_live
-
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
@@ -240,14 +237,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     echo "🚀 All files updated (forced overwrite)!"
   fi
 
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb \
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY" \
-    | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb \
-    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE" \
-    | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+    | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
+    | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -259,13 +256,16 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
   BEARER=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb \
-    curl -s -X POST -H "Authorization: Bearer ${BEARER}" -H "Content-Type: application/json" \
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c "\
+    curl -s -X POST -H 'Authorization: Bearer ${BEARER}' -H 'Content-Type: application/json' \
     https://us-central1-feedmapping.cloudfunctions.net/function \
-    --data @_data/orgs.json | jq '.' > $HYPEROPT_PARAM
+    --data @_data/orgs.json | jq '.' > $HYPEROPT_PARAM"
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
+
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_dry
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb ls -alR /home/runner/data_live
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
