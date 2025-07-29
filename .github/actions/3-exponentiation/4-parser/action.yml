@@ -69,6 +69,9 @@ inputs:
   bot_token:
     description: The monitor token
     required: true
+  live_token:
+    description: The trading token
+    required: true
   logs_token:
     description: The warning token
     required: true
@@ -94,7 +97,7 @@ runs:
       env:
         TELEGRAM_CHAT_ID: ${{ inputs.chat_id }}
         MONITOR_BOT_TOKEN: ${{ inputs.bot_token }}
-        TRADING_BOT_TOKEN: ${{ inputs.logs_token }}     
+        TRADING_BOT_TOKEN: ${{ inputs.live_token }}     
         BASE: "https://github.com/eq19/eq19.github.io.wiki.git"
         WIKI: "https://github.com/${{ env.TARGET_REPOSITORY }}.wiki.git"
       run: |
