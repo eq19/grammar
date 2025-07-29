@@ -224,6 +224,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
+  HYPEROPT_BASE="/home/runner/user_data/strategies/orgs.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
 
@@ -254,6 +255,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
     | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+  /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
+    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+    | jq -r '.value' > $HYPEROPT_BASE"
 
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
@@ -265,11 +270,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   # Get the strategy file and params value then save to fibbo.py and fibbo.json
   BEARER=$(/mnt/disks/deeplearning/usr/bin/gcloud auth print-identity-token)
-  /mnt/disks/deeplearning/usr/bin/docker exec mydb cp _data/orgs.json mydb:orgs.json
   /mnt/disks/deeplearning/usr/bin/docker exec mydb bash -c \
     "curl -s -X POST -H 'Authorization: Bearer ${BEARER}' -H 'Content-Type: application/json' \
     https://us-central1-feedmapping.cloudfunctions.net/function \
-    --data @orgs.json | jq '.' > $HYPEROPT_PARAM"
+    --data @$HYPEROPT_BASE | jq '.' > $HYPEROPT_PARAM"
 
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cat $HYPEROPT_PARAM
   /mnt/disks/deeplearning/usr/bin/docker exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
