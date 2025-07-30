@@ -83,11 +83,10 @@ runs:
   steps:
     #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
     - name: Run identity
+      if: runner.os == 'Redis'
       shell: bash
       run: |
         # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
-        /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|${{ inputs.api_key }}|g" /home/runner/data_live/config.json
-        /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_secret|${{ inputs.api_secret }}|g" /home/runner/data_live/config.json
 
     - name: 💎 Connect to Redis
       # Runs a script that creates a Redis client, populates
@@ -105,7 +104,7 @@ runs:
         echo '${{ inputs.pauli_sum }}'
     
     - name: 💎 Connect to postgres
-      if: env.RERUN_RUNNER == 'true'
+      if: runner.os == 'Redis'
       env:
         # use the internal host here because we have specified a container for the job.
         # If we were running the job on the VM this would be localhost

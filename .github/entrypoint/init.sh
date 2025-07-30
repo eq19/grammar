@@ -240,10 +240,13 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $CONFIG_LIVE
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_dry/strategies|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|user_data/strategies|/home/runner/data_live/strategies|g" $CONFIG_LIVE
+
     echo "🚀 All files updated (forced overwrite)!"
   fi
 
