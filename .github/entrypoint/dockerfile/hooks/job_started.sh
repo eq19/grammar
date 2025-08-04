@@ -105,15 +105,15 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_dry" ]; then
       /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
       /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p /home/runner/data_dry/strategies/utils
-    elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-      /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_dry
+    #elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+      #/mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_dry
     fi
 
     if ! /mnt/disks/deeplearning/usr/bin/docker exec mydb [ -d "/home/runner/data_live" ]; then
       /mnt/disks/deeplearning/usr/bin/docker exec mydb freqtrade create-userdir --userdir /home/runner/data_live
       /mnt/disks/deeplearning/usr/bin/docker exec mydb mkdir -p /home/runner/data_live/strategies/utils
     elif /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-      /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop freqtrade_live
+      /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl stop monitor_freqtrade
     fi
 
   fi
