@@ -54,7 +54,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb supervisorctl start freqtrade_dry
     /mnt/disks/deeplearning/usr/bin/docker exec mydb service cron start
     #echo "❌ $APP is NOT running (either container is down or process crashed)."
-
+    
   fi
 fi
 
