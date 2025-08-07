@@ -132,7 +132,7 @@ jobs:
 
     ## ✔️ Completeness status
     needs: lexering
-    if: ${{ env.JOBS_ID == 4 }}
+    #if: ${{ env.JOBS_ID == 4 }}
     runs-on: ${{ matrix.config.os }}
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
      
