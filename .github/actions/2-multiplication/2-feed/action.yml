@@ -220,7 +220,7 @@ runs:
       shell: bash
       run: >
         gcloud compute instances create grid-${{ env.IMAGE_TAG }}
-        --service-account=project-owner@feedmapping.iam.gserviceaccount.com
+        --service-account=project-owner@marketleader.iam.gserviceaccount.com
         --scopes=https://www.googleapis.com/auth/cloud-platform --deletion-protection
         --zone=us-central1-a --machine-type=e2-micro --enable-display-device --tags=https-server
         --boot-disk-device-name=cos --image-project cos-cloud --image-family cos-stable --metadata-from-file=user-data=cloud-config
