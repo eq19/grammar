@@ -104,6 +104,8 @@ runs:
   
     - name: 🪂 Download data
       if: env.RERUN_RUNNER == 'false'
+      env:
+        PYTHONPATH: "${{ github.workspace }}/user_data/strategies"
       shell: bash
       run: |
         cd user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
