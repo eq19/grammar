@@ -105,7 +105,7 @@ runs:
     - name: 🪂 Download data
       if: env.RERUN_RUNNER == 'false'
       env:
-        PYTHONPATH: "${{ github.workspace }}/user_data/strategies"
+        PYTHONPATH: ${{ github.workspace }}/user_data/strategies
       shell: bash
       run: |
         cd user_data/build_helpers && ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
@@ -138,6 +138,7 @@ runs:
       if: env.RERUN_RUNNER == 'false'
       shell: bash
       env:
+        PYTHONPATH: ${{ github.workspace }}/user_data/strategies
         CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
         SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
         CERTIFICATE_PATH: ${{ steps.postgres.outputs.certificate-path }}
