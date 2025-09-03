@@ -100,7 +100,7 @@ runs:
       id: variables
       shell: bash
       run: |
-        brew update --quiet
+        brew update --quiet && brew uninstall cmake
         brew install --quiet coreutils doxygen pandoc gsl cmake ninja lcov gcc@12 qt@5 texlive
         brew info qt@5 && brew info gsl
         IFS=', '; array=($(curl -L -s 'https://registry.hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags?page_size=1024' | jq -rc '."results"[]["name"]' | yq eval -P | sed "s/ /, /g")) 
