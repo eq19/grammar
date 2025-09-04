@@ -76,9 +76,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   echo -e "\n$hr\n"
   /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
   
-  echo -e "\n$hr\nDeepLearning Docker containers\n$hr"
-  /mnt/disks/deeplearning/usr/bin/docker container ls -a
-
   #echo -e "\n$hr\nDeepLearning Locate Python\n$hr" 
   #find /mnt/disks/eeplearning -type d -name '*python*' | sort
 
@@ -112,6 +109,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo "Condition fulfilled ✅"
+      $DOCKER container ls -a
 
       # Setup freqtrade userdir for dry mode
       if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
