@@ -100,13 +100,8 @@ jobs:
         if: ${{ env.JOBS_ID == 2 && env.RERUN_RUNNER == 'true' }}
         run: |
           output=${{ steps.feed-mapping.outputs.addition ||steps.set-lexering.outputs.multiplication }}
+          bash ${{ env.GITHUB_WORKSPACE }}/_user/ft_client/test_client/gcp.sh
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
-
-          HEADER="Accept: application/vnd.github+json"
-          RESPONSE=$(gh api -H "${HEADER}" repos/${{ env.REPO_NAME }}/actions/runners)
-          TOTAL_COUNT=$(gh api -H "${HEADER}" /repos/${{ env.REPO_NAME }}/actions/runners --jq '.total_count')
-          STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${{ env.RUNNER_TITLE }}" '.runners[] | select(.name == $NAME).status')
-          #if [[ "$TOTAL_COUNT" -eq 0 ]] || [[ "$STATUS" == "offline" ]]; then gh workflow run "main.yml" --repo ${{ env.REPO_NAME }}; fi
 
     outputs:
       # ♻️ Simulate Gell-Mann Matrices
