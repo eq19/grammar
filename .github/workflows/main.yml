@@ -99,8 +99,8 @@ jobs:
         id: gen_outputs
         if: ${{ env.JOBS_ID == 2 && env.RERUN_RUNNER == 'true' }}
         run: |
-          output=${{ steps.feed-mapping.outputs.addition ||steps.set-lexering.outputs.multiplication }}
-          bash ${{ env.GITHUB_WORKSPACE }}/_user/ft_client/test_client/gcp.sh
+          output=${{ steps.feed-mapping.outputs.addition || steps.set-lexering.outputs.multiplication }}
+          bash ${{ github.workspace }}/_user/ft_client/test_client/gcp.sh
           echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
 
     outputs:
