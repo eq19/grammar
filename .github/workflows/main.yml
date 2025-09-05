@@ -34,6 +34,7 @@ jobs:
           - { os: ubuntu-latest, jobs_id: 1 }
           - { os: macos-latest, jobs_id: 2 }
     env:
+      FREQAIMODEL: ${{ vars.FREQAIMODEL }}
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'

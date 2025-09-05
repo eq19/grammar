@@ -99,6 +99,7 @@ jobs:
           HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
+          FREQAIMODEL: ${{ fromJson(inputs.matrix_json).freqai }}
         run: |
           echo "Running hyperopt..."
           echo "Space: $SPACE"
