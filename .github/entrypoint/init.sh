@@ -48,10 +48,15 @@ export MAP_BRANCH=$(curl -s -H "Authorization: token $GH_TOKEN" \
   https://api.github.com/repos/eq19/maps | jq -r .default_branch)
 export DEFAULT_BRANCH=$(curl -s -H "Authorization: token $GH_TOKEN" \
   https://api.github.com/repos/$GITHUB_REPOSITORY | jq -r .default_branch)
+export FREQAIMODEL_DRY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/FREQAIMODEL" | jq -r '.value')
+export FREQAIMODEL_LIVE=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/FREQAIMODEL" | jq -r '.value')
 export RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
 export TARGET_REPOSITORY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
+
 
 echo 'RERUN_RUNNER='${RERUN_RUNNER} >> ${GITHUB_ENV}
 echo 'DEFAULT_BRANCH='${DEFAULT_BRANCH} >> ${GITHUB_ENV}
@@ -221,9 +226,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   done
 
   # Setup freqtrade config.json
+  CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
+  SUPERVISORD_CONF="$BASE_URL/ft_client/supervisord.conf"
   CONFIG_FULL="$BASE_URL/config_examples/config_full.example.json"
   CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
   CONFIG_PAIR="$BASE_URL/config_examples/config_pairlist.example.json"
@@ -246,6 +253,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
+
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
+    /mnt/disks/deeplearning/usr/bin/docker exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
 
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIR"
     /mnt/disks/deeplearning/usr/bin/docker exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_BASE"
