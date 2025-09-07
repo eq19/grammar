@@ -43,7 +43,7 @@ jobs:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
-      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
+      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }} || 'false'
 
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
