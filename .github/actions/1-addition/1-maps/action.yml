@@ -112,7 +112,7 @@ runs:
         if [[ "$TOTAL_COUNT" -eq 0 ]]; then
           export "RUNNER_COUNT=$TOTAL_COUNT"
           gh variable set RERUN_RUNNER --body "true"
-        elif [[ "$STATUS" == "offline" ]]; then
+        elif [[ "$STATUS" == "offline" || "$REMOVE_RUNNER" == "true" ]]; then
           export "RUNNER_STATUS=$STATUS"
           gh variable set RERUN_RUNNER --body "true"
           RUNNER_ID=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners --jq '.runners.[].id')
