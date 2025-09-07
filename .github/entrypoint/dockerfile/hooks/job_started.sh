@@ -138,6 +138,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   done
 
   echo "Condition not fulfilled after $max_retries checks ❌"
-  gh workflow run "main.yml" --repo "$REPOSITORY"
+  gh workflow run "main.yml" --repo "$REPOSITORY" --raw-field "REMOVE_RUNNER=true"
 
 fi

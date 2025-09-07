@@ -6,10 +6,15 @@ on:
   workflow_run:
     types: [completed]
     workflows: ["pages-build-deployment"]
-  workflow_dispatch:
   repository_dispatch:
     types: [trigger_action, retry_workflow]
-
+  workflow_dispatch:
+    inputs:
+      REMOVE_RUNNER:
+        description: 'remove runner if is set'
+        required: false
+        type: string
+        
 concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}
@@ -38,6 +43,7 @@ jobs:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
+      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
 
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
