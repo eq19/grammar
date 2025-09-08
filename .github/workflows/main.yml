@@ -11,7 +11,8 @@ on:
   workflow_dispatch:
     inputs:
       REMOVE_RUNNER:
-        description: 'remove runner if is set'
+        description: 'remove runner if is set true'
+        default: 'false'
         required: false
         type: string
         
@@ -43,7 +44,7 @@ jobs:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
-      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }} || 'false'
+      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
 
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
