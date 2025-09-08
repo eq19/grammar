@@ -68,14 +68,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   echo -e "\n$hr\nDeepLearning Packages\n$hr"
   /mnt/disks/deeplearning/usr/bin/dpkg -l | sort
 
-  echo -e "\n$hr\nDeepLearning Docker info\n$hr"
-  /mnt/disks/deeplearning/usr/bin/docker info
-  
-  echo -e "\n$hr\nDeepLearning Final Cloud\n$hr"
-  /mnt/disks/deeplearning/usr/bin/gcloud info
-  echo -e "\n$hr\n"
-  /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
-  
   #echo -e "\n$hr\nDeepLearning Locate Python\n$hr" 
   #find /mnt/disks/eeplearning -type d -name '*python*' | sort
 
@@ -108,8 +100,13 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     echo "Check $i of $max_retries..."
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
-      echo "Condition fulfilled ✅"
-      $DOCKER container ls -a
+      echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
+      echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
+  
+      echo -e "\n$hr\nDeepLearning Docker info\n$hr" && $DOCKER info
+      echo -e "\n$hr\n" && $DOCKER container ls -a
+
+      echo -e "\n$hr\nCondition fulfilled ✅"
 
       # Setup freqtrade userdir for dry mode
       if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
