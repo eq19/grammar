@@ -33,10 +33,12 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
 
   echo -e "\n$hr\nStart Network\n$hr"
-  $DOCKER exec mydb supervisorctl reload
+  $DOCKER exec mydb supervisorctl reread
+  $DOCKER exec mydb supervisorctl update
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     #$DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
+    $DOCKER exec mydb supervisorctl start monitor_freqtrade
     $DOCKER exec mydb service cron start
 
   #Check if ✅ $APP is running inside $CONTAINER
@@ -52,10 +54,11 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   else
     # Optionally restart:
     # docker start "$CONTAINER" && docker exec "$CONTAINER" supervisorctl start "$APP"
+    echo "❌ $APP is NOT running (either container is down or process crashed)."
     #$DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
+    $DOCKER exec mydb supervisorctl start monitor_freqtrade
     $DOCKER exec mydb service cron start
-    #echo "❌ $APP is NOT running (either container is down or process crashed)."
     
   fi
 fi
