@@ -36,10 +36,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   $DOCKER exec mydb supervisorctl reread
   $DOCKER exec mydb supervisorctl update
   if [[ "$RERUN_RUNNER" == "true" ]]; then
-    $DOCKER exec mydb service cron start
     $DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
     $DOCKER exec mydb supervisorctl start monitor_freqtrade
+    $DOCKER exec mydb service cron start
 
   #Check if ✅ $APP is running inside $CONTAINER
   elif $DOCKER ps --format '{{.Names}}' | grep -q "^${CONTAINER}$" && \
@@ -55,10 +55,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     # Optionally restart:
     # docker start "$CONTAINER" && docker exec "$CONTAINER" supervisorctl start "$APP"
     echo "❌ $APP is NOT running (either container is down or process crashed)."
-    $DOCKER exec mydb service cron start
     $DOCKER exec mydb supervisorctl start freqtrade_dry
     $DOCKER exec mydb supervisorctl start freqtrade_live
     $DOCKER exec mydb supervisorctl start monitor_freqtrade
+    $DOCKER exec mydb service cron start
     
   fi
 fi
