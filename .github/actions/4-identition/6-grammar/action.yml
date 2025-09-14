@@ -126,7 +126,7 @@ runs:
               echo "❌ $DOMAIN does not resolve."
             fi
           fi
-          rm -rf ./docs/.nojekyll && touch ./docs/.nojekyll
+          #rm -rf ./docs/.nojekyll && touch ./docs/.nojekyll
 
           echo -e "\n$hr\nFinal Pages\n$hr"
           ls -al ./docs
