@@ -197,7 +197,7 @@ runs:
 
         runcmd:
         - systemctl stop docker
-        - fallocate -l 2G /mnt/disks/deeplearning/swapfile || dd if=/dev/zero of=/mnt/disks/deeplearning/swapfile bs=1M count=2048
+        - fallocate -l 4G /mnt/disks/deeplearning/swapfile || dd if=/dev/zero of=/mnt/disks/deeplearning/swapfile bs=1M count=2048
         - chmod 600 /mnt/disks/deeplearning/swapfile
         - mkswap /mnt/disks/deeplearning/swapfile
         - swapon /mnt/disks/deeplearning/swapfile
