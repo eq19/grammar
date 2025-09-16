@@ -247,8 +247,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     $DOCKER exec mydb ls -al /home/runner/user_data
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY"
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE"
-    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE"
+    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE"
 
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
