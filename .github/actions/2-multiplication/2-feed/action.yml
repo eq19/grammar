@@ -121,11 +121,13 @@ runs:
         #cloud-config
         users:
         - default
-        - uid: 1000
-          name: runner
-          groups: admin,adm,video,docker,google-sudoers
 
         write_files:
+        - path: /home/runner/.docker/.keep
+          permissions: "0755"
+          owner: root
+          content: ""
+
         - path: /etc/systemd/system/firewall.service
           permissions: "0644"
           owner: root
