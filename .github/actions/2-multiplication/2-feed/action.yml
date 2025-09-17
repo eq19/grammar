@@ -122,6 +122,11 @@ runs:
         users:
         - default
 
+        network:
+          config: disabled
+
+        datasource_list: [ NoCloud, ConfigDrive ]
+
         write_files:
         - path: /home/runner/.docker/.keep
           permissions: "0755"
