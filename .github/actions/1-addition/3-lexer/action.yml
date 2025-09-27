@@ -99,8 +99,8 @@ runs:
         #mv -f ${{ github.workspace }}/_site/* .
 
         mv -f ${{ github.workspace }}/_site ${{ inputs.action_path }}/
-        docker system prune -a -f && rm -rf /tmp/* /var/tmp/*
         cat ${{ inputs.action_path }}/Dockerfile
+        docker system prune -a -f
 
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
