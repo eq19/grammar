@@ -100,10 +100,10 @@ runs:
 
         mv -f ${{ github.workspace }}/_site ${{ inputs.action_path }}/
         cat ${{ inputs.action_path }}/Dockerfile
-        docker system prune -a -f
 
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
+      if: runner.os == 'Redis'
       id: artifact
       with:
         imageTag: id-${{ env.ID }}
