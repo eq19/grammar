@@ -176,6 +176,8 @@ elif [[ "${JOBS_ID}" == "2" ]]; then
 elif [[ "${JOBS_ID}" == "3" ]]; then
 
   # Configuration
+  NONCE=$(date +%s)
+  METHOD="getInfo"
   MAX_RETRIES=3
   DIRS=(
     "data_dry"
@@ -188,9 +190,19 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "strategies/utils/__init__.py"
     "strategies/utils/indodax_patch.py"
   )
+  PARAMS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
+  SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
 
+  # Make the API request
+  curl -X POST \
+    -H "Key: $API_KEY" \
+    -H "Sign: $SIGNATURE" \
+    -d "method=$METHOD" \
+    -d "nonce=$NONCE" \
+    "https://indodax.com/tapi/"
+  
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
