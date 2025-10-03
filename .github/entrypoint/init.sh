@@ -194,14 +194,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
-
-  # Make API call and parse with jq
-  curl -s -X POST \
-    -H "Key: $API_KEY" \
-    -H "Sign: $SIGNATURE" \
-    -d "method=$METHOD" \
-    -d "nonce=$NONCE" \
-    "https://indodax.com/tapi/" | jq '.return.balance.idr'
+  WALLET=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/" | jq '.return.balance.idr')
 
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
