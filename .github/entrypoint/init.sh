@@ -197,6 +197,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   BALLANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
   WALLET=$(echo $BALLANCE | jq '.return.balance.idr')
+  echo -e "ASSET_COUNT=$ASSET_COUNT\nWALLET=$WALLET"
   if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
 
   for DIR_PATH in "${DIRS[@]}"; do
@@ -240,16 +241,16 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_DRY="/home/runner/data_dry/config.json"
   CONFIG_LIVE="/home/runner/data_live/config.json"
   SUPERVISORD_CONF="$BASE_URL/ft_client/supervisord.conf"
-  CONFIG_FULL="$BASE_URL/config_examples/config_full.example.json"
-  CONFIG_BASE="$BASE_URL/config_examples/config_exchange.example.json"
-  CONFIG_PAIR="$BASE_URL/config_examples/config_pairlist.example.json"
+  CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
+  CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
+  CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/user_data/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
 
   set -euo pipefail  # Strict error handling
   $DOCKER exec mydb rm -rf "$CONFIG"
-  if $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_FULL"; then
+  if $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"; then
     $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     $DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
@@ -267,8 +268,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
 
-    $DOCKER exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIR"
-    $DOCKER exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_BASE"
+    $DOCKER exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIRLIST"
+    $DOCKER exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_EXCHANGE"
     $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
     $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
