@@ -194,9 +194,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
-  BALLANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
+  BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  WALLET=$(echo $BALLANCE | jq '.return.balance.idr')
+  WALLET=$(echo $BALANCE | jq '.return.balance.idr')
   echo -e "ASSET_COUNT=$ASSET_COUNT\nWALLET=$WALLET"
   if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
 
