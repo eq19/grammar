@@ -196,9 +196,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  WALLET=$(echo $BALANCE | jq '.return.balance.idr')
-  echo -e "ASSET_COUNT=$ASSET_COUNT\nWALLET=$WALLET"
-  if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
 
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
@@ -255,6 +252,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
     $DOCKER exec mydb ls -al /home/runner/user_data
+    WALLET=$(echo $BALANCE | jq '.return.balance.idr')
+    if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
+  
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY"
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE"
     #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE"
