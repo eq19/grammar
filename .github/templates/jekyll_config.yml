@@ -25,7 +25,6 @@ exclude:
   - Dockerfile
 
 plugins:
-  - jemoji
   - jekyll-gist
   - jekyll-avatar
   - jekyll-mentions
