@@ -1,5 +1,5 @@
 debug:
-  dist: false
+  dist: true
   compress: true
   shortcodes: true
 
