@@ -153,7 +153,7 @@ p r i m e s
 41 √
 ```
 
-In order to maintain the 36 symmetry (whether it is an addition zone or not), with this prime number 19 was found at least seven (7) pairs of _[truncated patterns](https://www.eq19.com/multiplication/file19.html#truncated-patterns)_.
+In order to maintain the 36 symmetry (whether it is an addition zone or not), with this prime number 19 was found at least seven (7) pairs of _[truncated patterns](https://eq19.github.io/multiplication/file19.html#truncated-patterns)_.
 
 ```py
 total_parameters = 0
@@ -428,7 +428,7 @@ In the matrix pictured below, we list the first 24 elements of our domain, take 
 
 ***7 x π(89) = 7 x 24 = 168 = π(1000)***
 
-[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://www.eq19.com/multiplication/#elementary-structure)
+[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://eq19.github.io/multiplication/#elementary-structure)
 
 ```txt
 p r i m e s

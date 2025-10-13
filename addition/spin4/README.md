@@ -69,7 +69,7 @@ layer | node | sub |  i  |  f.                                       MEC 30 / 2
 ------|------|-----+-----+-----  ‹----------------------------------- 30 {+1/2}
 ```
 
-This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the ***[30 to 36' cells](https://www.eq19.com/exponentiation/#fundamental-forces)***.
+This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the ***[30 to 36' cells](https://eq19.github.io/exponentiation/#fundamental-forces)***.
 
 ![74550123-6dd1d680-4f83-11ea-8810-3b8f4f50a9c0](https://github.com/eq19/maps/assets/8466209/dd0a99e5-07e6-43ab-aa07-47c49f963220)
 
@@ -81,7 +81,7 @@ This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it 
  - | - | - | 28| 29|
 ```
 
-By _[The Δ(19 vs 18) Scenario](https://www.eq19.com/identition/#%CE%B419-vs-18-scenario)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
+By _[The Δ(19 vs 18) Scenario](https://eq19.github.io/identition/#%CE%B419-vs-18-scenario)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
 
 ```note
 You likely noticed I began with 2 rather than 1 or 0 when I first constructed the hexagon. Why? Because they do not fit inside — they stick off the hexagon like a tail. Perhaps that’s where they belong. However, if one makes a significant and interesting assumption, then 1 and 0 fall in their logical locations – in the 1 and 0 cells, respectively. _([HexSpin](https://www.hexspin.com/0-1-and-negative-numbers/))
@@ -104,7 +104,7 @@ You likely noticed I began with 2 rather than 1 or 0 when I first constructed th
 ```
 
 ```tip
-This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://www.eq19.com/exponentiation/#self-repetition)_ on MEC30.
+This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://eq19.github.io/exponentiation/#self-repetition)_ on MEC30.
 ```
 
 ***7th spin - 4th spin = (168 - 102)s = 66s = 6 x 11s = 30s + 36s***
@@ -145,7 +145,7 @@ It will be forced back to Δ19 making a cycle that bring back **the 12 to → 13
 
 ![default](https://user-images.githubusercontent.com/8466209/201015369-c6ba5c75-c2c7-415b-b424-debaa5c7f64a.png)
 
-The 10 ranks will coordinate with the 18 to raise up the symmetrical behaviour of 12+24=36 which is prime pair 17+19=36 and let the 2 and 3 out of 2,3,5,7 to begin a new cycle while the 5,7 will pair the 11,13 and 17,19 as _[True Prime Pairs](https://www.eq19.com/addition/file02.html#true-prime-pairs)_.
+The 10 ranks will coordinate with the 18 to raise up the symmetrical behaviour of 12+24=36 which is prime pair 17+19=36 and let the 2 and 3 out of 2,3,5,7 to begin a new cycle while the 5,7 will pair the 11,13 and 17,19 as _[True Prime Pairs](https://eq19.github.io/addition/file02.html#true-prime-pairs)_.
 
 ```note
 I like that 0 can occupy a center point.  Incidentally, this circular shape minus all my numbers and colors s has been called Seed of Life / Flower of Life by certain New Age groups who claim it has a sacred geometry.  Please don’t see this as an endorsement of any spiritual group or religion. _([Prime Hexagon - Circulat Form](https://www.hexspin.com/circular/))_

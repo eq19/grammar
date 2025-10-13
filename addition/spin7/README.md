@@ -112,7 +112,7 @@ In particle physics, an _[elementary particle](https://en.wikipedia.org/wiki/Ele
 The Standard Model presently recognizes ***seventeen distinct particles (twelve fermions and five bosons)***. As a consequence of flavor and color combinations and antimatter, the fermions and bosons are known to have 48 and 13 variations, respectively. Among ***the 61 elementary particles*** embraced by the Standard Model number electrons and other leptons, quarks, and the fundamental bosons. _([Wikipedia](https://en.wikipedia.org/wiki/Elementary_particle))_
 ```
 
-[![Standard_Model_of_Elementary_Particles](https://user-images.githubusercontent.com/36441664/274339509-913c39a3-9fdf-4a02-91da-7bc7b746db27.png)](https://www.eq19.com/multiplication/#elementary-structure)
+[![Standard_Model_of_Elementary_Particles](https://user-images.githubusercontent.com/36441664/274339509-913c39a3-9fdf-4a02-91da-7bc7b746db27.png)](https://eq19.github.io/multiplication/#elementary-structure)
 
 Subatomic particles such as protons or neutrons, which contain two or more elementary particles, are known as composite particles. 
 
@@ -197,7 +197,7 @@ $$
 
 [![base](https://user-images.githubusercontent.com/8466209/249753163-6cfbcecf-3713-409b-8d8b-5fa5cf8489ac.png)](https://www.hexspin.com/finding-a-number-in-the-hexagon/)
 
-[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://www.eq19.com/multiplication/18.html#higgs-mechanism)
+[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://eq19.github.io/multiplication/18.html#higgs-mechanism)
 
 It is supposed that elementary particles participate in gravitational interactions as well, though there is no sufficient quantum gravity theory.
 
@@ -286,4 +286,4 @@ After these chapters, we will come to the description of physics beyond the stan
 
 [![the-physics-of-the-standard-model-and-beyond](https://github.com/user-attachments/assets/6d27e427-48b4-44e7-a887-4db2e37b6704)](https://github.com/user-attachments/files/17866411/the-physics-of-the-standard-model-and-beyond.pdf)
 
-By next chapter we will discuss the mechanism of _[symmetry breaking](https://www.eq19.com/multiplication/10.html#symmetry-breaking)_ where the neutral Higgs field interacts with other particles to give them mass.
+By next chapter we will discuss the mechanism of _[symmetry breaking](https://eq19.github.io/multiplication/10.html#symmetry-breaking)_ where the neutral Higgs field interacts with other particles to give them mass.

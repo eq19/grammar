@@ -15,7 +15,7 @@ An Independent claim is also included for the localization and determination, or
 
 ## Prime Objects
 
-In short this project is mapping [the quantum way](https://www.eq19.com/) within a huge of **[prime objects (5 to 19)](https://github.com/eq19)** by [lexering](https://www.eq19.com/lexer) (11) the un[grammar](https://www.eq19.com/grammar)ed feed (7) and [parsering](https://www.eq19.com/parser) (13) across [syntax](https://www.eq19.com/syntax) (17). 
+In short this project is mapping [the quantum way](https://eq19.github.io/) within a huge of **[prime objects (5 to 19)](https://github.com/eq19)** by [lexering](https://eq19.github.io/lexer) (11) the un[grammar](https://eq19.github.io/grammar)ed feed (7) and [parsering](https://eq19.github.io/parser) (13) across [syntax](https://eq19.github.io/syntax) (17). 
 
 ```txt
 5, 2, 1, 0
@@ -76,7 +76,7 @@ This fully imported form can then be compiled indepedently of the [source langua
 
 [![framework](https://user-images.githubusercontent.com/36441664/71587951-4f8a5580-2b52-11ea-84cd-a2b1465fce8b.png)](https://iree.dev/guides/ml-frameworks/#execution)
 
-Using this trained machine learning models we shall do [fine-tuning](https://www.eq19.com/addition/spin2/) and make it [deployable](https://www.eq19.com/addition/spin3/) to discuss the _[undiscovered features](https://www.eq19.com/addition/#undiscovered-features)_ as we have discussed before.
+Using this trained machine learning models we shall do [fine-tuning](https://eq19.github.io/addition/spin2/) and make it [deployable](https://eq19.github.io/addition/spin3/) to discuss the _[undiscovered features](https://eq19.github.io/addition/#undiscovered-features)_ as we have discussed before.
 
 ```note
 These files can be imported into an IREE-compatible format then compiled to a series of backends. 
@@ -218,7 +218,7 @@ In this article we will support this conjecture and develop a new approach to qu
 The scaling behavior of this action is analyzed to obtain the classical theory of _General Relativity (GRT)_ for large scales. _([Smooth quantum gravity - pdf](https://github.com/eq19/maps/files/14132472/1601.06436.pdf))_
 ```
 
-[![addition zones](https://github.com/eq19/maps/assets/8466209/4945cbd3-57ff-42ee-a363-7b27ed693a0e)](https://www.eq19.com/addition/)
+[![addition zones](https://github.com/eq19/maps/assets/8466209/4945cbd3-57ff-42ee-a363-7b27ed693a0e)](https://eq19.github.io/addition/)
 
 
 The TensorFlow ops are written in **optimized C++**. These ops sample from circuits, calculate expectation values, and output the state produced by the given circuits.
@@ -358,7 +358,7 @@ In the matrix pictured below, we list the first 24 elements of our domain, take 
 
 ***7 x π(89) = 7 x 24 = 168 = π(1000)***
 
-[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://www.eq19.com/multiplication/#elementary-structure)
+[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://eq19.github.io/multiplication/#elementary-structure)
 
 ## Supersymmetric Multiplet
 

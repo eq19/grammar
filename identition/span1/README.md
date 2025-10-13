@@ -15,10 +15,10 @@ A gauge colour rotation is _[a spacetime-dependent SU(3)](https://en.m.wikipedia
 
 ## Three (3) Layers
 
-Our scenario of [prime identity](https://www.eq19.com/#prime-identity) is layering three (3) prime pairs out of the symmetrical behaviour of 36 as the smallest number (greater than 1) which is not a prime.
+Our scenario of [prime identity](https://eq19.github.io/#prime-identity) is layering three (3) prime pairs out of the symmetrical behaviour of 36 as the smallest number (greater than 1) which is not a prime.
 
 ```tip
-By our project this prime layering is called _[The True Prime Pairs](https://www.eq19.com/addition/2.html)_ and to be intrepeted as: Mapping the quantum way within a huge of primes objects (5 to 19) by lexering (11) the ungrammared feed (7) and parsering (13) across syntax (17).
+By our project this prime layering is called _[The True Prime Pairs](https://eq19.github.io/addition/2.html)_ and to be intrepeted as: Mapping the quantum way within a huge of primes objects (5 to 19) by lexering (11) the ungrammared feed (7) and parsering (13) across syntax (17).
 ```
 
 ```txt
@@ -287,7 +287,7 @@ These are called hypercomplex numbers, such as, quaternions (4D), octonions (8D)
 
 [![4 types of numbers](https://github.com/eq19/maps/assets/8466209/5b6d06cf-e7b3-442c-b5d8-0818a2eb470c)](https://nitinuchil.wordpress.com/2020/09/09/hypercomplex-math/)
 
-The _[three (3) layers](https://www.eq19.com/identition/span12/#three-3-layers)_ as explained above is in the 1st-term of our discussed structure. So the next step is the 2nd-term which ***goes to the four (4)*** dimensional space-time.
+The _[three (3) layers](https://eq19.github.io/identition/span12/#three-3-layers)_ as explained above is in the 1st-term of our discussed structure. So the next step is the 2nd-term which ***goes to the four (4)*** dimensional space-time.
 
 ## The Four (4) Dimensions
 
@@ -420,7 +420,7 @@ It has been long known that the SO(10) model is free from all perturbative local
 In the spin-foam formalism, the [Barrett–Crane model](https://en.wikipedia.org/wiki/Barrett%E2%80%93Crane_model), which was for a while the most promising state-sum model of 4D Lorentzian quantum gravity
 
 ```note
-It was [based on representations](https://www.eq19.com/addition/5.html#power-of-magnitude) of the noncompact groups SO(3,1) or SL(2,C), so the spin foam faces (and hence the spin network edges) were labelled by positive real numbers as opposed to the half-integer labels of SU(2) spin networks. _([Wikipedia](https://en.wikipedia.org/wiki/Lorentz_invariance_in_loop_quantum_gravity))_
+It was [based on representations](https://eq19.github.io/addition/5.html#power-of-magnitude) of the noncompact groups SO(3,1) or SL(2,C), so the spin foam faces (and hence the spin network edges) were labelled by positive real numbers as opposed to the half-integer labels of SU(2) spin networks. _([Wikipedia](https://en.wikipedia.org/wiki/Lorentz_invariance_in_loop_quantum_gravity))_
 ```
 
 [![41114_2016_3_Equ168](https://github.com/eq19/maps/assets/8466209/561fe8cb-65f6-4050-ab54-3b45392ac897)](https://link.springer.com/article/10.12942/lrr-2013-3)
@@ -431,7 +431,7 @@ The field content of this theory is the massless N = 8 supergravity which compri
 
 ```note
 In four spacetime dimensions, N = 8 supergravity, speculated by [Stephen Hawking](https://en.wikipedia.org/wiki/Stephen_Hawking), is the most [symmetric](https://en.wikipedia.org/wiki/Symmetric) quantum field theory which ***involves gravity*** and a finite number of fields.
-- It can be found from a [dimensional reduction](https://www.eq19.com/identition/span12/#the-seven-7-groups) of 11D supergravity ***by making the size of seven (7) of the dimensions go to zero***.
+- It can be found from a [dimensional reduction](https://eq19.github.io/identition/span12/#the-seven-7-groups) of 11D supergravity ***by making the size of seven (7) of the dimensions go to zero***.
 - ***It has eight (8) supersymmetries***, which is the most any gravitational theory can have, since there are eight half-steps between spin 2 and spin −2. (The spin 2 graviton is the particle with the highest spin in this theory.)[![eight (8) supersymmetries](https://github.com/eq19/maps/assets/8466209/3796ffd2-465f-44d7-b750-95a092537939)](https://github.com/eq19/maps/files/14229967/0109010.pdf)
 
 - More supersymmetries would mean the particles would have [superpartners](https://en.wikipedia.org/wiki/Superpartner) with spins higher than 2.

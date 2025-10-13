@@ -138,7 +138,7 @@ Mathematically, this type of system requires ***27 letters (1-9, 10–90, 100–
 
 [![Hebrew numerals](https://github.com/eq19/maps/assets/8466209/cc55cb34-d42e-45b8-938d-341fe345767e)](https://en.wikipedia.org/wiki/Hebrew_numerals)
 
-The first object symboled by "star" above is taken from one of the [Higgs particles](https://www.eq19.com/multiplication/18.html#certain-parameters) called ***neutral CP-odd (A)*** and behave as [the base unit](https://www.eq19.com/addition/#addition-zones-0-18).
+The first object symboled by "star" above is taken from one of the [Higgs particles](https://eq19.github.io/multiplication/18.html#certain-parameters) called ***neutral CP-odd (A)*** and behave as [the base unit](https://eq19.github.io/addition/#addition-zones-0-18).
 
 ```note
 The Higgs mechanism breaks electroweak symmetry in the Standard Model, giving mass to particles ***through its couplings***.
@@ -270,7 +270,7 @@ Here's a draft of what the proposed triangular wave might look like:
 
 [![Triangular Wave](https://user-images.githubusercontent.com/8466209/225824209-ba2b9fe0-1a29-4208-940e-3351243ab0ba.png)](https://www.primesdemystified.com/First1000Primes.html)
 
-Base on the above discussions we conclude that [the decay frames](https://www.eq19.com/multiplication/19.html#decay-frames) should behave as 4 times Triangular Waves as well, let have it done by _[The True Primer Pairs](https://www.eq19.com/addition/2.html)_.
+Base on the above discussions we conclude that [the decay frames](https://eq19.github.io/multiplication/19.html#decay-frames) should behave as 4 times Triangular Waves as well, let have it done by _[The True Primer Pairs](https://eq19.github.io/addition/2.html)_.
 
 ```note
 Surprisingly, the 24-cell hexagon confines all natural numbers. ***The reason: no prime numbers occupy a cell with a right or left wall on the t-hexagon’s outer boundary, other than 2 and 3, the initial primes that forced the number line into this complex coil***. Without a prime number in the outer set of triangles, the number line does not change to an outward course and remains forever contained in the 24 cells shown above. _([HexSpin](https://www.hexspin.com/defining-the-prime-hexagon/))_

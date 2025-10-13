@@ -88,7 +88,7 @@ Eigennvalue curves (right) showing a triple eigenvalue at zero for τ = 1 and do
 ```
 
 ```tip
-This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://www.eq19.com/exponentiation/#self-repetition)_ on MEC30.
+This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://eq19.github.io/exponentiation/#self-repetition)_ on MEC30.
 ```
 
 ***7th spin - 4th spin = (168 - 102)s = 66s = 6 x 11s = 30s + 36s***

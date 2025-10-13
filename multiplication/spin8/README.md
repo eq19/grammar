@@ -174,7 +174,7 @@ SU(5) fermions of standard model in 5+10 representations. The sterile neutrino s
 [![SU(5)_representation_of_fermions](https://github.com/eq19/maps/assets/8466209/2b1aa8f5-0028-4549-a091-eee291ed4890)
 ](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
 
-This eleven (11) will continue to be discussed on _[identition zone](https://www.eq19.com/identition/)_.
+This eleven (11) will continue to be discussed on _[identition zone](https://eq19.github.io/identition/)_.
 
 ***2×96 = 192 = 5 + 7 + 11 + 13 + 17 + 19 +23 + 29 + 31 + 37 (10 consecutive primes)***
 

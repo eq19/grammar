@@ -12,7 +12,7 @@ _[Exponentiation](https://en.wikipedia.org/wiki/Exponentiation)_ is an operation
 
 {% include list.liquid all=true %}
 
-Exponentiation zones allows _[multiplication zones](https://www.eq19.com/multiplication/)_ on representing [recursive residues](https://arxiv.org/pdf/1801.07561) by virtualizing _[addition zones](https://www.eq19.com/addition/)_ on top of the original.
+Exponentiation zones allows _[multiplication zones](https://eq19.github.io/multiplication/)_ on representing [recursive residues](https://arxiv.org/pdf/1801.07561) by virtualizing _[addition zones](https://eq19.github.io/addition/)_ on top of the original.
 
 ## The Root System 
 
@@ -24,7 +24,7 @@ The first appearance of ***e*** in a printed publication was in Euler's [Mechani
 
 [![Letter e](https://user-images.githubusercontent.com/36441664/262249679-b5d6fc1a-6e42-4775-b09d-965ddd046171.png)](https://en.wikipedia.org/wiki/E_(mathematical_constant))
 
-This exponentiation takes important roles since by the _[multiplication zones](https://www.eq19.com/multiplication/#parsering-structure)_ the MEC30 forms a matrix of  `8 x 8 = 64 = 8²` where the power of 2 stands as exponent
+This exponentiation takes important roles since by the _[multiplication zones](https://eq19.github.io/multiplication/#parsering-structure)_ the MEC30 forms a matrix of  `8 x 8 = 64 = 8²` where the power of 2 stands as exponent
 
 ```note
 We present a method to increase the dynamical range of a ***Residue Number System (RNS)*** by adding virtual RNS layers on top of the original RNS, where the required modular arithmetic for a modulus on any non-bottom layer is implemented by means of an [RNS Montgomery multiplication algorithm](https://www.google.com/search?q=RNS+Montgomery+multiplication) that uses the RNS on the layer.
@@ -79,7 +79,7 @@ FILE=${1##*/} && SORT=${FILE%.*}
 [[ $SORT =~ ^-?[0-9]+$ ]] && edit_file $1 $SORT
 ```
 
-These representations are a curious finding. They relate particles to antiparticles by using only the complex conjugate ***i → −i***, they fill these as of _[Euler's Identity](https://www.eq19.com/#identition-zones)_.
+These representations are a curious finding. They relate particles to antiparticles by using only the complex conjugate ***i → −i***, they fill these as of _[Euler's Identity](https://eq19.github.io/#identition-zones)_.
 
 ```note
 Euler's identity is a special case of Euler's formula ***e^ix = cos x + i sin x*** when evaluated for ***x = π***, In addition, it is directly used in a proof that ***π is transcendental***, which implies the impossibility of squaring the circle. _([Wikipedia](https://en.wikipedia.org/wiki/Euler%27s_identity))_
@@ -110,16 +110,16 @@ This imaginary unit is particularly important in both mathematics and physics. F
 As usual, the images ***on the left are snapshots of the particles at different times. Those times correspond to the grey slices in the space-time diagram on the right***. You can see the specific interaction points in the space-time diagram, where the blue particle is emitted and then absorbed by the red particles. _([Slimy.com](http://www.slimy.com/~steuard/research/StringIntro/slide13.html))_
 ```
 
-[![Feynman diagrams](https://github.com/eq19/maps/assets/8466209/1f5fba0d-4951-4be9-a232-23a1b00b9843)](https://www.eq19.com/multiplication/#physical-movements)
+[![Feynman diagrams](https://github.com/eq19/maps/assets/8466209/1f5fba0d-4951-4be9-a232-23a1b00b9843)](https://eq19.github.io/multiplication/#physical-movements)
 
-So it will need a gap between each identities to proceed the thing. Let's discuss how it goes by the _[seven (7) hidden dimensions](https://www.eq19.com/identition/#hidden-dimensions)_.
+So it will need a gap between each identities to proceed the thing. Let's discuss how it goes by the _[seven (7) hidden dimensions](https://eq19.github.io/identition/#hidden-dimensions)_.
 
 ## Three (3) Layers
 
-Our scenario of [prime identity](https://www.eq19.com/#prime-identity) is layering three (3) prime pairs out of the symmetrical behaviour of 36 as the smallest number (greater than 1) which is not a prime.
+Our scenario of [prime identity](https://eq19.github.io/#prime-identity) is layering three (3) prime pairs out of the symmetrical behaviour of 36 as the smallest number (greater than 1) which is not a prime.
 
 ```tip
-By our project this prime layering is called _[The True Prime Pairs](https://www.eq19.com/addition/2.html)_ and to be intrepeted as: Mapping the quantum way within a huge of primes objects (5 to 19) by lexering (11) the ungrammared feed (7) and parsering (13) across syntax (17).
+By our project this prime layering is called _[The True Prime Pairs](https://eq19.github.io/addition/2.html)_ and to be intrepeted as: Mapping the quantum way within a huge of primes objects (5 to 19) by lexering (11) the ungrammared feed (7) and parsering (13) across syntax (17).
 ```
 
 ```txt
@@ -375,7 +375,7 @@ These are called hypercomplex numbers, such as, quaternions (4D), octonions (8D)
 
 [![4 types of numbers](https://github.com/eq19/maps/assets/8466209/5b6d06cf-e7b3-442c-b5d8-0818a2eb470c)](https://nitinuchil.wordpress.com/2020/09/09/hypercomplex-math/)
 
-The _[three (3) layers](https://www.eq19.com/identition/span12/#three-3-layers)_ as explained above is in the 1st-term of our discussed structure. So the next step is the 2nd-term which ***goes to the four (4)*** dimensional space-time.
+The _[three (3) layers](https://eq19.github.io/identition/span12/#three-3-layers)_ as explained above is in the 1st-term of our discussed structure. So the next step is the 2nd-term which ***goes to the four (4)*** dimensional space-time.
 
 ## The Four (4) Dimensions
 
@@ -539,7 +539,7 @@ It has been long known that the SO(10) model is free from all perturbative local
 In the spin-foam formalism, the [Barrett–Crane model](https://en.wikipedia.org/wiki/Barrett%E2%80%93Crane_model), which was for a while the most promising state-sum model of 4D Lorentzian quantum gravity
 
 ```note
-It was [based on representations](https://www.eq19.com/addition/5.html#power-of-magnitude) of the noncompact groups SO(3,1) or SL(2,C), so the spin foam faces (and hence the spin network edges) were labelled by positive real numbers as opposed to the half-integer labels of SU(2) spin networks. _([Wikipedia](https://en.wikipedia.org/wiki/Lorentz_invariance_in_loop_quantum_gravity))_
+It was [based on representations](https://eq19.github.io/addition/5.html#power-of-magnitude) of the noncompact groups SO(3,1) or SL(2,C), so the spin foam faces (and hence the spin network edges) were labelled by positive real numbers as opposed to the half-integer labels of SU(2) spin networks. _([Wikipedia](https://en.wikipedia.org/wiki/Lorentz_invariance_in_loop_quantum_gravity))_
 ```
 
 [![41114_2016_3_Equ168](https://github.com/eq19/maps/assets/8466209/561fe8cb-65f6-4050-ab54-3b45392ac897)](https://link.springer.com/article/10.12942/lrr-2013-3)
@@ -550,7 +550,7 @@ The field content of this theory is the massless N = 8 supergravity which compri
 
 ```note
 In four spacetime dimensions, N = 8 supergravity, speculated by [Stephen Hawking](https://en.wikipedia.org/wiki/Stephen_Hawking), is the most [symmetric](https://en.wikipedia.org/wiki/Symmetric) quantum field theory which ***involves gravity*** and a finite number of fields.
-- It can be found from a [dimensional reduction](https://www.eq19.com/identition/span12/#the-seven-7-groups) of 11D supergravity ***by making the size of seven (7) of the dimensions go to zero***.
+- It can be found from a [dimensional reduction](https://eq19.github.io/identition/span12/#the-seven-7-groups) of 11D supergravity ***by making the size of seven (7) of the dimensions go to zero***.
 - ***It has eight (8) supersymmetries***, which is the most any gravitational theory can have, since there are eight half-steps between spin 2 and spin −2. (The spin 2 graviton is the particle with the highest spin in this theory.)
 
 - More supersymmetries would mean the particles would have [superpartners](https://en.wikipedia.org/wiki/Superpartner) with spins higher than 2.
@@ -668,7 +668,7 @@ The Standard Model presently recognizes ***seventeen distinct particles (twelve 
 
 ***17 distinct particles = 12 fermions + 5 bosons = 48 + 13 = 61 variations***
 
-[![Standard_Model_of_Elementary_Particles](https://user-images.githubusercontent.com/36441664/274339509-913c39a3-9fdf-4a02-91da-7bc7b746db27.png)](https://www.eq19.com/multiplication/#elementary-structure)
+[![Standard_Model_of_Elementary_Particles](https://user-images.githubusercontent.com/36441664/274339509-913c39a3-9fdf-4a02-91da-7bc7b746db27.png)](https://eq19.github.io/multiplication/#elementary-structure)
 
 ```txt
 Answer-1: 3 generation x 3 color x 2 types x 2 each = 36 quarks
@@ -779,7 +779,7 @@ layer | node | sub |  i  |  f.                                       MEC 30 / 2
 ------|------|-----+-----+-----  ‹----------------------------------- 30 {+1/2}
 ```
 
-The Standard Model with massive neutrinos need ***7 more parameters*** (3 masses and 4 [PMNS matrix](https://en.wikipedia.org/wiki/PMNS_matrix) parameters) for a total of _[26 parameters](https://www.eq19.com/multiplication/15.html#parity-order)_.
+The Standard Model with massive neutrinos need ***7 more parameters*** (3 masses and 4 [PMNS matrix](https://en.wikipedia.org/wiki/PMNS_matrix) parameters) for a total of _[26 parameters](https://eq19.github.io/multiplication/15.html#parity-order)_.
 
 ```note
 In principle, there is one further parameter in the Standard Model; the Lagrangian
@@ -865,7 +865,7 @@ So, from the first cell, exit from 2’s left side. This sets the spin to left a
 
 [![Defining the Prime Hexagon](https://github.com/eq19/maps/assets/8466209/36aeac77-ecb2-4c94-b2ea-fe0f8b7e391c)](https://www.hexspin.com/defining-the-prime-hexagon/)
 
-In our approach a 3-form is not an object that exist in addition to the metric, it is the only object that exist and in particular ***[the 4D metric, is defined by the 3-form](https://www.eq19.com/identition/span12/#three-3-layers)***.
+In our approach a 3-form is not an object that exist in addition to the metric, it is the only object that exist and in particular ***[the 4D metric, is defined by the 3-form](https://eq19.github.io/identition/span12/#three-3-layers)***.
 
 ```note
 We would like to say that our present use of G2 structures (3-forms in 7D) is different from what
@@ -882,7 +882,7 @@ The complete theory was obtained by [dimensional reduction](https://en.wikipedia
 ) of the 11D supergravity on a seven (7) torus and realizing the exceptional symmetry group E7(7)
 
 ```note
-In particular, these theories include the compactification of eleven-dimensional supergravity on the seven-sphere S7, which gives rise to a ***[four-dimensional theory](https://www.eq19.com/identition/span12/#the-four-4-dimensions)*** with compact non-abelian gauge group SO(8) _([11D Supergravity and Hidden Symmetries - pdf](https://github.com/eq19/maps/files/14126154/2303.12682.pdf))_
+In particular, these theories include the compactification of eleven-dimensional supergravity on the seven-sphere S7, which gives rise to a ***[four-dimensional theory](https://eq19.github.io/identition/span12/#the-four-4-dimensions)*** with compact non-abelian gauge group SO(8) _([11D Supergravity and Hidden Symmetries - pdf](https://github.com/eq19/maps/files/14126154/2303.12682.pdf))_
 ```
 
 ```txt
@@ -998,7 +998,7 @@ The same number of 7 vs 11 dimensions as we have discussed are hold by 7 primes 
 - so by the concept of prime identity, this 7 vs 11 scheme of dimensions is originated from the behaviour of both 19 and 18,
 - the prime is fewer than the natural so the 7 prime cycle is always happen in every first term followed by 11 composite cycle (see our side menu).
 
-The further terms will only have their specific meaning when they are formed in the favor of _[True Prime Pairs](https://www.eq19.com/addition/2.html)_ which we called as ***Δ(19 vs 18) Scenario***
+The further terms will only have their specific meaning when they are formed in the favor of _[True Prime Pairs](https://eq19.github.io/addition/2.html)_ which we called as ***Δ(19 vs 18) Scenario***
 ```
 
 ![Δ(19 vs 18) Scenario](https://user-images.githubusercontent.com/36441664/274093531-0878e3e5-6be3-448e-9ad4-3b34523c1e9c.jpg)
@@ -1166,7 +1166,7 @@ By Chiral symmetry the Vector gauge theories with massless Dirac fermion fields 
 
 ![Symmetry State](https://github.com/eq19/maps/assets/8466209/70cb2eb0-0955-4d18-8400-e05ac1b9d325)
 
-The Standard Model with massive neutrinos need ***7 more parameters*** (3 [CKM](https://en.wikipedia.org/wiki/Cabibbo%E2%80%93Kobayashi%E2%80%93Maskawa_matrix) and 4 [PMNS matrix](https://en.wikipedia.org/wiki/PMNS_matrix) parameters) for a total of _[26 parameters](https://www.eq19.com/multiplication/15.html#parity-order)_. By our concept these 7 parameters correspond to ***π(17) = 7 prime identities*** of _[additional zones](https://www.eq19.com/addition)_.
+The Standard Model with massive neutrinos need ***7 more parameters*** (3 [CKM](https://en.wikipedia.org/wiki/Cabibbo%E2%80%93Kobayashi%E2%80%93Maskawa_matrix) and 4 [PMNS matrix](https://en.wikipedia.org/wiki/PMNS_matrix) parameters) for a total of _[26 parameters](https://eq19.github.io/multiplication/15.html#parity-order)_. By our concept these 7 parameters correspond to ***π(17) = 7 prime identities*** of _[additional zones](https://eq19.github.io/addition)_.
 
 ```note
 Massive fermions do not exhibit chiral symmetry, as the mass term in the [Lagrangian](https://en.wikipedia.org/wiki/Lagrangian_(field_theory)), mψψ, breaks chiral symmetry explicitly.
@@ -1231,7 +1231,7 @@ We expect that the nontrivial r-dependence of vevs makes Einstein-Maxwell
  connecting two critical points. _([N = 8 Supergravity: Part I - pdf](https://github.com/eq19/maps/files/14229967/0109010.pdf))_
 ```
 
-[![Symmetry Breaking](https://github.com/eq19/maps/assets/8466209/80bb1b09-e1d4-479a-b570-815786058b04)](https://www.eq19.com/multiplication/20.html#strand-partition)
+[![Symmetry Breaking](https://github.com/eq19/maps/assets/8466209/80bb1b09-e1d4-479a-b570-815786058b04)](https://eq19.github.io/multiplication/20.html#strand-partition)
 
 Taking 19 as a certain parameter we can see that the left handed cycles are happen on ***5th-spin*** (forms 4th hexagon, purple) and ***6th-spin*** (forms 5th hexagon, cyan). Both have different rotation with other spin below 9th spin (forms 6th hexagon, yellow).
 
@@ -1243,7 +1243,7 @@ Proceeding, the number line begins to coil upon itself; 20 lands on 2’s cell, 
 
 ![IMG_20231221_074421](https://github.com/eq19/maps/assets/8466209/1e7dc443-b7d8-44d9-8da0-5fe50dd7ee70)
 
-Thus it appears that the [cosmological models](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/#RSPA20200786C24)] derived from compactification of 11d supergravity on a manifold with [G2 holonomy](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/) have some ***[hidden E7 symmetry](https://www.eq19.com/identition/span12/#the-seven-7-groups).***
+Thus it appears that the [cosmological models](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/#RSPA20200786C24)] derived from compactification of 11d supergravity on a manifold with [G2 holonomy](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/) have some ***[hidden E7 symmetry](https://eq19.github.io/identition/span12/#the-seven-7-groups).***
 
 ```note
 There are `14 + 7 × 16 = 126` integral octonions. It was [shown](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/#RSPA20200786C33) that the set of transformations which preserve the octonion algebra of [the root system of E7](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/#RSPA20200786M5x4) is the adjoint Chevalley group G2(2). It is possible to decompose these 126 imaginary octonions into ***eighteen (18) sets of seven (7) imaginary octonionic units*** that can be transformed to each other by the finite subgroup of matrices. These lead to 18 sets of 7, which we see in figures [​figure-77](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/figure/RSPA20200786F7/) and [​figure-88](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/figure/RSPA20200786F8/). _([M-theory, Black Holes and Cosmology - pdf](https://github.com/eq19/maps/files/14207670/2009.11339.pdf))_
@@ -1265,7 +1265,7 @@ bispinor-4 |    2    |    3    |     3     |    18     |     24     |   i18 ✔�
 ===========+=========+=========+===========+===========+============+===========
 ```
 
-By the _[Δ(19 vs 18) Scenario](https://www.eq19.com/identition/span12/#the-seven-7-groups)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
+By the _[Δ(19 vs 18) Scenario](https://eq19.github.io/identition/span12/#the-seven-7-groups)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
 
 ```note
 You likely noticed I began with 2 rather than 1 or 0 when I first constructed the hexagon. Why? Because they do not fit inside — they stick off the hexagon like a tail. Perhaps that’s where they belong. However, if one makes a significant and interesting assumption, then 1 and 0 fall in their logical locations – in the 1 and 0 cells, respectively. _([HexSpin](https://www.hexspin.com/0-1-and-negative-numbers/))
@@ -1275,7 +1275,7 @@ You likely noticed I began with 2 rather than 1 or 0 when I first constructed th
 
 [![0, 1 and negative numbers](https://github.com/eq19/maps/assets/8466209/19f68eca-c0e1-48fc-9c9a-60d01cf26057)](https://www.hexspin.com/0-1-and-negative-numbers/)
 
-By defining the pattern on each individual numbers against _[homogeneous sorting](https://gist.github.com/eq19/c9bdc2bbe55f2d162535023c8d321831#interpolation)_. Using this method then out of bilateral way the _[∆(19 vs 18) Scenario](https://www.eq19.com/identition/span12/#the-seven-7-groups)_ we could get in to _[Scheme-33](https://gist.github.com/eq19/c9bdc2bbe55f2d162535023c8d321831#file-entrance-md)_. 
+By defining the pattern on each individual numbers against _[homogeneous sorting](https://gist.github.com/eq19/c9bdc2bbe55f2d162535023c8d321831#interpolation)_. Using this method then out of bilateral way the _[∆(19 vs 18) Scenario](https://eq19.github.io/identition/span12/#the-seven-7-groups)_ we could get in to _[Scheme-33](https://gist.github.com/eq19/c9bdc2bbe55f2d162535023c8d321831#file-entrance-md)_. 
 
 ```note
 The [electroweak force](https://en.wikipedia.org/wiki/Electroweak_interaction) is believed to have separated into the electromagnetic and weak forces during the [quark epoch](https://en.wikipedia.org/wiki/Quark_epoch) of the [early universe](https://en.wikipedia.org/wiki/Chronology_of_the_universe#Early_universe).
@@ -1408,7 +1408,7 @@ In Fuller's synergetic geometry, symmetry breaking is modeled as 4 sub-tetra's, 
 - In QFT, the potential well is based on excitation modes, not on actual excitations, which is a reason why the proposed synergetic action gets obscured.
 - A new type of symmetry breaking is proposed, based on a synchronized path integral.
 
-The latter solves into a Goldstone oscillation and a vacuum expectation value (VEV), among other unique properties. The scalar field's self-interaction is a _[Golden Ratio scale-invariant group effect](https://www.eq19.com/multiplication/11.html#fibonacci-retracement)_, such as geometrically registered by the icosa-dodeca matrix. _([TGMResearch](http://science.trigunamedia.com/geometry-and-topology/index.htm))_
+The latter solves into a Goldstone oscillation and a vacuum expectation value (VEV), among other unique properties. The scalar field's self-interaction is a _[Golden Ratio scale-invariant group effect](https://eq19.github.io/multiplication/11.html#fibonacci-retracement)_, such as geometrically registered by the icosa-dodeca matrix. _([TGMResearch](http://science.trigunamedia.com/geometry-and-topology/index.htm))_
 ```
 
 ```txt
@@ -1576,7 +1576,7 @@ This fact may also provide a possible explanation for why almost all of the part
 The [Standard Model](https://en.wikipedia.org/wiki/Standard_Model) of particle physics contains only renormalizable operators, but the interactions of [general relativity](https://en.wikipedia.org/wiki/General_relativity) become nonrenormalizable operators if one attempts to construct a field theory of [quantum gravity](https://en.wikipedia.org/wiki/Quantum_gravity) in the most straightforward manner (treating the metric in the [Einstein–Hilbert Lagrangian](https://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_Lagrangian) as a perturbation about the [Minkowski metric](https://en.wikipedia.org/wiki/Minkowski_metric)), suggesting that [perturbation theory](https://en.wikipedia.org/wiki/Perturbation_theory_(quantum_mechanics)) is not satisfactory in application to quantum gravity.
 - However, in an [effective field theory](https://en.wikipedia.org/wiki/Effective_field_theory), "renormalizability" is, strictly speaking, a [misnomer](https://en.wikipedia.org/wiki/Misnomer). In nonrenormalizable effective field theory, terms in the Lagrangian do multiply to infinity, but have coefficients suppressed by ever-more-extreme inverse powers of the energy cutoff.![169-over-109-blood-pressure](https://github.com/eq19/maps/assets/8466209/a702ea20-2ef3-424f-804e-c73a6c873692)
 - If the cutoff is a real, physical quantity—that is, if the theory is only an effective description of physics up to some maximum energy or minimum distance scale—then these additional terms could represent real physical interactions.
-- Assuming that the dimensionless constants in the theory do not get too large, one can group calculations by inverse powers of the cutoff, and extract approximate predictions to finite order in the cutoff that still have a finite number of free parameters. It can even be useful to renormalize these "nonrenormalizable" interactions.[![multiplication zones](https://user-images.githubusercontent.com/8466209/195963923-0796217c-7a87-4b2d-ba93-f47465304c03.png)](https://www.eq19.com/multiplication/)
+- Assuming that the dimensionless constants in the theory do not get too large, one can group calculations by inverse powers of the cutoff, and extract approximate predictions to finite order in the cutoff that still have a finite number of free parameters. It can even be useful to renormalize these "nonrenormalizable" interactions.[![multiplication zones](https://user-images.githubusercontent.com/8466209/195963923-0796217c-7a87-4b2d-ba93-f47465304c03.png)](https://eq19.github.io/multiplication/)
 - Nonrenormalizable interactions in effective field theories rapidly become weaker as the energy scale becomes much smaller than the cutoff. The classic example is the [Fermi theory](https://en.wikipedia.org/wiki/Fermi%27s_interaction) of the [weak nuclear force](https://en.wikipedia.org/wiki/Weak_nuclear_force), a nonrenormalizable effective theory whose cutoff is comparable to the mass of the [W particle](https://en.wikipedia.org/wiki/W_particle).
 
 It may be that any others that may exist at the [GUT](https://en.wikipedia.org/wiki/Grand_Unified_Theory) or Planck scale simply become too weak to detect in the realm we can observe, with one exception: [gravity](https://en.wikipedia.org/wiki/Gravity), whose exceedingly weak interaction is magnified by the presence of the enormous masses of [stars](https://en.wikipedia.org/wiki/Star) and [planets](https://en.wikipedia.org/wiki/Planet). _([Wikipedia](https://en.wikipedia.org/wiki/Renormalization))_
@@ -1611,7 +1611,7 @@ Indeed, a particularly well-chosen cellular automaton on [II(9,1) or II(25,1)](h
 The [Lie algebra](https://www.valdostamuseum.com/hamsmith/Lie.html) E6 of the [D4-D5-E6-E7-E8 VoDou Physics model](https://www.valdostamuseum.com/hamsmith/d4d5e6hist.html) can be represented in terms of 3 copies of the 26-dimensional traceless subalgebra J3(O)o of the 27-dimensional [Jordan algebra](https://www.valdostamuseum.com/hamsmith/Jordan.html) J3(O) by using the [fibration E6 / F4](https://www.valdostamuseum.com/hamsmith/Jordan.html#E6F4fib) of 78-dimensional E6 over 52-dimensional F4 and the structure of [F4 as doubled J3(O)o](https://www.valdostamuseum.com/hamsmith/Jordan.html#F4J3Oo) based on the 26-dimensional representation of [F4](https://www.valdostamuseum.com/hamsmith/Lie.html#Liexceptional). _([Tony's Home](https://www.valdostamuseum.com/hamsmith/Rzeta.html))_
 ```
 
-[![Quantum Chromodynamics](https://github.com/eq19/maps/assets/8466209/62c106bd-7950-4b63-9e64-4f758473b48e)](https://www.eq19.com/exponentiation/span15/)
+[![Quantum Chromodynamics](https://github.com/eq19/maps/assets/8466209/62c106bd-7950-4b63-9e64-4f758473b48e)](https://eq19.github.io/exponentiation/span15/)
 
 The fact that quarks of the same electric charge possess a mass hierarchy is a big puzzle. It must be highly correlated with the hierarchy of quark flavor mixing.
 
@@ -1697,7 +1697,7 @@ Likewise, ***the coupling constants of the three gauge interactions*** are of a 
 Below is a model of E11 (shown by 11 dimensions). Its absolute dimensions represent all related key knowledges of modern physics. 
 
 ```note
-Moreover this model represents [Quark-Gluon Plasma](https://en.wikipedia.org/wiki/Quark%E2%80%93gluon_plasma), with all of the [fundamental forces](https://www.eq19.com/exponentiation/#fundamental-forces) in the early stage after [Big Bang](https://youtu.be/7VgoECW06-s?si=_l-Pu42gwtnxzzT2). _([Youtube](https://www.youtube.com/watch?v=dEoMeHi-6kM))_
+Moreover this model represents [Quark-Gluon Plasma](https://en.wikipedia.org/wiki/Quark%E2%80%93gluon_plasma), with all of the [fundamental forces](https://eq19.github.io/exponentiation/#fundamental-forces) in the early stage after [Big Bang](https://youtu.be/7VgoECW06-s?si=_l-Pu42gwtnxzzT2). _([Youtube](https://www.youtube.com/watch?v=dEoMeHi-6kM))_
 ```
 
 [![default](https://user-images.githubusercontent.com/8466209/242000067-6d2ac164-06d6-4546-a118-10642982ce52.png)](https://www.youtube.com/watch?v=dEoMeHi-6kM)
@@ -1716,7 +1716,7 @@ Note that `4 x 32 = 128` is the perimeter of the square base which has an area o
 
 [![](https://user-images.githubusercontent.com/8466209/225830554-007fbd06-9d7d-44e8-867d-c7b0188bf488.png)](https://www.primesdemystified.com/First1000Primes.html)
 
-The above 11 stands as the central point which is correlated to 77 sequencial processes of sun vs moon orbits starting with the _[symmetri breaking](https://www.eq19.com/multiplication/10.html#spontaneous-symmetry-breaking)_ that involving 9 and 7.
+The above 11 stands as the central point which is correlated to 77 sequencial processes of sun vs moon orbits starting with the _[symmetri breaking](https://eq19.github.io/multiplication/10.html#spontaneous-symmetry-breaking)_ that involving 9 and 7.
 
 ```note
 Back in 1982, a very nice paper by Kugo and Townsend, [Supersymmetry and the Division Algebras](http://linkinghub.elsevier.com/retrieve/pii/0550321383905849), explained some of this, ending up with some comments on the ***relation of octonions to d=10 super Yang-Mills and d=11 super-gravity***.
@@ -1744,7 +1744,7 @@ The headline argument is that octonions are important and interesting because th
          {98}                                       |  └── 110 - 123 (14x)» 70
 ```
 
-A number of other GUT models are based upon subgroups of SO(10). ***They are the minimal [left-right model](https://www.eq19.com/identition/span12/#the-quantum-gravity), [SU(5)](https://en.wikipedia.org/wiki/SU(5)), [flipped SU(5)](https://en.wikipedia.org/wiki/Flipped_SU(5)) and the Pati–Salam model***.
+A number of other GUT models are based upon subgroups of SO(10). ***They are the minimal [left-right model](https://eq19.github.io/identition/span12/#the-quantum-gravity), [SU(5)](https://en.wikipedia.org/wiki/SU(5)), [flipped SU(5)](https://en.wikipedia.org/wiki/Flipped_SU(5)) and the Pati–Salam model***.
 
 ```note
 SU(5) fermions of standard model in 5+10 representations. The sterile neutrino singlet's 1 representation is omitted. Neutral bosons are omitted, but would occupy diagonal entries in complex superpositions. X and Y bosons as shown are the opposite of the conventional definition
@@ -1848,7 +1848,7 @@ bispinor-4 |    2    |    3    |     3     |    18     |     24     |   i13+i5 �
 
 ## Parsering Structure
 
-This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the ***[30 to 36' cells](https://www.eq19.com/exponentiation/#fundamental-forces)***.
+This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the ***[30 to 36' cells](https://eq19.github.io/exponentiation/#fundamental-forces)***.
 
 ```note
 The interaction of any pair of fermions in perturbation theory can be modelled as:
@@ -1862,7 +1862,7 @@ The exchange of bosons always carries energy and momentum between the fermions, 
 
 [![Defining the Prime Hexagon](https://user-images.githubusercontent.com/8466209/282279534-a448cd09-3d5e-4006-a84d-2574f7ed85c3.png)](https://www.hexspin.com/defining-the-prime-hexagon/)
 
-The boson, photon and gravity forces are assigned to ***30, 31 and 32***. Gluon force and exchange are assigned to ***33 and 34*** which are then standing as the ***[lexer](https://www.eq19.com/multiplication/#assigning-a-lexer)*** and ***[parser](https://www.eq19.com/exponentiation/#parsering-structure)***.
+The boson, photon and gravity forces are assigned to ***30, 31 and 32***. Gluon force and exchange are assigned to ***33 and 34*** which are then standing as the ***[lexer](https://eq19.github.io/multiplication/#assigning-a-lexer)*** and ***[parser](https://eq19.github.io/exponentiation/#parsering-structure)***.
 
 ```note
 Below we will demonstrate how factorization algorithms and twin prime dyad cycling at the digital root level rotate the vertices of ***equilateral triangles within {9/3}*** star polygons like the one pictured above. These rotations are ***encoded in 3 x 3 matrices generated by period-24 digital root dyad tri-level cycling***. We will also reveal the Latin Square reflecting {3,6,9} hidden in plain sight betwixt and between the twin prime distribution channels; ***all of its rows, columns and principal diagonals summing to 18***. _[PrimesDemystified](https://www.primesdemystified.com/twinprimes.html)_
@@ -1881,7 +1881,7 @@ An overview of the various families of elementary and composite particles, and t
 
 According to the [Standard Model](https://en.wikipedia.org/wiki/Standard_Model_of_Particle_Physics) ***there are five (5) elementary bosons with thirteen (13) variations***. These 5 and 13 will be assigned to the "5xid's of **31~35** (sequenced)" and "13xid's of **36~68** (unsequenced)", respectively (see the sidebar menu).
 - One (1) [scalar boson](https://en.wikipedia.org/wiki/Scalar_boson) (***spin = 0***) [Higgs boson](https://en.wikipedia.org/wiki/Higgs_boson) – the particle that contributes to the phenomenon of [mass](https://en.wikipedia.org/wiki/Mass) via the [Higgs mechanism](https://en.wikipedia.org/wiki/Higgs_mechanism) (assigned to "19xid's of **2~30**").
-- Four (4) [vector bosons](https://en.wikipedia.org/wiki/Vector_boson) (***spin = 1***) that act as [force carriers](https://en.wikipedia.org/wiki/Force_carriers). These four are the [gauge bosons](https://en.wikipedia.org/wiki/Gauge_boson), they have ***twelve (12) different types*** originated from the interaction on _[bispinor-2 and -3](https://www.eq19.com/multiplication/12.html#free-parameters)_ to the _twelve (12) spinors of majorana_:
+- Four (4) [vector bosons](https://en.wikipedia.org/wiki/Vector_boson) (***spin = 1***) that act as [force carriers](https://en.wikipedia.org/wiki/Force_carriers). These four are the [gauge bosons](https://en.wikipedia.org/wiki/Gauge_boson), they have ***twelve (12) different types*** originated from the interaction on _[bispinor-2 and -3](https://eq19.github.io/multiplication/12.html#free-parameters)_ to the _twelve (12) spinors of majorana_:
   - [γ](https://en.wikipedia.org/wiki/Photon) [Photon](https://en.wikipedia.org/wiki/Photon) – the force carrier of the [electromagnetic field](https://en.wikipedia.org/wiki/Electromagnetic_field) (**id:31**).
   - [g](https://en.wikipedia.org/wiki/Gluon) [Gluons](https://en.wikipedia.org/wiki/Gluon) (***eight (8) different types***) – force carriers originated from the _eight (8) spinors of bispinor-1 to -4_ that mediate the [strong force](https://en.wikipedia.org/wiki/Strong_interaction) (**id:33**)
   - [Z](https://en.wikipedia.org/wiki/Z_boson) [Neutral weak boson](https://en.wikipedia.org/wiki/W_and_Z_bosons) – the force carrier that mediates the [weak force](https://en.wikipedia.org/wiki/Weak_interaction) and
@@ -1889,15 +1889,15 @@ According to the [Standard Model](https://en.wikipedia.org/wiki/Standard_Model_o
 - A second order tensor boson (***spin = 2***) called the [graviton](https://en.wikipedia.org/wiki/Graviton) (G). It has been hypothesised as the force carrier for [gravity](https://en.wikipedia.org/wiki/Gravitational_force) (**id:32**).
 ```
 
-[![The exchange of virtual pions](https://user-images.githubusercontent.com/8466209/282278731-ac8438f7-afd4-41f8-8c6a-a41c0d740825.png)](https://www.eq19.com/identition/#partition-function)
+[![The exchange of virtual pions](https://user-images.githubusercontent.com/8466209/282278731-ac8438f7-afd4-41f8-8c6a-a41c0d740825.png)](https://eq19.github.io/identition/#partition-function)
 
-So the 36 should behave as a central. Therefore the total files that inherited from this scheme will be `1 + 7 + 29 = 37` including [one (1) main page](https://www.eq19.com). 
+So the 36 should behave as a central. Therefore the total files that inherited from this scheme will be `1 + 7 + 29 = 37` including [one (1) main page](https://eq19.github.io). 
 
 ***109 = 29th prime = (10th prime)th prime***
 
-[![self repetition](https://github.com/eq19/maps/assets/8466209/bde2248a-2feb-4c4b-85fe-f75de640775d)](https://www.eq19.com/exponentiation/#self-repetition)
+[![self repetition](https://github.com/eq19/maps/assets/8466209/bde2248a-2feb-4c4b-85fe-f75de640775d)](https://eq19.github.io/exponentiation/#self-repetition)
 
-This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://www.eq19.com/exponentiation/#self-repetition)_ on MEC30.
+This behaviour finaly brings us to a suggestion that the dimension in string theory are linked with ***the prime distribution level*** as indicated by the _[self repetition](https://eq19.github.io/exponentiation/#self-repetition)_ on MEC30.
 
 ```note
 ***There are 7 hidden dimensions in 11-d Supergravity, which is the low energy approximation to M theory, which also has 7 hidden dimensions***. _([Prime Curios!](https://t5k.org/curios/page.php?curio_id=20686))_
@@ -1905,9 +1905,9 @@ This behaviour finaly brings us to a suggestion that the dimension in string the
 
 ***π(1000) - loop(1,30) - loop(31,36) = 168 - 29 - 25 = 114***
 
-[![IMG_20240114_014704](https://user-images.githubusercontent.com/36441664/262341222-6c71005e-2f44-45d9-ac42-b1464c045a45.png)](https://www.eq19.com/multiplication/#77s-structure)
+[![IMG_20240114_014704](https://user-images.githubusercontent.com/36441664/262341222-6c71005e-2f44-45d9-ac42-b1464c045a45.png)](https://eq19.github.io/multiplication/#77s-structure)
 
-By the _[identition zones](https://www.eq19.com/identition/)_ we are going to discuss in detail how this reversal behaviour of 8-dimensions is converting the 11 dimensions to `7 x 11 = 77` partitions.
+By the _[identition zones](https://eq19.github.io/identition/)_ we are going to discuss in detail how this reversal behaviour of 8-dimensions is converting the 11 dimensions to `7 x 11 = 77` partitions.
 
 ## Grand Unification
 
@@ -2017,9 +2017,9 @@ Since the _modulo 6_ is occured all over the spin then we have defined that this
 In order to maintain the 18's structure between each of repositories to correlate with the above density then we could use a hierarchical database that stores low-level settings for the operating system such as _[windows registry](https://en.wikipedia.org/wiki/Windows_Registry)_.
 ```
 
-[![windows registry](https://user-images.githubusercontent.com/8466209/230746478-0146e88e-22ba-4f1b-abf2-c5226c1a56ca.png)](https://www.eq19.com/exponentiation/)
+[![windows registry](https://user-images.githubusercontent.com/8466209/230746478-0146e88e-22ba-4f1b-abf2-c5226c1a56ca.png)](https://eq19.github.io/exponentiation/)
 
-Using the javascript library from _[Chevotrain](https://www.eq19.com/addition/#structure-minor-hexagons)_ and data parser from _[Jekyll/Liquid](https://jekyllrb.com/docs/datafiles/)_ finally we found the correlation between the lexer and parser trough _[the powers of pi](https://www.eq19.com/identition/#the-powers-of-pi)_.
+Using the javascript library from _[Chevotrain](https://eq19.github.io/addition/#structure-minor-hexagons)_ and data parser from _[Jekyll/Liquid](https://jekyllrb.com/docs/datafiles/)_ finally we found the correlation between the lexer and parser trough _[the powers of pi](https://eq19.github.io/identition/#the-powers-of-pi)_.
 
 ```note
 In this example, the content from a Markdown document `document.md` that specifies `layout: docs` gets pushed into the `{% raw %}{{ content }}{% endraw %}` tag of the layout file `docs.html`. Because the docs layout itself specifies `layout: page`, the content from `docs.html` gets pushed into the `{% raw %}{{ content }}{% endraw %}` tag in the layout file `page.html`. Finally because the page layout specifies `layout: default`, the content from `page.html` gets pushed into the `{% raw %}{{ content }}{% endraw %}` tag of the layout file `default.html`. _([JekyllRb](https://jekyllrb.com/tutorials/convert-site-to-jekyll/#how-layouts-work))_
@@ -2027,7 +2027,7 @@ In this example, the content from a Markdown document `document.md` that specifi
 
 [![Parsering](https://github-production-user-asset-6210df.s3.amazonaws.com/8466209/260864973-50fbc0a0-7441-4800-97aa-265b0dfd2ac2.png)](https://hub.docker.com/layers/jekyll/jekyll/latest/images/sha256-400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625)
 
-It is going to setup **[CI/CD](https://en.wikipedia.org/wiki/CI/CD)** for up to _[1000 public repositories](https://gist.github.com/eq19/b32915925d9d365e2e9351f0c4ed786e)_ out of millions that available on GitHub. You may visit our _[mapping scheme](https://www.eq19.com/maps/exponentiation/span17/)_ for more detail.
+It is going to setup **[CI/CD](https://en.wikipedia.org/wiki/CI/CD)** for up to _[1000 public repositories](https://gist.github.com/eq19/b32915925d9d365e2e9351f0c4ed786e)_ out of millions that available on GitHub. You may visit our _[mapping scheme](https://eq19.github.io/maps/exponentiation/span17/)_ for more detail.
 
 ```note
 This is the partial of [the whole scheme](https://github.com/chetabahana/chetabahana.github.io/wiki/Skema#Implementasi) from our [Quantum Project](https://github.com/eq19) based on the algorithm of **DNA Recombination: [M+F](https://github.com/chetabahana/chetabahana.github.io/blob/Chetabahana/_layouts/feed.rb) to [C1+C2](https://github.com/chetabahana/chetabahana.github.io/blob/workflows/_includes/data/roots.rb):**
@@ -2042,7 +2042,7 @@ _C1+C2_ as implementations, see sample: [Project Base (C1)](https://chetabahana.
 The final result of this Q(19,10) would form π(10)=(2,3,5,7) as the [1st row of 19](https://github.com/eq19/quantum#1st-step-q10-30).
 ```
 
-[![mapping scheme](https://user-images.githubusercontent.com/36441664/162069734-fc8036a1-fd2d-4fc9-bcad-f677388b76fa.jpg)](https://www.eq19.com/maps/exponentiation/span17/)
+[![mapping scheme](https://user-images.githubusercontent.com/36441664/162069734-fc8036a1-fd2d-4fc9-bcad-f677388b76fa.jpg)](https://eq19.github.io/maps/exponentiation/span17/)
 
 Such of method is used to generate a _[basic grammar](https://github.com/chetabahana)_ which algorithm is adaptable for any kind of implementations or applications.
 
@@ -2052,7 +2052,7 @@ The 619 is the **114th prime**. By the _[True Prime Pairs](#true-prime-pairs)_ i
 
 ***168+618 - 19x6x6 = 786 - 684 = 102***
 
-[![entry and exit point](https://user-images.githubusercontent.com/8466209/225589915-8f7690c8-4c17-4232-be51-63e79efb2c51.png)](https://www.eq19.com/exponentiation/#parsering-structure)
+[![entry and exit point](https://user-images.githubusercontent.com/8466209/225589915-8f7690c8-4c17-4232-be51-63e79efb2c51.png)](https://eq19.github.io/exponentiation/#parsering-structure)
 
 This sequence is [simulated](https://gist.github.com/eq19/0ce5848f7ad62dc46dedfaa430069857#the-implementation) by a flowchart having 12 arrows flowing on 10 (ten) shapes of prime 31 up to 71 (**40 nodes**).
 
@@ -2060,7 +2060,7 @@ This sequence is [simulated](https://gist.github.com/eq19/0ce5848f7ad62dc46dedfa
 
 [![flowchart](https://user-images.githubusercontent.com/36441664/128732737-81762604-0ae0-4a90-b5a8-30921cf46efb.png)](https://gist.github.com/eq19/b32915925d9d365e2e9351f0c4ed786e#assigning-repositories)
 
-By this project the above would be [deployed](https://www.moncefbelyamani.com/making-github-pages-work-with-latest-jekyll/) as **default layout**. It is set to be avalaible throughout the whole platform via [a single page](https://github.com/eq19/parser/blob/eQ19/_layouts/default.liquid) within a parser repository which is acting as _[prime 13](https://gist.github.com/eq19/d2336e28e79702acf38edd182003d5e0#primes-mapping)_. Their [interface](https://eq19.github.io/sitemap/scheme.html) will be in _[json](https://www.eq19.com/feed.json)_ and _[xml](https://www.eq19.com/grammar/feeds.xml)_ format. 
+By this project the above would be [deployed](https://www.moncefbelyamani.com/making-github-pages-work-with-latest-jekyll/) as **default layout**. It is set to be avalaible throughout the whole platform via [a single page](https://github.com/eq19/parser/blob/eQ19/_layouts/default.liquid) within a parser repository which is acting as _[prime 13](https://gist.github.com/eq19/d2336e28e79702acf38edd182003d5e0#primes-mapping)_. Their [interface](https://eq19.github.io/sitemap/scheme.html) will be in _[json](https://eq19.github.io/feed.json)_ and _[xml](https://eq19.github.io/grammar/feeds.xml)_ format. 
 
 Here is for the sample:
 
@@ -2069,9 +2069,9 @@ Here is for the sample:
   "title":"Mapping System",
   "content":"<p>Hello, <strong>world</strong>.\nI am here.</p>\n",
   "links": [
-    {"title":"Introduction","url":"https://www.eq19.com/intro/"},
-    {"title":"Go tour on Mapping System ","url":"https://www.eq19.com/maps/"},
-    {"title":"A backed pretty display for markdown","url":"https://www.eq19.com/gistio/"},
+    {"title":"Introduction","url":"https://eq19.github.io/intro/"},
+    {"title":"Go tour on Mapping System ","url":"https://eq19.github.io/maps/"},
+    {"title":"A backed pretty display for markdown","url":"https://eq19.github.io/gistio/"},
     {"title":"Gist.io for programmers","url":"https://gist.io/@eq19/d2336e28e79702acf38edd182003d5e0"}
   ]
 }
@@ -2110,7 +2110,7 @@ _At tree-level, the masses are [governed](https://github.com/eq19/maps/files/140
  with one of the CP-even states (denoted ϕ)_. _([ScienceDirect](https://www.sciencedirect.com/topics/mathematics/higgs-mechanism))_
 ```
 
-[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://www.eq19.com/multiplication/18.html#higgs-mechanism)
+[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://eq19.github.io/multiplication/18.html#higgs-mechanism)
 
 By [The GitHub Runner](https://github.com/actions/runner) you can [connect](https://github.com/tcardonne/docker-github-runner) to the [Google COS Instance](https://gist.github.com/eq19/e9832026b5b78f694e4ad22c3eb6c3ef#container-optimized-os). For self-hosted runners defined at the organization level, configure [runs-on.group](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow#about-self-hosted-runner-groups) in your workflow file to target a [runner groups](https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job#choosing-runners-in-a-group) or [combine groups and labels](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow#using-default-labels-to-route-jobs).
 
@@ -2130,6 +2130,6 @@ You can find a great and fairly complete overview of [ML papers in HEP](https://
 [![SO(10)](https://github.com/eq19/maps/assets/8466209/b1d3bccd-a423-4ebb-a397-e973b2cc8e6e)
 ](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
 
-[![teaching-machines-glouppe_compressed.pdf](https://user-images.githubusercontent.com/8466209/222966425-9da703ef-9189-44e6-8fc1-8b766cf9f7bb.png)](https://www.eq19.com/identition/)
+[![teaching-machines-glouppe_compressed.pdf](https://user-images.githubusercontent.com/8466209/222966425-9da703ef-9189-44e6-8fc1-8b766cf9f7bb.png)](https://eq19.github.io/identition/)
 
 This way will also be our approach to [Euler's identity](https://gist.github.com/eq19/e9832026b5b78f694e4ad22c3eb6c3ef#eulers-identity). By taking the correlation between ***f(π) as P*** vs ***f(i) as NP*** where ***e<sup>iπ</sup> + 1 = 0*** then [theoretically](https://github.com/eq19/maps/files/13765788/teaching-machines-glouppe_compressed.pdf) they shall be correlated to get an expression of the prime distribution similar to _[MEC30](https://gist.github.com/eq19/e9832026b5b78f694e4ad22c3eb6c3ef#eulers-identity)_.

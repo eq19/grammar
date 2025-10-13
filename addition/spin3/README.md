@@ -108,7 +108,7 @@ It's possible to build a _[Hessian matrix](https://en.wikipedia.org/wiki/Hessian
 [![Partitioned-matrices-of-the-numbers-60-62-and-64-as-examples](https://github.com/eq19/maps/assets/8466209/2009c4a4-49f8-4653-b0ea-b928ecad3240)](https://github.com/eq19/maps/files/13722898/Partitions_of_even_numbers.pdf)
 
 ```note
-***In summary, it has been shown that partitions into an even number of distinct parts and an odd number of distinct parts exactly cancel each other, producing null terms 0x^n, except if n is a generalized [pentagonal number](https://www.eq19.com/identition/#hidden-dimensions) n=g_{k}=k(3k-1)/2}***, in which case there is exactly one Ferrers diagram left over, producing a term (−1)kxn. But this is precisely what the right side of the identity says should happen, so we are finished. _([Wikipedia](https://en.wikipedia.org/wiki/Pentagonal_number_theorem))_
+***In summary, it has been shown that partitions into an even number of distinct parts and an odd number of distinct parts exactly cancel each other, producing null terms 0x^n, except if n is a generalized [pentagonal number](https://eq19.github.io/identition/#hidden-dimensions) n=g_{k}=k(3k-1)/2}***, in which case there is exactly one Ferrers diagram left over, producing a term (−1)kxn. But this is precisely what the right side of the identity says should happen, so we are finished. _([Wikipedia](https://en.wikipedia.org/wiki/Pentagonal_number_theorem))_
 ```
 
 ```txt
@@ -141,7 +141,7 @@ p r i m e s
 
 The code is interspersed with python, shell, perl, also demonstrates how multiple languages can be integrated seamlessly. 
 
-[![extended branes](https://github.com/eq19/maps/assets/8466209/deb0e309-2178-4dc5-a1d6-30c81c4a8305)](https://www.eq19.com/identition/#partition-function)
+[![extended branes](https://github.com/eq19/maps/assets/8466209/deb0e309-2178-4dc5-a1d6-30c81c4a8305)](https://eq19.github.io/identition/#partition-function)
 
 These include generating variants of their abundance profile, assigning taxonomy and finally generating a rooted [phylogenetic tree](https://en.wikipedia.org/wiki/Phylogenetic_tree).
 

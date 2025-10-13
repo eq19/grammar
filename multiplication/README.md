@@ -11,7 +11,7 @@ Multiplication is the form of expression set equal to the inverse function of sy
 
 {% include list.liquid all=true %}
 
-The multiplication zones is a symmetric matrix representing the multilinear relationship of a stretching and shearing within the plane of _[the base unit](https://www.eq19.com/addition/#addition-zones-1-18)_. 
+The multiplication zones is a symmetric matrix representing the multilinear relationship of a stretching and shearing within the plane of _[the base unit](https://eq19.github.io/addition/#addition-zones-1-18)_. 
 
 ## Square Dimensions 
 
@@ -25,7 +25,7 @@ In this one system, represented as an icon, we can see the distribution profile 
 The MEC 30 transforms this idea from Christian Goldbach into the structure of a numerical double strand, into an opposite link of the MEC 30 scale. _([MEC 30 - pdf](https://patentimages.storage.googleapis.com/6f/e3/f0/b8f7292f1f2749/DE102011101032A9.pdf))_
 ```
 
-[![MEC30 Square](https://user-images.githubusercontent.com/36441664/262213707-63aa0a64-cf7d-4fb7-9f1a-f3d1ba805643.png)](https://www.eq19.com/addition/#77s-structure)
+[![MEC30 Square](https://user-images.githubusercontent.com/36441664/262213707-63aa0a64-cf7d-4fb7-9f1a-f3d1ba805643.png)](https://eq19.github.io/addition/#77s-structure)
 
 To implement the above octagonal format of MEC30 then this project will use the unique location of `.github` across the GitHub platform as listed below:
 
@@ -47,7 +47,7 @@ Since the first member is 30 then the form is initiated by a matrix of `5 x 6 = 
 A square system of coupled nonlinear equations can be solved iteratively by Newton's method. This method uses the Jacobian matrix of the system of equations. _([Wikipedia](https://en.wikipedia.org/Jacobian_matrix_and_determinant))_
 ```
 
-[![gradien](https://user-images.githubusercontent.com/36441664/128025898-187ba576-795f-4578-af71-ff02a8b682b1.png)](https://www.eq19.com/addition/#undiscovered-features)
+[![gradien](https://user-images.githubusercontent.com/36441664/128025898-187ba576-795f-4578-af71-ff02a8b682b1.png)](https://eq19.github.io/addition/#undiscovered-features)
 
 Each of the nine (9) types express themselves as one of the ***three (3) subtypes***. So from this perspective, there are 27 distinct patterns which are usually denoted by letters.
 
@@ -55,7 +55,7 @@ Each of the nine (9) types express themselves as one of the ***three (3) subtype
 Mathematically, this type of system requires ***27 letters (1-9, 10–90, 100–900)***. In practice, the last letter, tav (which has the value 400), is used in combination with itself or other letters from qof (100) onwards to generate numbers from 500 and above. Alternatively, the 22-letter Hebrew numeral set is sometimes ***extended to 27 by using 5 sofit (final)*** forms of the [Hebrew letters](https://en.wikipedia.org/wiki/Hebrew_numerals#cite_note-7). _([Wikipedia](https://en.wikipedia.org/wiki/Hebrew_numerals))_
 ```
 
-[![The Parameter Zones](https://github.com/eq19/maps/assets/8466209/1895c35b-8da4-4dae-bbf7-38fe5d34d1dd)](https://www.eq19.com/multiplication/13.html#decay-objects)
+[![The Parameter Zones](https://github.com/eq19/maps/assets/8466209/1895c35b-8da4-4dae-bbf7-38fe5d34d1dd)](https://eq19.github.io/multiplication/13.html#decay-objects)
 
 We found also a useful method called ***Square of Nine*** which was developed by _[WD Gann](https://en.wikipedia.org/wiki/William_Delbert_Gann)_ to analyze stock market behaviour base on astrological pattern.
 
@@ -63,7 +63,7 @@ We found also a useful method called ***Square of Nine*** which was developed by
 He designed a new approach to predicting market behavior using several disciplines, ***including geometry, astrology, astronomy, and ancient mathematics***. They say that not long before his death, Gann developed a unique trading system. ***However, he preferred not to make his invention public or share it with anyone***. _([PipBear](https://pipbear.com/price-action-pattern/gann-square-of-9/))_
 ```
 
-[![The Square of 9](https://github-production-user-asset-6210df.s3.amazonaws.com/8466209/258702885-e21c7bfc-0d91-4bc6-8a28-e61a2cdadece.png)](https://www.eq19.com/identition/#the-powers-of-pi)
+[![The Square of 9](https://github-production-user-asset-6210df.s3.amazonaws.com/8466209/258702885-e21c7bfc-0d91-4bc6-8a28-e61a2cdadece.png)](https://eq19.github.io/identition/#the-powers-of-pi)
 
 They are used to determine critical points where an asset's momentum is likely to reverse for the equities when paired with additional momentum
 
@@ -101,7 +101,7 @@ But as the module currently stands it is included to simplify some expressions a
  π(101+8) |103 |107 |109 |   - | 29th
 ```
 
-This density will bring the _[D3-Brane](https://www.eq19.com/addition/#structure-true-prime-pairs)_ where the lexer is being assigned per MEC30. Base on the its spin as shown in the above picture this lexer is assigned by [`Id: 33`](https://www.eq19.com/identition/#euler-partition).
+This density will bring the _[D3-Brane](https://eq19.github.io/addition/#structure-true-prime-pairs)_ where the lexer is being assigned per MEC30. Base on the its spin as shown in the above picture this lexer is assigned by [`Id: 33`](https://eq19.github.io/identition/#euler-partition).
 
 ```note
 In this short review, we have briefly described the structure of exceptional field theories (ExFT’s), which provide a (T)U-duality covariant approach to supergravity. These are based on symmetries of toroidally reduced supergravity; however are defined on a general background.
@@ -112,7 +112,7 @@ In this short review, we have briefly described the structure of exceptional fie
 Among these are non-abelian T-dualities in terms of Poisson-Lie transformations inside DFT [[100](https://www.mdpi.com/2073-8994/11/8/993#B100-symmetry-11-00993),[101](https://www.mdpi.com/2073-8994/11/8/993#B101-symmetry-11-00993)]; generating supersymmetric vacua and ***consistent truncations of supergravity into lower dimensions*** [[102](https://www.mdpi.com/2073-8994/11/8/993#B102-symmetry-11-00993),[103](https://www.mdpi.com/2073-8994/11/8/993#B103-symmetry-11-00993),[104](https://www.mdpi.com/2073-8994/11/8/993#B104-symmetry-11-00993)] (for review see [[105](https://www.mdpi.com/2073-8994/11/8/993#B105-symmetry-11-00993)]); compactifications on non-geometric (Calabi-Yau) backgrounds and construction of cosmological models [[54](https://www.mdpi.com/2073-8994/11/8/993#B54-symmetry-11-00993),[55](https://www.mdpi.com/2073-8994/11/8/993#B55-symmetry-11-00993),[106](https://www.mdpi.com/2073-8994/11/8/993#B106-symmetry-11-00993),[107](https://www.mdpi.com/2073-8994/11/8/993#B107-symmetry-11-00993)]. _([U-Dualities in Type II and M-Theory](https://www.mdpi.com/2073-8994/11/8/993))_
 ```
 
-[![3-forms in 7D](https://github.com/eq19/maps/assets/8466209/705213d6-00e3-4130-9b06-adfb8d06c110)](https://www.eq19.com/multiplication/#standard-model)
+[![3-forms in 7D](https://github.com/eq19/maps/assets/8466209/705213d6-00e3-4130-9b06-adfb8d06c110)](https://eq19.github.io/multiplication/#standard-model)
 
 The Golden Ratio “symbolically links each new generation to its ancestors, preserving the continuity of relationship as the means for retracing its lineage.”
 
@@ -129,7 +129,7 @@ Simply stated, the Golden Ratio establishes that the small is to the large as th
 - In the special case of a unit segment, the Golden Ratio provides the only way to divide unity in two parts that are in a geometric progression:[![Phi_division_unity](https://github.com/eq19/maps/assets/8466209/485cc8f8-4964-4d82-8fee-e78b38abfb6a)](https://www.sacred-geometry.es/?q=en/content/golden-ratio)
 - The side of a pentagon-pentagram can clearly be seen as in relation to its diagonal as 1: (√5 +1)/2 or 1:φ, the Golden Section:[![golden-ratio-pentagram-lr](https://github.com/eq19/maps/assets/8466209/bbc7688d-d656-4a14-97eb-8bb073b41fea)](https://www.cosmic-core.org/free/article-56-geometry-the-golden-ratio-part-1-introduction/)
 - When you draw all the diagonals in the pentagon you end up with the pentagram. The pentagram shows that the Golden Gnomon, and therefore Golden Ratio, are iteratively contained inside the pentagon:[![Phi_Squared_Circle_Mides](https://github.com/eq19/maps/assets/8466209/9afc48e0-326b-47ee-86fd-68697705d187)](https://www.sacred-geometry.es/?q=en/content/golden-ratio)
-- There are set of sequence known as _[Fibonacci retracement](https://www.investopedia.com/ask/answers/05/fibonacciretracement.asp#:~:text=The%20key%20Fibonacci%20ratio%20of,two%20spots%20to%20the%20right.)_. For unknown reasons, these Fibonacci ratios seem to play a role in the _[stock market](https://www.eq19.com/exponentiation/#hexagonal-patterns)_, just as they do in nature.  The Fibonacci retracement levels are 0.236, 0.382, ***0.618, and 0.786***.[![Fibonacci retracement](https://user-images.githubusercontent.com/36441664/277129518-a7bfc713-40f5-47a5-9a1d-37c3e3fde1ff.png)](https://www.investopedia.com/ask/answers/05/fibonacciretracement.asp#:~:text=The%20key%20Fibonacci%20ratio%20of,two%20spots%20)
+- There are set of sequence known as _[Fibonacci retracement](https://www.investopedia.com/ask/answers/05/fibonacciretracement.asp#:~:text=The%20key%20Fibonacci%20ratio%20of,two%20spots%20to%20the%20right.)_. For unknown reasons, these Fibonacci ratios seem to play a role in the _[stock market](https://eq19.github.io/exponentiation/#hexagonal-patterns)_, just as they do in nature.  The Fibonacci retracement levels are 0.236, 0.382, ***0.618, and 0.786***.[![Fibonacci retracement](https://user-images.githubusercontent.com/36441664/277129518-a7bfc713-40f5-47a5-9a1d-37c3e3fde1ff.png)](https://www.investopedia.com/ask/answers/05/fibonacciretracement.asp#:~:text=The%20key%20Fibonacci%20ratio%20of,two%20spots%20)
   - The key Fibonacci ratio of 61.8% is found by dividing one number in the series by the number that follows it. For example, 21 divided by 34 equals 0.6176, and 55 divided by 89 equals about 0.61798.
   - The 38.2% ratio is discovered by dividing a number in the series by the number located two spots to the right. For instance, 55 divided by 144 equals approximately 0.38194.
   - The 23.6% ratio is found by dividing one number in the series by the number that is three places to the right. For example, 8 divided by 34 equals about 0.23529.
@@ -141,7 +141,7 @@ This study cascade culminating in the Fibonacci digital root sequence (also peri
 
 ***(√0.618 - 0.618) x 1000  = (0.786 - 0.618) x 1000 = 0.168 x 1000 = 168 = π(1000)***
 
-[![24-digital root](https://user-images.githubusercontent.com/8466209/225589915-8f7690c8-4c17-4232-be51-63e79efb2c51.png)](https://www.eq19.com/addition/#the-24-cells-hexagon)
+[![24-digital root](https://user-images.githubusercontent.com/8466209/225589915-8f7690c8-4c17-4232-be51-63e79efb2c51.png)](https://eq19.github.io/addition/#the-24-cells-hexagon)
 
 By parsering 168 primes of 1000 id's across `π(π(100 x 100)) - 1 = 200` then the (Δ1) would be _[initiated](https://eq19.github.io/init.js)_. As you may guess they will slightly forms the ***hexagonal patterns***.
 
@@ -157,7 +157,7 @@ We are focusing to MEC30 so we end up this exponentiation by the famous quote fr
 W.D. Gann: “Stocks make important changes in trend every ***30, 60, 120, 150, 210, 240, 300, 330, 360*** days or degrees from any important top or bottom.”
 ```
 
-[![WD Gann - Hexagonal Chart](https://github.com/eq19/maps/assets/8466209/defe3aa5-ab70-4fd6-9412-b19c21a4ffaf)](https://www.eq19.com/identition/)
+[![WD Gann - Hexagonal Chart](https://github.com/eq19/maps/assets/8466209/defe3aa5-ab70-4fd6-9412-b19c21a4ffaf)](https://eq19.github.io/identition/)
 
 ***In line with 168 there is 330 located of 10th layer***. Since the base unit of 30 repeats it self on the center then this `11 x 30 = 330` is pushed to the `10 + 1 = 11th layer`. 
 
@@ -166,28 +166,71 @@ W.D. Gann: “Stocks make important changes in trend every ***30, 60, 120, 150, 
 By metaphorically linking trading components to physical forces, we propose a model that inspires a more unified approach to systematic development.
 
 ```note
-This paper presents a novel conceptual framework aligning the stages of trading strategy hyperoptimization with the hierarchy of fundamental forces in physics. 
+# A Theory-Inspired Framework for Strategy Hyperoptimization
 
-Hyperoptimization in algorithmic trading often involves tuning multiple components, such as buy/sell signals, ROI, and risk controls. To manage the complexity and guide the sequence of optimization, we introduce an analogy drawn from the layered structure of physics: from the weak nuclear force to the theory of everything.
+This paper presents a novel conceptual framework aligning the stages of trading strategy hyperoptimization with the hierarchy of fundamental forces in physics.
 
-This model offers both a logical optimization order and a conceptual narrative. The Seven Layers of Optimization and Their Physical Analogs
+Hyperoptimization in algorithmic trading involves tuning multiple interacting components — such as buy/sell logic, ROI models, risk protections, and meta-settings. To manage this complexity and define a meaningful sequence, we draw an analogy from the layered architecture of physics: from weak nuclear interactions to the theory of everything.
 
-- Weak Nuclear – [buy, custom_entry]: The buy logic initiates trades and is sensitive to short-term or localized conditions, akin to the weak nuclear force which governs subatomic particle transformations.
-- Electromagnetic (EM) – [sell, custom_exit]: Sell logic reflects reactionary and often symmetrical conditions, much like the electromagnetic force governs attraction/repulsion. These exits respond dynamically and are influenced by custom exits.
-- Electroweak – [custom_entry]: A transitional force that unifies aspects of buy and sell behavior. Here, custom_entry stands alone to symbolize this merging and the subtle influence it plays in trade execution.
-- Strong Nuclear – [trailing, protection, timeframe]: This group holds trades together, offering resistance against loss and shaping trade duration. It's the binding energy of the system, just like the strong nuclear force maintains the integrity of atomic nuclei.
-- Grand Unified Theory (GUT) – [trade, roi]: By abstracting to trade outcomes and ROI, this layer synthesizes entry/exit logic and trade structure into a unified profit model.
-- Quantum Gravity – [default, leverage]: This layer sets the curvature of the environment. Default configurations and leverage influence the system's responsiveness and inherent risk, akin to gravity shaping space-time.
-- Theory of Everything (TOE) – [all]: The total system is tuned here. This level represents full integration, optimizing all subsystems under a single theoretical roof.
+This model proposes not only a logical order of optimization but also a coherent conceptual narrative. Each stage corresponds to a fundamental force or unifying theory, collectively guiding development through **Seven Layers of Optimization**.
 
-The sequencing guides where to begin (local forces) and how to scale complexity (unification layers).
+---
 
-This model also offers pedagogical value for team communication and strategy design. Conceptually elegant and practically functional.
+## The Seven Layers of Optimization and Their Physical Analogs
 
-Mapping hyperopt stages to physics not only helps structure development but also provides a narrative lens through which one can explore strategy as an evolving system. This perspective may inspire further research in theory-driven financial modeling.
+### 1. **Weak Nuclear** – _[buy¹, custom-entry²]_
+The buy logic initiates trades and responds to localized, short-lived signals — akin to the weak nuclear force, which governs subatomic transformations. Custom entry logic represents nuanced early decision-making.
+
+### 2. **Electromagnetic (QED)** – _[sell³, custom-exit⁴]_
+The sell logic reacts to opposing conditions and manages exits through symmetric, responsive forces. Like electromagnetism, this governs interactions and balance through custom-exit dynamics.
+
+### 3. **Electroweak (QED + Weak + QM)** – _[custom-entry², custom-exit⁴, roi⁵]_
+This layer unifies buying and selling into a cohesive interactive force. **Here, quantum mechanics** is conceptually embedded: representing probabilistic filters, confidence thresholds, and dynamic decision-making within `custom-entry` and `custom-exit`. ROI emerges here as a modulated outcome of quantum-level signal interaction.
+
+### 4. **Strong Nuclear (QCD)** – _[trailing⁶, protection⁷, timeframe⁸]_
+Trailing stops, protection logic, and timeframe define the internal trade architecture. This layer offers resilience and cohesion, much like the strong nuclear force binds particles under high tension.
+
+### 5. **Grand Unified Theory (GUT)** – _[trades⁹, roi⁵]_
+Abstracting above local behaviors, this layer analyzes trade performance and profit structure. It combines earlier logic into a unifying profit mechanism and long-term strategy shaping.
+
+### 6. **Quantum Gravity (Meta-Layer)** – _[default¹⁰, leverage¹¹, global-overrides¹²]_
+This meta-layer defines the curvature of the environment. Default settings, leverage, and global overrides determine the system’s flexibility and risk profile — mirroring how gravity shapes the space-time structure of the trading universe.
+
+### 7. **Theory of Everything (TOE)** – _[all¹³]_
+The final layer integrates all previous dimensions. It represents full-system optimization, where all logic, protections, and meta-controls are harmonized into a complete strategic model.
+
+---
+
+## Benefits of the Model
+
+This structured analogy provides:
+
+- A natural progression from localized tuning to system-wide integration.
+- A conceptual narrative that aids in **team communication**, **strategic planning**, and **educational clarity**.
+- A foundation for **theory-driven financial modeling**, encouraging deeper exploration of system dynamics and unification across trading components.
+
+By mapping the **13 available optimization spaces** to this seven-layered structure — with quantum mechanics **embedded** rather than added — this framework maintains coherence with both physics and practical hyperoptimization architecture.
+
+---
+
+## Footnotes (Mapping to Hyperopt Spaces)
+
+1. buy  
+2. custom-entry  
+3. sell  
+4. custom-exit  
+5. roi  
+6. trailing  
+7. protection  
+8. timeframe  
+9. trades  
+10. default  
+11. leverage  
+12. global-overrides  
+13. all
 ```
 
-[![The Four Fundamental Forces](https://github.com/user-attachments/assets/731865b0-7033-4e1b-a587-0c75c0dcae36)](https://www.eq19.com/#prime-unit-identity)
+[![The Four Fundamental Forces](https://github.com/user-attachments/assets/731865b0-7033-4e1b-a587-0c75c0dcae36)](https://eq19.github.io/#prime-unit-identity)
 
 Each stage builds upon the stability of the one before, echoing how forces in physics emerge with energy scale.
 
@@ -197,7 +240,7 @@ That is, if the powers of 10 all returned with blue spin, or as a series of rain
 
 ![169-over-109-blood-pressure](https://github.com/eq19/maps/assets/8466209/a702ea20-2ef3-424f-804e-c73a6c873692)
 
-Within these 1000 primes there will be fractions which end up with _[168 identities](https://www.eq19.com/identition/#the-powers-of-pi)_. This will be the same structure as the seven (7) pàrtitions of _[addition zones](https://www.eq19.com/addition/)_. 
+Within these 1000 primes there will be fractions which end up with _[168 identities](https://eq19.github.io/identition/#the-powers-of-pi)_. This will be the same structure as the seven (7) pàrtitions of _[addition zones](https://eq19.github.io/addition/)_. 
 
 ```note
 The first 1000 prime numbers are silently screaming: "Pay attention to us, for we hold the secret to the distribution of all primes!" We heard the call, and with 'strange coincidences' leading the way have discovered compelling evidence that the 1000th prime number, 7919, is the perfectly positioned cornerstone of a mathematical object with highly organized substructures and stunning reflectional symmetries. _([PrimesDemystified](https://www.primesdemystified.com/First1000Primes.html))_
@@ -235,7 +278,7 @@ However, the exact nature of the relationship between primes and the Golden rati
 
 [![default](https://user-images.githubusercontent.com/8466209/195963923-0796217c-7a87-4b2d-ba93-f47465304c03.png)](https://www.nausetschools.org/cms/lib/MA02212418/Centricity/Domain/204/Linkage%20Map%20Worksheet%20Genetics%202017.pdf)
 
-During this interchange, the two 16-plets will be crossing over and farther apart but they are more likely to ***[stick together](https://www.eq19.com/multiplication/#fractal-dimensions)*** and not switch places.
+During this interchange, the two 16-plets will be crossing over and farther apart but they are more likely to ***[stick together](https://eq19.github.io/multiplication/#fractal-dimensions)*** and not switch places.
 
 ```note
 Another fascinating feature of this array is that any even number of–not necessarily contiguous–factors drawn from any one of ***the 32 angles in this modulo 120*** configuration distribute products to 1(mod 120) or 49 (mod 120), along with the squares.
@@ -255,7 +298,7 @@ A thirt, in case you're wondering, is a useful unit of measure when discussing i
 
 [![Mystery of the First 1000 Prime Numbers](https://user-images.githubusercontent.com/8466209/225830554-007fbd06-9d7d-44e8-867d-c7b0188bf488.png)](https://www.primesdemystified.com/First1000Primes.html)
 
-Both 1/89 and 1/109 have the Fibonacci sequence _[encoded in their decimal expansions](https://www.eq19.com/addition/#minor-hexagons)_ illustrates a period-24 palindromic that bring ***[the powers of pi](https://www.eq19.com/multiplication/#lineage-retracement)***. 
+Both 1/89 and 1/109 have the Fibonacci sequence _[encoded in their decimal expansions](https://eq19.github.io/addition/#minor-hexagons)_ illustrates a period-24 palindromic that bring ***[the powers of pi](https://eq19.github.io/multiplication/#lineage-retracement)***. 
 
 ```note
 When the digital root of perfect squares is sequenced within a ***modulo 30 x 3 = modulo 90 horizon***, beautiful symmetries in the form of period-24 palindromes are revealed, which the author has documented on the On-Line Encyclopedia of Integer Sequences as [Digital root of squares of numbers not divisible by 2, 3 or 5 (A24092)](https://oeis.org/A240924):
@@ -265,7 +308,7 @@ When the digital root of perfect squares is sequenced within a ***modulo 30 x 3 
 In the matrix pictured below, we list ***the first 24 elements*** of our domain, take their squares, calculate the modulo 90 congruence and digital roots of each square, and display the digital root factorization dyad for each square (and map their collective bilateral 9 sum symmetry).  _([PrimesDemystified](https://primesdemystified.com/#Distribution_of_Perfect_Squares))_
 ```
 
-[![root profiles](https://user-images.githubusercontent.com/36441664/277179073-e0411710-779e-4cea-8a37-ff7c635f46f7.png)](https://www.eq19.com/exponentiation/folder14/#root-profiles)
+[![root profiles](https://user-images.githubusercontent.com/36441664/277179073-e0411710-779e-4cea-8a37-ff7c635f46f7.png)](https://eq19.github.io/exponentiation/folder14/#root-profiles)
 
 Geometrically, a transformation matrix rotates, stretches, or shears the vectors it acts upon. The corresponding [eigenvalue](https://www.lancaster.ac.uk/staff/schomeru/lecturenotes/Quantum%20Mechanics/S15.html#E266) is often represented as the ***multiplying factor***.
 
@@ -273,7 +316,7 @@ Geometrically, a transformation matrix rotates, stretches, or shears the vectors
 In the matrix pictured below, we list the first 24 elements of our domain, take their squares, calculate the modulo 90 congruence and digital roots of each square, and display the digital root factorization dyad for each square (and map their ***collective bilateral 9 sum symmetry***). _([PrimesDemystified](https://primesdemystified.com/))_
 ```
 
-[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://www.eq19.com/multiplication/#elementary-structure)
+[![collective bilateral 9 sum symmetry](https://user-images.githubusercontent.com/8466209/200229388-03811f48-2492-4845-b15f-85259cd93717.png)](https://eq19.github.io/multiplication/#elementary-structure)
 
 ## 77s Structure
 
@@ -312,7 +355,7 @@ Notice that the divisions in the original square have been done according to som
 
 ***32 + 11×7 = 109 = ((10th)th prime)***
 
-[![77s Structure](https://github.com/eq19/maps/assets/8466209/8362e5e8-a102-435e-8e6a-788456d00148)](https://www.eq19.com/addition/#hidden-dimensions)
+[![77s Structure](https://github.com/eq19/maps/assets/8466209/8362e5e8-a102-435e-8e6a-788456d00148)](https://eq19.github.io/addition/#hidden-dimensions)
 
 ```note
 The [Standard Model](https://en.wikipedia.org/wiki/Standard_Model) presently recognizes seventeen distinct particles—twelve [fermions](https://en.wikipedia.org/wiki/Fermion) and ***five [bosons](https://en.wikipedia.org/wiki/Boson)***. As a consequence of [flavor](https://en.wikipedia.org/wiki/Flavour_(particle_physics)) and [color](https://en.wikipedia.org/wiki/Quantum_chromodynamics) combinations and [antimatter](https://en.wikipedia.org/wiki/Antimatter), the fermions and bosons are known to have 48 and ***13 variations***, respectively.[[](https://en.wikipedia.org/wiki/Elementary_particle#cite_note-braibant-2) _([Wikipedia](https://en.wikipedia.org/wiki/Elementary_particle))_
@@ -362,15 +405,15 @@ Every repository on GitHub.com comes equipped with a section for hosting documen
 
 ![](https://user-images.githubusercontent.com/8466209/244855108-b80b3c2e-1a13-4b55-828a-72ed15b448dd.png)
 
-Finally we found that the loop corresponds to a _[quadratic polynomial](https://www.eq19.com/identition/span9/#quadratic-polynomials-span-9)_ originated from the 4th coupling of MEC30 which is holded by ***five (5) cells between 13 and 17***.
+Finally we found that the loop corresponds to a _[quadratic polynomial](https://eq19.github.io/identition/span9/#quadratic-polynomials-span-9)_ originated from the 4th coupling of MEC30 which is holded by ***five (5) cells between 13 and 17***.
 
-[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://www.eq19.com/multiplication/18.html#higgs-mechanism)
+[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://eq19.github.io/multiplication/18.html#higgs-mechanism)
 
 Further observation of this _13 vs 17 phenomenon_ also introduces a _[lower bound](https://www.primesdemystified.com/Factorization.html)_ of Mod 90 to four (4) of possible length scales in the structure of prime recycling.
 
 [![Modulo_90_Congruency_Matrix_Twin_Prime_Page](https://github.com/eq19/maps/assets/8466209/aaea3897-5503-4142-b59a-f2f690d59927)](https://www.primesdemystified.com/Factorization.html)
 
-It appears that the triangulations and magic squares structuring the distribution of all prime numbers involving symmetry groups rotated by ***[the 8-dimensional algorithms](https://www.eq19.com/addition/#dimensional-algorithms)***.
+It appears that the triangulations and magic squares structuring the distribution of all prime numbers involving symmetry groups rotated by ***[the 8-dimensional algorithms](https://eq19.github.io/addition/#dimensional-algorithms)***.
 
 ```note
 In sum, we're positing that ***Palindromagon + {9/3} Star Polygon = Regular Enneazetton***.
@@ -380,9 +423,9 @@ In sum, we're positing that ***Palindromagon + {9/3} Star Polygon = Regular Enne
 This is geometric confirmation of the deep if not profound connection between the three twin prime distribution channels (which remember have 2, 3, and 5 encoded in their Prime Spiral Sieve angles) and the first three primes, 2, 3, and 5. _([PrimesDemystified](https://www.primesdemystified.com/twinprimes.html))_
 ```
 
-[![Theory of Everything](https://github.com/eq19/maps/assets/8466209/6e26ada0-c545-4771-810b-9f721512a03c)](https://www.eq19.com/identition/span12/)
+[![Theory of Everything](https://github.com/eq19/maps/assets/8466209/6e26ada0-c545-4771-810b-9f721512a03c)](https://eq19.github.io/identition/span12/)
 
-The symmetries that come into focus when the lense aperature, of ***the Prime Spiral Sieve is tripled to modulo 90***, synchronizing its modulus with its _[period-24 digital root](https://www.eq19.com/addition/#the-24-cells-hexagon)_.
+The symmetries that come into focus when the lense aperature, of ***the Prime Spiral Sieve is tripled to modulo 90***, synchronizing its modulus with its _[period-24 digital root](https://eq19.github.io/addition/#the-24-cells-hexagon)_.
 
 ## Palindromic Sequence 
 
@@ -418,7 +461,7 @@ This web enabled demonstration shows a polar plot of ***the first 20 non-trivial
 
 [![Riemann Zeta_Zeros](https://user-images.githubusercontent.com/36441664/268831545-9d8998b9-2528-458a-8956-5b0654e59f97.png)](https://qr.ae/pKnIbn)
 
-By our project, these 37 files are located within _[the wiki of main repository](https://github.com/eq19/eq19.github.io/wiki)_ and organized by [the 18's structure](https://www.eq19.com/addition/#structure-true-prime-pairs) located per the _[18 files of  project gist](https://gist.github.com/eq19)_.
+By our project, these 37 files are located within _[the wiki of main repository](https://github.com/eq19/eq19.github.io/wiki)_ and organized by [the 18's structure](https://eq19.github.io/addition/#structure-true-prime-pairs) located per the _[18 files of  project gist](https://gist.github.com/eq19)_.
 
 ![](https://user-images.githubusercontent.com/8466209/244139208-378b2229-c3e8-4f1f-8829-dee6687348fb.png)
 
@@ -448,7 +491,7 @@ In [linear algebra](https://en.wikipedia.org/wiki/Linear_algebra), there is vect
 The eigenvectors of the matrix (red lines) are the two special directions such that every point on them will just slide on them _([Wikipedia](https://commons.wikimedia.org/wiki/File:Eigenvectors_of_a_linear_operator.gif))_.
 ```
 
-[![Eigenvectors_of_a_linear_operator](https://user-images.githubusercontent.com/8466209/228168805-ab93185d-4172-4284-8459-040e2f8797d4.gif)](https://www.eq19.com/identition/#partition-function)
+[![Eigenvectors_of_a_linear_operator](https://user-images.githubusercontent.com/8466209/228168805-ab93185d-4172-4284-8459-040e2f8797d4.gif)](https://eq19.github.io/identition/#partition-function)
 
 In later sections, we will discuss finding all the solutions to a polynomial function. We will also discuss solving multiple equations with multiple unknowns. 
 
@@ -461,12 +504,12 @@ From what we learned above about segregating twin prime candidates, we can demon
 [![Base of TOE](https://user-images.githubusercontent.com/8466209/249753163-6cfbcecf-3713-409b-8d8b-5fa5cf8489ac.png)](https://www.hexspin.com/finding-a-number-in-the-hexagon/)
 
 ```tip
-Our ***[18s gists](https://gist.github.com/eq19)*** would form the _[18s structure of 11s and 7s](https://www.eq19.com/addition/#structure-true-prime-pairs)_ where by the 11s, the 20th prime 71 would stand as _[eigenvalue](https://www.eq19.com/multiplication/#streaching-structure)_ and by the 7s, the 11th prime 31 would stand as the _[new symmetical zero axis](https://www.eq19.com/exponentiation/#parsering-structure)_ by means of _[MEC30 Structure](https://www.eq19.com/exponentiation/#self-repetition)_. So whenever the 11s is _[compactified](https://www.eq19.com/identition/#the-powers-of-10)_ down to ***[4 dimensions](https://www.eq19.com/exponentiation/#parsering-structure)*** it will always be compactifed by the 7s as their _[extended branes](https://www.eq19.com/identition/#extra-dimensions)_ which including the _[eigenvector](https://www.eq19.com/addition/#18s-structure)_ of _[dark energy](https://www.eq19.com/identition/#string-theory)_ and finally become another level of ***[11 dimensions](https://www.eq19.com/identitionl/#the-powers-of-pi)*** that lead to the concept of _[multiple universes](https://www.eq19.com/identition/#extra-dimensions)_. 
+Our ***[18s gists](https://gist.github.com/eq19)*** would form the _[18s structure of 11s and 7s](https://eq19.github.io/addition/#structure-true-prime-pairs)_ where by the 11s, the 20th prime 71 would stand as _[eigenvalue](https://eq19.github.io/multiplication/#streaching-structure)_ and by the 7s, the 11th prime 31 would stand as the _[new symmetical zero axis](https://eq19.github.io/exponentiation/#parsering-structure)_ by means of _[MEC30 Structure](https://eq19.github.io/exponentiation/#self-repetition)_. So whenever the 11s is _[compactified](https://eq19.github.io/identition/#the-powers-of-10)_ down to ***[4 dimensions](https://eq19.github.io/exponentiation/#parsering-structure)*** it will always be compactifed by the 7s as their _[extended branes](https://eq19.github.io/identition/#extra-dimensions)_ which including the _[eigenvector](https://eq19.github.io/addition/#18s-structure)_ of _[dark energy](https://eq19.github.io/identition/#string-theory)_ and finally become another level of ***[11 dimensions](https://eq19.github.io/identitionl/#the-powers-of-pi)*** that lead to the concept of _[multiple universes](https://eq19.github.io/identition/#extra-dimensions)_. 
 ```
 
 ***Δ prime = 114th prime - 19 = (6 x 19)th prime - 19 = 619 - 19 = 600 = 3 x 200***
 
-[![Proof of Confinement](https://user-images.githubusercontent.com/36441664/270557989-54d6720f-fd55-44e9-a873-e11c6763bb8d.png)](https://www.eq19.com/multiplication/#streaching-structure)
+[![Proof of Confinement](https://user-images.githubusercontent.com/36441664/270557989-54d6720f-fd55-44e9-a873-e11c6763bb8d.png)](https://eq19.github.io/multiplication/#streaching-structure)
 
 Observing more detail of the discussed scheme of 168 we will get it also when we take the 19's and 17's cell of `(31+37)+(35+65)=68+100=168`.
 
@@ -494,9 +537,9 @@ By the MEC30 we will also discuss the relation of these 4 zones with high densit
 Both Ulam and Gardner noted that the existence of such prominent lines ***is not unexpected***, as lines in ***the spiral correspond to quadratic polynomials***, and certain such polynomials, such as Euler's prime-generating polynomial x²-x+41, are believed to produce a high density of prime numbers. Nevertheless, the Ulam spiral is connected with **major unsolved problems** in number theory such as Landau's problems _([Wikipedia](https://en.wikipedia.org/wiki/Ulam_spiral))_.
 ```
 
-[![prime Sacks_spiral](https://user-images.githubusercontent.com/8466209/229820606-b2bbd7fb-3300-4507-8080-fb27ed6fd512.png)](https://www.eq19.com/multiplication/#streching-structure)
+[![prime Sacks_spiral](https://user-images.githubusercontent.com/8466209/229820606-b2bbd7fb-3300-4507-8080-fb27ed6fd512.png)](https://eq19.github.io/multiplication/#streching-structure)
 
-So by the eight (8) pairs of prime it will always return to **[the beginning position](https://www.eq19.com/multiplication/#square-dimensions)** within [`60+40=100 nodes`](https://gist.github.com/eq19/0ce5848f7ad62dc46dedfaa430069857#the-power-of-168-vs-618) per layer.
+So by the eight (8) pairs of prime it will always return to **[the beginning position](https://eq19.github.io/multiplication/#square-dimensions)** within [`60+40=100 nodes`](https://gist.github.com/eq19/0ce5848f7ad62dc46dedfaa430069857#the-power-of-168-vs-618) per layer.
 
 ```note
 [The published](https://github.com/eq19/maps/files/13930690/PhysRev.76.769.pdf) diagram by [Feynman](https://physics.aps.org/story/v24/st3) helped scientists track particle movements in illustrations and visual equations rather than verbose explanations. What seemed almost improbable at the time is now one of the greatest [explanations](https://www.quantamagazine.org/why-feynman-diagrams-are-so-important-20160705/) of particle physics — the squiggly lines, diagrams, arrows, quarks, and cartoonish figures are now the established nomenclature and visual story that students, scientists, and readers will see when they learn about this field of science. _([medium.com](https://medium.com/taking-note/learning-from-the-feynman-technique-5373014ad230))_
@@ -504,6 +547,6 @@ So by the eight (8) pairs of prime it will always return to **[the beginning pos
 
 ***8 pairs = 8 x 2 = 16***
 
-[![Electromagnetism](https://user-images.githubusercontent.com/8466209/223011738-7e2084bc-861b-4424-89d5-9f39643df22f.png)](https://www.eq19.com/exponentiation/)
+[![Electromagnetism](https://user-images.githubusercontent.com/8466209/223011738-7e2084bc-861b-4424-89d5-9f39643df22f.png)](https://eq19.github.io/exponentiation/)
 
 Transforming particles into anti-particles, and vice versa, requires only the complex conjugate ***i → −i*** in our formalism. _([Standard Model from an algebra - pdf](https://github.com/eq19/maps/files/14387513/Standard_model_physics_from_an_algebra.pdf))_

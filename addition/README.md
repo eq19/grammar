@@ -11,7 +11,7 @@ Addition is the form of an expression set equal to zero as the ***additive ident
 
 {% include list.liquid all=true %}
 
-By the _[Euler's identity](https://www.eq19.com/#eulers-identity)_ this addition should form as one (1) unit of an object originated by the 18s structure. For further on let's call this unit as ***the base unit***.
+By the _[Euler's identity](https://eq19.github.io/#eulers-identity)_ this addition should form as one (1) unit of an object originated by the 18s structure. For further on let's call this unit as ***the base unit***.
 
 ## The 24 Cells Hexagon
 
@@ -196,7 +196,7 @@ Including the 1st (2) and 2nd prime (3) all together will have a total of ***168
 The number of primes less than or equal to a thousand (π(1000) = 168) equals the number of hours in a week (7 * 24 = 168).
 ```
 
-[![247](https://user-images.githubusercontent.com/36441664/103107461-173c2b00-4671-11eb-962c-da7e9eab022e.png)](https://www.eq19.com/#addition-zones)
+[![247](https://user-images.githubusercontent.com/36441664/103107461-173c2b00-4671-11eb-962c-da7e9eab022e.png)](https://eq19.github.io/#addition-zones)
 
 The most obvious interesting feature of proceeding this prime hexagon, the number line begins to coil upon itself, is it confines all numbers of primes spin!
 
@@ -212,9 +212,9 @@ As the number line winds about toward infinity, bending around prime numbers, it
 Surprisingly, the 24-cell hexagon confines all natural numbers. The reason: no prime numbers occupy a cell with a right or left wall on the t-hexagon’s outer boundary, other than 2 and 3, the initial primes that forced the number line into this complex coil. Without a prime number in the outer set of triangles, the number line does not change to an outward course and ***remains forever contained in the 24 cells***. _([HexSpin](https://www.hexspin.com/defining-the-prime-hexagon/))_
 ```
 
-[![Euler Partition](https://github.com/eq19/maps/assets/8466209/b73fec0f-1798-4679-bbc2-ed6060484543)](https://eq19.com/identition/#euler-partition)
+[![Euler Partition](https://github.com/eq19/maps/assets/8466209/b73fec0f-1798-4679-bbc2-ed6060484543)](https://eq19.github.io/identition/#euler-partition)
 
-You may notice that there are twists and turns until 19 abuts 2 therefore this addition zone takes only the seven (7) primes out of the 18's structure of _[True Prime Pairs](https://www.eq19.com/addition/file02.html#true-prime-pairs)_.
+You may notice that there are twists and turns until 19 abuts 2 therefore this addition zone takes only the seven (7) primes out of the 18's structure of _[True Prime Pairs](https://eq19.github.io/addition/file02.html#true-prime-pairs)_.
 
 ```
 $True Prime Pairs:
@@ -275,7 +275,7 @@ In conclusion, the number 1 is neither prime nor composite.
 
 ![](https://user-images.githubusercontent.com/36441664/274093531-0878e3e5-6be3-448e-9ad4-3b34523c1e9c.jpg)
 
-So there should be a tight connection between 168 primes within 1000 with the _[24-cell hexagon](https://www.eq19.com/multiplication/#assigning-a-lexer)_. Indeed it is also correlated with [1000 prime numbers](https://www.primesdemystified.com/First1000Primes.html).
+So there should be a tight connection between 168 primes within 1000 with the _[24-cell hexagon](https://eq19.github.io/multiplication/#assigning-a-lexer)_. Indeed it is also correlated with [1000 prime numbers](https://www.primesdemystified.com/First1000Primes.html).
 
 ## Undiscovered Features
 
@@ -309,9 +309,9 @@ Another is that phi and its members have a pisano period if the resulting fracti
 I wondered if that property might hold for the incremental powers of phi as well. For this reason I chose to see numbers in the hexagon as quantum, and truncate off the decimal values to determine which integer cell they land in. That is what I found. ***Phi and its members have a pisano period if the resulting fractional numbers are truncated***. _([HexSpin](https://www.hexspin.com/phi-not-pi-and-why-i-truncate-to-determine-integer-values/))_.
 ```
 
-[![truncated fractional numbers](https://user-images.githubusercontent.com/8466209/229198281-8dbd72fb-cd0b-46c3-8a2c-ddc66107333e.png)](https://www.eq19.com/identition/#the-powers-of-pi)
+[![truncated fractional numbers](https://user-images.githubusercontent.com/8466209/229198281-8dbd72fb-cd0b-46c3-8a2c-ddc66107333e.png)](https://eq19.github.io/identition/#the-powers-of-pi)
 
-It would mean that there should be undiscovered things hidden within the residual of this decimal values. In fact it is the case that happen with _[3-forms in 7D](https://www.eq19.com/identition/span12/#the-seven-7-groups)_.
+It would mean that there should be undiscovered things hidden within the residual of this decimal values. In fact it is the case that happen with _[3-forms in 7D](https://eq19.github.io/identition/span12/#the-seven-7-groups)_.
 
 ## Dimensional Algorithms
 
@@ -329,7 +329,7 @@ Taking 19 as a certain parameter we can see that the left handed cycles are happ
 ```note
 All perfect squares within our domain (numbers not divisible by 2, 3 or 5) possess a digital root of 1, 4 or 7 and are congruent to either {1} or {19} modulo 30.
 - ***When the digital root of perfect squares is sequenced within a modulo 30 x 3 = modulo 90 horizon, beautiful symmetries in the form of period-24 palindromes are revealed***. Here's one modulo 90 spin on perfect squares.
-- parsing the squares by their mod 90 congruence reveals that there are ***[96 perfect squares](https://www.eq19.com/multiplication/17.html#perfect-squares)*** generated with each 4 * 90 = 360 degree cycle,
+- parsing the squares by their mod 90 congruence reveals that there are ***[96 perfect squares](https://eq19.github.io/multiplication/17.html#perfect-squares)*** generated with each 4 * 90 = 360 degree cycle,
 - which distribute 16 squares to each of 6 mod 90 congruence sub-sets defined as n congruent to {1, 19, 31, 49, 61, 79} forming 4 bilateral 80 sums.
 - each of the 6 columns has 8 bilateral 360 sums, tor a total of 48 * 360 = 40 * 432 (much more on the significance of number 432, elsewhere on this site). 
 
@@ -392,7 +392,7 @@ It's remarkable that ***objects consisting of star polygons, spiraling irregular
 [![Twin_Prime_Digital_Root_Polygon](https://github.com/eq19/maps/assets/8466209/ffd3fdb1-5d9d-4a21-95a6-e5f492d6e374)](https://www.primesdemystified.com/twinprimes.html)
 
 ```note
-In our approach a 3-form is not an object that exist in addition to the metric, it is the only object that exist and in particular ***[the 4D metric, is defined by the 3-form](https://www.eq19.com/identition/span12/#three-3-layers)***.
+In our approach a 3-form is not an object that exist in addition to the metric, it is the only object that exist and in particular ***[the 4D metric, is defined by the 3-form](https://eq19.github.io/identition/span12/#three-3-layers)***.
 - We would like to say that our present use of G2 structures (3-forms in 7D) is different from what
 one can find in the literature on Kaluza–Klein compactifications of supergravity.
 - We show that the resulting 4D theory is (Riemannian) [General Relativity](https://www.sciencedirect.com/topics/physics-and-astronomy/general-relativity) (GR) in Plebanski formulation, modulo corrections that are negligible for curvatures smaller than Planckian.
@@ -419,9 +419,9 @@ Focusing on just the twin prime distribution channels, we see the relationships 
 
 ***7th spin - 4th spin = (168 - 102)s = 66s = 6 x 11s = 30s + 36s***
 
-[![Twin_Primes_Channel_Matrices (1)](https://github.com/eq19/maps/assets/8466209/4c480d9b-7e6d-4056-9caf-16cfc3bfe6d1)](https://www.eq19.com/multiplication/)
+[![Twin_Primes_Channel_Matrices (1)](https://github.com/eq19/maps/assets/8466209/4c480d9b-7e6d-4056-9caf-16cfc3bfe6d1)](https://eq19.github.io/multiplication/)
 
-By the _[Δ(19 vs 18) Scenario](https://www.eq19.com/identition/span12/#the-seven-7-groups)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
+By the _[Δ(19 vs 18) Scenario](https://eq19.github.io/identition/span12/#the-seven-7-groups)_ those three are exactly landed in the ***0's cell*** out of Δ18. See that the sum of 30 and 36 is 66 while the difference between 36 and 102 is also 66.
 
 ```note
 You likely noticed I began with 2 rather than 1 or 0 when I first constructed the hexagon. Why? Because they do not fit inside — they stick off the hexagon like a tail. Perhaps that’s where they belong. However, if one makes a significant and interesting assumption, then 1 and 0 fall in their logical locations – in the 1 and 0 cells, respectively. _([HexSpin](https://www.hexspin.com/0-1-and-negative-numbers/))
@@ -470,18 +470,18 @@ Using Euler's method to find p(40): A ruler with plus and minus signs (grey box)
 ***π(π(π(1000th prime))) + 1 = 40***
 
 [![image](https://github.com/eq19/maps/assets/8466209/810f734c-fe35-44de-a096-6021ebfecc76)
-](https://www.eq19.com/addition/3.html#subclasses-of-partitions)
+](https://eq19.github.io/addition/3.html#subclasses-of-partitions)
 
-As explicitly indicated by `n - 7` within identition zones this `p(33)` behave reversal to the _[exponentiation zones](https://www.eq19.com/exponentiation/#exponentiation-zones-31-36)_ so it would stand as [`π(π(π(1000th prime)))+1`](https://www.eq19.com/addition/file02.html#true-prime-pairs).
+As explicitly indicated by `n - 7` within identition zones this `p(33)` behave reversal to the _[exponentiation zones](https://eq19.github.io/exponentiation/#exponentiation-zones-31-36)_ so it would stand as [`π(π(π(1000th prime)))+1`](https://eq19.github.io/addition/file02.html#true-prime-pairs).
 
 ***p(33) = p(40-7) = loop (100000) = 4 + 25 + 139 + 1091 + 8884 = 10143***
 
-[![identities zones](https://user-images.githubusercontent.com/8466209/241491860-72da956a-1740-4ed7-83ef-3844ae1ff8d2.png)](https://www.eq19.com/#identition-zones)
+[![identities zones](https://user-images.githubusercontent.com/8466209/241491860-72da956a-1740-4ed7-83ef-3844ae1ff8d2.png)](https://eq19.github.io/#identition-zones)
 
-So there would be the empty spaces for `18 - 7 = 11` numbers. By our project these spaces will be _[unified](https://www.eq19.com/exponentiation/#god-particle)_ by all of the eleven (11) members of ***[identition zones](https://www.eq19.com/identition/)***.
+So there would be the empty spaces for `18 - 7 = 11` numbers. By our project these spaces will be _[unified](https://eq19.github.io/exponentiation/#god-particle)_ by all of the eleven (11) members of ***[identition zones](https://eq19.github.io/identition/)***.
 
 ***(11x7) + (29+11) + (25+6) + (11+7) + (4+1) = 77+40+31+18+5 = 171***
 
-[![extended branes](https://github.com/eq19/maps/assets/8466209/deb0e309-2178-4dc5-a1d6-30c81c4a8305)](https://www.eq19.com/multiplication/)
+[![extended branes](https://github.com/eq19/maps/assets/8466209/deb0e309-2178-4dc5-a1d6-30c81c4a8305)](https://eq19.github.io/multiplication/)
 
-So by simple words this 11 dimensions brings us back to the _[root functions](https://www.eq19.com/exponentiation/#root-functions)_. The only difference is _the base unit_. It is now carrying the above `p(33) = 10143`.
+So by simple words this 11 dimensions brings us back to the _[root functions](https://eq19.github.io/exponentiation/#root-functions)_. The only difference is _the base unit_. It is now carrying the above `p(33) = 10143`.
