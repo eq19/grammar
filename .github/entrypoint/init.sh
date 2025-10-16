@@ -196,7 +196,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-
+  
   for DIR_PATH in "${DIRS[@]}"; do
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
@@ -255,9 +255,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
   
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_DRY"
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true' $CONFIG > $CONFIG_LIVE"
-    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .dry_run = false' $CONFIG > $CONFIG_LIVE"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
+    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
 
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
