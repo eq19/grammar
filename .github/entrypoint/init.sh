@@ -255,9 +255,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
   
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
-    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
+    $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
+    #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
 
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
