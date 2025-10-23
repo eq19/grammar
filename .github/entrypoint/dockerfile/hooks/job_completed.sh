@@ -73,6 +73,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   elif $DOCKER ps --format '{{.Names}}' | grep -q "^${CONTAINER}$" && \
     $DOCKER exec "$CONTAINER" supervisorctl status "$APP" | grep -q "RUNNING"; then
 
+    echo "🌀 Reload all application's configs upon the updated configuration."
+    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
+    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
+
     if [[ "$CONTAINER_NAME" == "runner1" ]]; then
       $DOCKER exec runner2 /home/runner/scripts/exitpoint.sh $REMOVE_REPOSITORY $TARGET_REPOSITORY
     elif [[ "$CONTAINER_NAME" == "runner2" ]]; then
@@ -81,9 +85,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   else
     # Optionally reload:
-    echo "🌀 Reload all applications upon the updated configuration."
-    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
-    curl -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
+    echo "🌀 Rerun all applications upon failure."
+    $DOCKER exec mydb supervisorctl start freqtrade_live
+    $DOCKER exec mydb supervisorctl start freqtrade_dry
     set_monitor
   fi
 fi
