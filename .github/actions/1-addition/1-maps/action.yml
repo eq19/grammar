@@ -161,7 +161,7 @@ runs:
         GCP_CREDENTIALS: ${{ inputs.credentials }}
       run: |
         python -m pip -q install --upgrade pip
-        python -m pip -qqq install tensorflow-cpu
+        #python -m pip -qqq install tensorflow-cpu
         #python -m pip -qqq install -r ${{ inputs.action_path }}/dataFile/requirements.txt
 
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
@@ -195,7 +195,7 @@ runs:
         password: ${{ inputs.hub_token }}
 
     - name: 🚀 Initiate Lexer
-      if: runner.os == 'Redis'
+      if: runner.os != 'Redis'
       uses: devcontainers/ci@v0.3
       with:
         skipContainerUserIdUpdate: true
@@ -216,7 +216,7 @@ runs:
           ARTIFACT=user_data/ft_client/test_client/results/orgs.json
 
     - name: 🗑️ Delete Docker Tags AND Images
-      if: runner.os == 'Redis'
+      if: runner.os != 'Redis'
       id: delete_images
       shell: bash
       env:
