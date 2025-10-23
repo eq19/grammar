@@ -195,6 +195,7 @@ runs:
         password: ${{ inputs.hub_token }}
 
     - name: 🚀 Initiate Lexer
+      if: runner.os == 'Redis'
       uses: devcontainers/ci@v0.3
       with:
         skipContainerUserIdUpdate: true
@@ -215,6 +216,7 @@ runs:
           ARTIFACT=user_data/ft_client/test_client/results/orgs.json
 
     - name: 🗑️ Delete Docker Tags AND Images
+      if: runner.os == 'Redis'
       id: delete_images
       shell: bash
       env:
