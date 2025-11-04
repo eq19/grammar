@@ -36,7 +36,7 @@ set_config() {
 
 git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
+ls -alR $GITHUB_WORKSPACE
 git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 [[ "$RUNNER_OS" == "Windows" ]] && YQ=$(choco install yq)
 [[ "$RUNNER_OS" == "Windows" ]] && git config --global core.safecrlf false
