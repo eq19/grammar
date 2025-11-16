@@ -10,6 +10,11 @@ on:
     types: [trigger_action, retry_workflow]
   workflow_dispatch:
     inputs:
+      FREQAI_MODEL:
+        description: 'the model of FreqAI to run'
+        default: 'false'
+        required: false
+        type: string
       REMOVE_RUNNER:
         description: 'remove runner if is set true'
         default: 'false'
@@ -44,8 +49,9 @@ jobs:
       JOBS_ID: ${{ matrix.config.jobs_id }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
+      FREQAI_MODEL: ${{ github.event.inputs.FREQAI_MODEL }}
       REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
-
+      
     # 🔧 Commutation relations
     runs-on: ${{ matrix.config.os }}
     continue-on-error: ${{ matrix.config.jobs_id != 1 && false || true }}
