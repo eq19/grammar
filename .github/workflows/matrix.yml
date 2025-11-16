@@ -100,14 +100,14 @@ jobs:
           HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
-          FREQAIMODEL: ${{ fromJson(inputs.matrix_json).freqai }}
+          FREQAI_MODEL: ${{ fromJson(inputs.matrix_json).freqai }}
         run: |
           echo "Running hyperopt..."
           echo "Space: $SPACE"
           echo "Score: $SCORE"
           bash user_data/ft_client/test_client/feed.sh hyperopt
 
-          # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss\nSpaces: $spaces | Days: $days | Epochs: $epochs\n$hr"
+          # echo -e "\n$hr\nID: $id 👉 Running $hyperopt_loss | Days: $days | Epochs: $epochs\nSpaces: $spaces:FreqAImodel: $FREQAI_MODEL\n$hr"
           # freqtrade hyperopt --timerange ${start_date}-${end_date} --epochs ${epochs} -j 4 \
           #   --spaces ${spaces} --ignore-missing-spaces --hyperopt-loss ${hyperopt_loss} \
           #   --enable-protections --analyze-per-epoch  --random-state ${id} \
