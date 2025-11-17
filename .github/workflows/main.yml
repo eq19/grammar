@@ -196,3 +196,4 @@ jobs:
           pauli_sum: ${{ toJSON(steps.eval-syntax.outputs) }}
           failure_status: ${{ contains(steps.eval-syntax.conclusion, 'failure') ||
             (env.JOBS_ID == 4 && contains(needs.lexering.result, 'failure')) }}
+          #manual_force_cancel: gh run cancel 19411342256 --repo eq19/grammar --force
