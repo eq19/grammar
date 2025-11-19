@@ -57,6 +57,14 @@ jobs:
     continue-on-error: ${{ matrix.config.jobs_id != 1 && false || true }}
 
     steps:
+      - name: Expand workspace
+        if: ${{ env.JOBS_ID == 1 }}
+        run: |
+          sudo mkdir -p /mnt/extra
+          sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
+          sudo rsync -a $GITHUB_WORKSPACE/ /mnt/extra
+          echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+
       - name: 📂 Checkout
         uses: actions/checkout@v4
         with:
