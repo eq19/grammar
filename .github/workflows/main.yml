@@ -57,18 +57,16 @@ jobs:
     continue-on-error: ${{ matrix.config.jobs_id != 1 }}
 
     steps:
-      - name: 🧹 Free disk space (Ubuntu only)
+      - name: 📂 Diskspace
         if: ${{ runner.os == 'Linux' && env.JOBS_ID == 1 }}
         run: |
+          echo "🧹 Free disk"
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /usr/lib/google-cloud-sdk
           docker system prune -af || true
           docker builder prune -af || true
 
-      - name: 📂 Expand workspace to 100GB tmpfs (Ubuntu only)
-        if: ${{ runner.os == 'Linux' && env.JOBS_ID == 1 }}
-        run: |
           echo "⏫ Setting up 100GB tmpfs"
           sudo mkdir -p /mnt/extra
           sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
