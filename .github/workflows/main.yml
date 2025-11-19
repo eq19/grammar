@@ -44,6 +44,7 @@ jobs:
         config:
           - { os: ubuntu-latest, jobs_id: 1 }
           - { os: macos-latest, jobs_id: 2 }
+
     env:
       SCORE: ${{ vars.SCORE || 100 }}
       JOBS_ID: ${{ matrix.config.jobs_id }}
@@ -51,21 +52,41 @@ jobs:
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
       FREQAI_MODEL: ${{ github.event.inputs.FREQAI_MODEL }}
       REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
-      
-    # 🔧 Commutation relations
+
     runs-on: ${{ matrix.config.os }}
-    continue-on-error: ${{ matrix.config.jobs_id != 1 && false || true }}
+    continue-on-error: ${{ matrix.config.jobs_id != 1 }}
 
     steps:
-      - name: Expand workspace
-        if: ${{ env.JOBS_ID == 1 }}
+      - name: 🧹 Free disk space (Ubuntu only)
+        if: ${{ runner.os == 'Linux' && env.JOBS_ID == 1 }}
         run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/lib/google-cloud-sdk
+          docker system prune -af || true
+          docker builder prune -af || true
+
+      - name: 📂 Expand workspace to 100GB tmpfs (Ubuntu only)
+        if: ${{ runner.os == 'Linux' && env.JOBS_ID == 1 }}
+        run: |
+          echo "⏫ Setting up 100GB tmpfs"
           sudo mkdir -p /mnt/extra
           sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
-          sudo rsync -a $GITHUB_WORKSPACE/ /mnt/extra
-          echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+          
+          echo "➡️ Syncing workspace"
+          sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
 
-      - name: 📂 Checkout
+          echo "➡️ Switching workspace"
+          echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+          echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
+
+          # optional symlink to avoid tool breakage
+          sudo rm -rf "$GITHUB_WORKSPACE"
+          sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
+
+          echo "📌 Workspace successfully expanded."
+
+      - name: 📥 Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
@@ -154,7 +175,7 @@ jobs:
     continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
      
     steps:
-      - name: 📂 Checkout
+      - name: 📥 Checkout
         uses: actions/checkout@v4
         id: check-out
         with:
