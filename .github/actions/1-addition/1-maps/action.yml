@@ -127,6 +127,33 @@ runs:
       with:
         script: console.log(context)
 
+    - name: Setup Workspace
+      shell: bash
+      run: |
+        echo "🧹 Free disk"
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/lib/google-cloud-sdk
+        docker system prune -af || true
+        docker builder prune -af || true
+
+        echo "⏫ Setting up 100GB tmpfs"
+        sudo mkdir -p /mnt/extra
+        sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
+          
+        echo "➡️ Syncing workspace"
+        sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
+
+        echo "➡️ Switching workspace"
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
+
+        # optional symlink to avoid tool breakage
+        sudo rm -rf "$GITHUB_WORKSPACE"
+        sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
+
+        echo "📌 Workspace successfully expanded." && df -h
+
     - uses: actions/setup-python@v5
       with:
         python-version: 3.12
