@@ -39,7 +39,7 @@ jobs:
   lexering:
     strategy:
       max-parallel: 1
-      fail-fast: true
+      fail-fast: false
       matrix:
         config:
           - { os: ubuntu-latest, jobs_id: 1 }
@@ -132,7 +132,7 @@ jobs:
 
       # 💢 Completeness relations
       max-parallel: 1
-      fail-fast: true
+      fail-fast: false
 
     env:
       JOBS_ID: ${{ matrix.config.jobs_id }}
