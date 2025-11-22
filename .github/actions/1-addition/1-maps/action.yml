@@ -127,41 +127,14 @@ runs:
       with:
         script: console.log(context)
 
-    - name: Setup Workspace
-      shell: bash
-      run: |
-        echo "🧹 Free disk"
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /usr/lib/google-cloud-sdk
-        docker system prune -af || true
-        docker builder prune -af || true
-
-        echo "⏫ Setting up 100GB tmpfs"
-
-        # Mount tmpfs as root (safe)
-        sudo mkdir -p /mnt/extra
-        sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
-        sudo chown runner:docker /mnt/extra
-
-        echo "➡️ Dropping sudo — from this point everything runs as the runner user"
-        sudo -u runner bash << 'EOF'
-
-        echo "➡️ Syncing workspace into tmpfs"
-        rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
-
-        echo "➡️ Switching workspace safely (no sudo allowed)"
-        rm -rf "$GITHUB_WORKSPACE"
-        ln -s /mnt/extra "$GITHUB_WORKSPACE"
-
-        echo "➡️ Updating GITHUB_WORKSPACE environment"
-        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
-        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
-
-        echo "📌 Workspace expansion complete"
-        df -h
-
-        EOF
+    - name: Expand Disk Space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 512
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
 
     - uses: actions/setup-python@v5
       with:
