@@ -136,7 +136,9 @@ runs:
         rsync -a $GITHUB_WORKSPACE/ /mnt/extra/
         rm -rf $GITHUB_WORKSPACE
         ln -s /mnt/extra $GITHUB_WORKSPACE
-        df -h
+        mkdir -p /mnt/extra/cache/pip
+        rm -rf ~/.cache/pip
+        ln -s /mnt/extra/cache/pip ~/.cache/pip
 
     - uses: actions/setup-python@v5
       with:
