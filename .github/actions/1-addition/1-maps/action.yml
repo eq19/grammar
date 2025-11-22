@@ -138,22 +138,33 @@ runs:
         docker builder prune -af || true
 
         echo "⏫ Setting up 100GB tmpfs"
+
+        # 1. Create tmpfs mount as root
         sudo mkdir -p /mnt/extra
         sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
-        sudo chown -R runner:docker /mnt/extra
-          
-        echo "➡️ Syncing workspace"
-        sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
 
-        echo "➡️ Switching workspace"
+        # 2. Give full ownership to the GitHub runner user (critical!)
+        sudo chown -R runner:docker /mnt/extra
+
+        echo "➡️ Syncing workspace into tmpfs (no sudo here)"
+        rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
+
+        echo "➡️ Switching workspace safely"
+        # Export workspace path for subsequent steps
         echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
         echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
 
-        # optional symlink to avoid tool breakage
-        sudo rm -rf "$GITHUB_WORKSPACE"
-        sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
+        # 3. Clean the original workspace (owned by runner, safe)
+        rm -rf "$GITHUB_WORKSPACE"
 
-        echo "📌 Workspace successfully expanded." && df -h
+        # 4. Symlink tmpfs → original path (no root needed)
+        ln -s /mnt/extra "$GITHUB_WORKSPACE"
+
+        echo "➡️ Repairing ownership for parent runner directories"
+        sudo chown -R runner:docker /home/runner
+
+        echo "📌 Workspace expansion complete"
+        df -h
 
     - uses: actions/setup-python@v5
       with:
