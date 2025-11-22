@@ -145,6 +145,7 @@ runs:
         allow-prereleases: true
 
     - uses: actions/cache@v4
+      if: runner.os == 'Redis'
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip
