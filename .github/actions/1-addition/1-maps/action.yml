@@ -140,6 +140,7 @@ runs:
         echo "⏫ Setting up 100GB tmpfs"
         sudo mkdir -p /mnt/extra
         sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
+        sudo chown -R runner:docker /mnt/extra
           
         echo "➡️ Syncing workspace"
         sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
