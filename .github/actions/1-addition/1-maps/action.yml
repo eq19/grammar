@@ -127,14 +127,30 @@ runs:
       with:
         script: console.log(context)
 
-    - name: Expand Disk Space
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 512
-        swap-size-mb: 1024
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
+    - name: Setup Workspace
+      shell: bash
+      run: |
+        echo "🧹 Free disk"
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+
+        # Create and mount tmpfs with proper permissions
+        sudo mkdir -p /mnt/extra_workspace
+        sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra_workspace
+        sudo chown -R $USER:$USER /mnt/extra_workspace
+        sudo chmod -R 755 /mnt/extra_workspace
+      
+        # Copy workspace contents
+        cp -r "$GITHUB_WORKSPACE/." /mnt/extra_workspace/
+      
+        # Remove original and create symlink
+        rm -rf "$GITHUB_WORKSPACE"
+        ln -s /mnt/extra_workspace "$GITHUB_WORKSPACE"
+      
+        # Verify ownership
+        ls -la "$GITHUB_WORKSPACE"
+
+        echo "📌 Workspace successfully expanded." && df -h
 
     - uses: actions/setup-python@v5
       with:
