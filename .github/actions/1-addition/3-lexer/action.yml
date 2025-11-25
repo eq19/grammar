@@ -81,7 +81,6 @@ runs:
     - name: 🪂 Adapt feed mapping
       shell: bash
       env: |
-        ID: ${{ env.ID }}
         GH_TOKEN: ${{ env.GH_TOKEN }}
         REMOTE_REPO: ${{ env.REMOTE_REPO }}
         TARGET_REPOSITORY: ${{ env.TARGET_REPOSITORY }}
