@@ -80,6 +80,11 @@ runs:
   steps:
     - name: 🪂 Adapt feed mapping
       shell: bash
+      env: |
+        ID: ${{ env.ID }}
+        GH_TOKEN: ${{ env.GH_TOKEN }}
+        REMOTE_REPO: ${{ env.REMOTE_REPO }}
+        TARGET_REPOSITORY: ${{ env.TARGET_REPOSITORY }}
       run: |
         gh variable set ORGS_JSON --body "$(cat $RUNNER_TEMP/orgs.json)"
         mv -f .github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
@@ -100,7 +105,8 @@ runs:
 
         mv -f ${{ github.workspace }}/_site ${{ inputs.action_path }}/
         cat ${{ inputs.action_path }}/Dockerfile
-
+        bash user_data/ft_client/test_client/lexer.sh
+          
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
       if: runner.os == 'Redis'
