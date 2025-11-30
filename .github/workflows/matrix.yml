@@ -59,6 +59,8 @@ jobs:
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-plot.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-hyperopt.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-freqai-rl.txt
+          pip uninstall -y tensorflow tensorflow-cpu tensorboard
+          pip install -qq --no-cache-dir "tensorflow-cpu==2.13.*" "tensorboard==2.13.*"
           pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
 
       - name: ⚙️ Get artifact ID
