@@ -121,8 +121,7 @@ runs:
         ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
         curl -s https://api.github.com/repos/freqtrade/freqtrade/contents | jq -r '.[] | select(.name | test("^requirements(-.*)?\\.txt$")) | .download_url' | xargs -n1 curl -sO
         #python -m venv ${{ github.workspace }}/venv && source ${{ github.workspace }}/venv/bin/activate
-        pip uninstall -y tensorflow tensorflow-cpu tensorflow-base tensorflow-intel tensorflow-io
-        pip install -qq --no-cache-dir ta "numpy<3.0" "plotly==6.1.2" "tensorflow-cpu==2.13.0"
+        pip install -qq --no-cache-dir ta "numpy<3.0"
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
