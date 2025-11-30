@@ -59,7 +59,8 @@ jobs:
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-plot.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-hyperopt.txt
           pip install -qq --no-cache-dir -r user_data/build_helpers/requirements-freqai-rl.txt
-          pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
+          #pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
+          pip install -qq --no-cache-dir "freqtrade==2025.10"
 
       - name: ⚙️ Get artifact ID
         id: get-artifact-id
