@@ -113,6 +113,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
         $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_dry
         $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
+        $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
+        $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       #elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
         #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
@@ -122,6 +124,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
         $DOCKER exec mydb freqtrade create-userdir --userdir /home/runner/data_live
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
+        $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
+        $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       #elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
         #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
