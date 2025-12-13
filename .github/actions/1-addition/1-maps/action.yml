@@ -130,22 +130,36 @@ runs:
     - name: Setup Workspace
       shell: bash
       run: |
+        echo "🧹 Free disk"
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/lib/google-cloud-sdk
+        docker system prune -af || true
+        docker builder prune -af || true
+
+        echo "⏫ Setting up 100GB tmpfs"
         sudo mkdir -p /mnt/extra
         sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
-        sudo chown runner:runner /mnt/extra
-        rsync -a $GITHUB_WORKSPACE/ /mnt/extra/
-        rm -rf $GITHUB_WORKSPACE
-        ln -s /mnt/extra $GITHUB_WORKSPACE
-        mkdir -p /mnt/extra/cache/pip ~/.cache
-        ln -s /mnt/extra/cache/pip ~/.cache/pip
+          
+        echo "➡️ Syncing workspace"
+        sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
+
+        echo "➡️ Switching workspace"
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
+
+        # optional symlink to avoid tool breakage
+        sudo rm -rf "$GITHUB_WORKSPACE"
+        sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
+
+        echo "📌 Workspace successfully expanded." && df -h
 
     - uses: actions/setup-python@v5
       with:
-        python-version: 3.11
+        python-version: 3.12
         allow-prereleases: true
 
     - uses: actions/cache@v4
-      if: runner.os == 'Redis'
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip
@@ -172,9 +186,6 @@ runs:
         DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
         DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
         GCP_CREDENTIALS: ${{ inputs.credentials }}
-        BEARER: ${{ steps.auth.outputs.id_token }}
-        HYPEROPT_PARAM: "user_data/strategies/hyperopt_params.json"
-        ARTIFACT: "user_data/ft_client/test_client/results/orgs.json"
       run: |
         python -m pip -q install --upgrade pip
         python -m pip -qqq install tensorflow-cpu
@@ -184,7 +195,7 @@ runs:
         #pip uninstall -y iree-base-compiler iree-base-runtime iree-compiler iree-tools-tf
         python -m pip -q install --pre iree-base-compiler iree-base-runtime iree-tools-tf -f https://iree.dev/pip-release-links.html
         python user_data/ft_client/test_client/app.py orgs.json ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}
-        bash user_data/ft_client/test_client/maps.sh
+        python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
   
         ##python -m pip -q install -e ./.github/entrypoint/artifact/python
         ##iree-compile --iree-llvmcpu-list-targets && iree-run-module --list_drivers
@@ -207,21 +218,20 @@ runs:
 
     - name: Login to DockerHub
       uses: docker/login-action@v3
-      if:  ${{ env.RERUN_RUNNER == 'true' }}
       with:
         username: ${{ inputs.hub_username }}
         password: ${{ inputs.hub_token }}
 
     - name: 🚀 Initiate Lexer
+      if: runner.os != 'Redis'
       uses: devcontainers/ci@v0.3
-      if:  ${{ env.RERUN_RUNNER == 'true' }}
       with:
         skipContainerUserIdUpdate: true
         imageName: ${{ inputs.image_name }}
         imageTag: target-${{ github.run_number }}
         configFile: ${{ inputs.action_path }}/.devcontainer.json
         push: ${{ env.RERUN_RUNNER == 'true' && 'always' || 'never' }}
-        #runCmd: bash user_data/ft_client/test_client/maps.sh            
+        runCmd: bash user_data/ft_client/test_client/maps.sh            
         env: |
           ID=${{ env.ID }}
           GH_TOKEN=${{ env.GH_TOKEN }}
@@ -234,7 +244,7 @@ runs:
           ARTIFACT=user_data/ft_client/test_client/results/orgs.json
 
     - name: 🗑️ Delete Docker Tags AND Images
-      if:  ${{ env.RERUN_RUNNER == 'true' }}
+      if: runner.os != 'Redis'
       id: delete_images
       shell: bash
       env:
@@ -243,9 +253,7 @@ runs:
         HUB_PASSWORD: "${{ inputs.hub_password }}"
         MAX_DELETIONS: 15
       run: |
-        python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
         ./.github/entrypoint/remote.sh
-                
 
     - name: ⚧️ Rerun workflow if failed
       if: ${{ failure() }}
