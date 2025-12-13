@@ -129,7 +129,7 @@ runs:
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
         pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
 
-        pip install -qq --no-cache-dir ta "numpy<3.0" "freqtrade==2025.10"
+        pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==2025.10"
         cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
 
     - name: Upload downloaded data as artifact

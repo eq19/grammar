@@ -100,20 +100,26 @@ runs:
         echo "Checking if job 1 was cancelled…"
         run_id=${{ inputs.run_id }}
 
-        # Query all jobs for this workflow run
-        curl -s -H "Authorization: Bearer ${{ inputs.token }}" \
-          "https://api.github.com/repos/${{ inputs.repository }}/actions/runs/$run_id/jobs" \
-          > jobs.json
+        for i in {1..12}; do
+          echo "Polling attempt $i…"
 
-        echo "Jobs returned:"
-        cat jobs.json
+          curl -s -H "Authorization: Bearer ${{ inputs.token }}" \
+            "https://api.github.com/repos/${{ inputs.repository }}/actions/runs/$run_id/jobs" \
+            > jobs.json
 
-        # Find job 1 status (matrix index 1 corresponds to first job)
-        job1_status=$(jq -r '.jobs[] | select(.name | contains("jobs_id: 1")) | .conclusion' jobs.json)
-        echo "Job 1 conclusion = $job1_status"
+          job1_status=$(jq -r '.jobs[] | select(.labels[]?=="ubuntu-latest") | .conclusion' jobs.json)
+
+          echo "Job 1 conclusion = $job1_status"
+
+          if [ "$job1_status" != "null" ]; then
+            break
+          fi
+
+          sleep 10
+        done
 
         if [ "$job1_status" = "cancelled" ]; then
-          echo "Job 1 was cancelled (likely due to timeout)."
+          echo "Job 1 was cancelled (timeout confirmed)."
           gh workflow run "main.yml" --raw-field "FREQAI_MODEL=$FREQAI_MODEL"
         else
           echo "Job 1 was NOT cancelled."
