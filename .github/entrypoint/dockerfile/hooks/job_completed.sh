@@ -23,8 +23,8 @@ set_monitor() {
       $DOCKER exec mydb supervisorctl start monitor_freqtrade
       $DOCKER exec mydb service cron start
 
-      echo -e "\n$hr\nMemory Usage\n$hr"
-      $DOCKER exec mydb free -h
+      #echo -e "\n$hr\nMemory Usage\n$hr"
+      #$DOCKER exec mydb free -h
 
       echo -e "\n$hr\njob completed ✅"
       exit 0
