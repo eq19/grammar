@@ -56,6 +56,7 @@ jobs:
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
       DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
       FREQAI_MODEL: ${{ github.event.inputs.FREQAI_MODEL }}
+      REDUCE_EPOCH: ${{ github.event.inputs.REDUCE_EPOCH }}
       REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
 
     runs-on: ${{ matrix.config.os }}
