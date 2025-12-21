@@ -15,6 +15,11 @@ on:
         default: 'false'
         required: false
         type: string
+      REDUCE_EPOCH:
+        description: 'reduce epoch if is set true'
+        default: 'false'
+        required: false
+        type: string
       REMOVE_RUNNER:
         description: 'remove runner if is set true'
         default: 'false'
