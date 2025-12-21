@@ -36,7 +36,6 @@ jobs:
         id: build-parser
         env:
           JOBS_ID: 1
-          EPOCHS: ${{ fromJson(inputs.matrix_json).epochs }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
@@ -108,6 +107,7 @@ jobs:
           HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
+          EPOCHS: ${{ fromJson(inputs.matrix_json).epochs }}
           FREQAI_MODEL: ${{ fromJson(inputs.matrix_json).freqai }}
         run: |
           echo "Running hyperopt..."
