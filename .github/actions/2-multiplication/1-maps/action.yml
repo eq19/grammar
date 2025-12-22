@@ -108,19 +108,16 @@ runs:
             > jobs.json
 
           job1_status=$(jq -r '.jobs[] | select(.labels[]?=="ubuntu-latest") | .conclusion' jobs.json)
-
           echo "Job 1 conclusion = $job1_status"
-
           if [ "$job1_status" != "null" ]; then
             break
           fi
-
           sleep 10
         done
 
         if [ "$job1_status" = "cancelled" ]; then
           echo "Job 1 was cancelled (timeout confirmed)."
-          gh workflow run "main.yml" --raw-field "FREQAI_MODEL=$FREQAI_MODEL" --raw-field "REDUCE_EPOCH=true"
+          gh workflow run "main.yml"--repo $REPO_NAME --raw-field "FREQAI_MODEL=$FREQAI_MODEL" --raw-field "REDUCE_EPOCH=true"
         else
           echo "Job 1 was NOT cancelled."
         fi
