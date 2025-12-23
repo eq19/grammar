@@ -107,10 +107,10 @@ jobs:
           HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
           SCORE: ${{ fromJson(inputs.matrix_json).score }}
-          REDUCE_EPOCH: ${{ fromJson(inputs.matrix_json).epochs }}
           FREQAI_MODEL: ${{ fromJson(inputs.matrix_json).freqai }}
+          REDUCE_EPOCH: ${{ fromJson(inputs.matrix_json).reduce_epoch }}
         run: |
           echo "Running hyperopt..."
           echo "Score: $SCORE"
-          echo "Reduce epochs: $REDUCE_EPOCH"
+          echo "Reduce epoch: $REDUCE_EPOCH"
           bash user_data/ft_client/test_client/feed.sh hyperopt
