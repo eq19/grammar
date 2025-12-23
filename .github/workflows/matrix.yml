@@ -102,7 +102,7 @@ jobs:
         run: ls -R user_data/data
 
       - name: 🧠 Run Hyperopt
-        timeout-minutes: 180
+        timeout-minutes: 360
         env:
           HYPEROPT: ${{ matrix.hyperopts }}
           SPACE: ${{ fromJson(inputs.matrix_json).space }}
