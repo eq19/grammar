@@ -60,6 +60,39 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
+# Path to docker binary
+DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+
+freqtrade_total_loss () {
+  PORT="$1"
+  USER="YourUsername"
+  PASS="YourPassword"
+  CONTAINER="mydb"
+
+  if [ -z "$PORT" ]; then
+    echo "Usage: freqtrade_total_loss <port>"
+    return 1
+  fi
+
+  DAILY=$($DOCKER exec "$CONTAINER" curl -s \
+    -u "$USER:$PASS" \
+    "http://172.17.0.1:${PORT}/api/v1/daily" \
+    | jq '[.data[].abs_profit] | add')
+
+  OPEN=$($DOCKER exec "$CONTAINER" curl -s \
+    -u "$USER:$PASS" \
+    "http://172.17.0.1:${PORT}/api/v1/status" \
+    | jq '[.[].profit_abs] | add')
+
+  TOTAL=$(jq -n "$DAILY + $OPEN")
+
+  echo "Port      : $PORT"
+  echo "Weekly PnL: $DAILY IDR"
+  echo "Open PnL  : $OPEN IDR"
+  echo "------------------------"
+  echo "TOTAL     : $TOTAL IDR"
+}
+
 if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   
   echo -e "\n$hr\n"
@@ -90,11 +123,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
   # Max retries
   max_retries=10
+
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
-
-  # Path to docker binary
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
