@@ -123,7 +123,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
-  # Path to docker binarDOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+  # Path to docker binary
+  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
