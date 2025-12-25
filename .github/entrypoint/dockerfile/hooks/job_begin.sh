@@ -38,12 +38,12 @@ curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/
 #Expected one of --config-file, --system or --docs arguments
 sudo cloud-init schema --config-file cloud-config.yml
 pwd && cat cloud-config.yml
-echo -e "\n$hr\n"
-grep -i error /host/var/log/cloud-init.log
-echo -e "\n$hr\n"
-cat /host/var/log/cloud-init.log
-echo -e "\n$hr\n"
-cat /host/var/log/cloud-init-output.log
+#echo -e "\n$hr\n"
+#grep -i error /host/var/log/cloud-init.log
+#echo -e "\n$hr\n"
+#cat /host/var/log/cloud-init.log
+#echo -e "\n$hr\n"
+#cat /host/var/log/cloud-init-output.log
 
 echo -e "\n$hr\nSupervisor\n$hr"
 apt-cache show supervisor
@@ -69,11 +69,6 @@ freqtrade_total_loss () {
   PASS="YourPassword"
   CONTAINER="mydb"
 
-  if [ -z "$PORT" ]; then
-    echo "Usage: freqtrade_total_loss <port>"
-    return 1
-  fi
-
   DAILY=$($DOCKER exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
@@ -84,6 +79,7 @@ freqtrade_total_loss () {
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs] | add')
 
+  declare -g TOTAL
   TOTAL=$(jq -n "$DAILY + $OPEN")
 
   echo "Port      : $PORT"
@@ -133,7 +129,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo -e "\nCondition fulfilled ✅"
 
-
       echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
       echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
   
@@ -146,9 +141,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+        freqtrade_total_loss 8081 && TOTAL1=$TOTAL && echo $TOTAL1
+        $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
       # Setup freqtrade userdir for live mode
@@ -157,10 +152,15 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        #$DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+        freqtrade_total_loss 8082 && TOTAL2=$TOTAL && echo $TOTAL2
+        $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+        $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+        if (( $(echo "$TOTAL2 > $TOTAL1" | bc -l) )); then
+          echo "8082 is better than 8081"
+        else
+          echo "8081 is better or equal"
+        fi
       fi
 
       exit 0
