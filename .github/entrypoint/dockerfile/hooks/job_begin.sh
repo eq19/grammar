@@ -63,29 +63,30 @@ find ${PATH//:/ } -maxdepth 1 -executable | sort
 # Path to docker binary
 DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
 
-freqtrade_total_loss () {
-  PORT="$1"
-  USER="YourUsername"
-  PASS="YourPassword"
-  CONTAINER="mydb"
-
-  if [ -z "$PORT" ]; then
-    echo "Usage: freqtrade_total_loss <port>"
-    return 1
-  fi
-
+freqtrade_total_loss() {
+  local PORT="$1"
+  local USER="YourUsername"
+  local PASS="YourPassword"
+  local CONTAINER="mydb"
+  
+  # Get daily profit
+  local DAILY
   DAILY=$($DOCKER exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
-    | jq '[.data[].abs_profit] | add')
-
+    | jq '[.data[].abs_profit // 0] | add // 0')
+  
+  # Get open profit
+  local OPEN
   OPEN=$($DOCKER exec "$CONTAINER" curl -s \
     -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/status" \
-    | jq '[.[].profit_abs] | add')
-
-  TOTAL=$(jq -n "$DAILY + $OPEN")
-
+    | jq '[.[].profit_abs // 0] | add // 0')
+  
+  # Calculate total and set as global variable
+  declare -g TOTAL
+  TOTAL=$(echo "$DAILY + $OPEN" | bc -l)
+  
   echo "Port      : $PORT"
   echo "Weekly PnL: $DAILY IDR"
   echo "Open PnL  : $OPEN IDR"
@@ -146,7 +147,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_dry/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
+        freqtrade_total_loss 8081
+        TOTAL1=$TOTAL
+        echo "Total for port 8081: $TOTAL1 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
         #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
@@ -157,7 +161,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb mkdir -p /home/runner/data_live/strategies/utils
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
-      #elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+        freqtrade_total_loss 8082
+        TOTAL2=$TOTAL
+        echo "Total for port 8082: $TOTAL2 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
         #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
         #$DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
