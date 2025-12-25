@@ -60,10 +60,7 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
-# Path to docker binary
-DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-
-freqtrade_total_loss() {
+freqtrade_total_profit() {
   local PORT="$1"
   local USER="YourUsername"
   local PASS="YourPassword"
@@ -71,15 +68,13 @@ freqtrade_total_loss() {
   
   # Get daily profit
   local DAILY
-  DAILY=$($DOCKER exec "$CONTAINER" curl -s \
-    -u "$USER:$PASS" \
+  DAILY=$(curl -s -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/daily" \
     | jq '[.data[].abs_profit // 0] | add // 0')
   
   # Get open profit
   local OPEN
-  OPEN=$($DOCKER exec "$CONTAINER" curl -s \
-    -u "$USER:$PASS" \
+  OPEN=$(curl -s -u "$USER:$PASS" \
     "http://172.17.0.1:${PORT}/api/v1/status" \
     | jq '[.[].profit_abs // 0] | add // 0')
   
@@ -128,12 +123,13 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
+  # Path to docker binarDOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
     if $DOCKER ps --format '{{.Names}}' | grep -wq "^mydb$"; then
       echo -e "\nCondition fulfilled ✅"
-
 
       echo -e "\n$hr\nDeepLearning Final Cloud\n$hr" && /mnt/disks/deeplearning/usr/bin/gcloud info
       echo -e "\n$hr\n" && /mnt/disks/deeplearning/usr/bin/gcloud info --run-diagnostics
@@ -148,7 +144,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_dry/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        freqtrade_total_loss 8081
+        freqtrade_total_profit 8081
         TOTAL1=$TOTAL
         echo "Total for port 8081: $TOTAL1 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
@@ -162,7 +158,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb rm -rf /home/runner/data_live/freqaimodels
         $DOCKER exec mydb ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        freqtrade_total_loss 8082
+        freqtrade_total_profit 8082
         TOTAL2=$TOTAL
         echo "Total for port 8082: $TOTAL2 IDR"
         #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
