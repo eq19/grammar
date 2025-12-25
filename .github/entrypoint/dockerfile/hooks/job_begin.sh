@@ -160,6 +160,11 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           echo "8082 is better than 8081"
         else
           echo "8081 is better or equal"
+          #mv dry dry_ && mv live live_ && mv dry_ live && mv live_ dry
+          #for folder in tradesv3.dry.*; do mv "$folder" "${folder/tradesv3.dry/tradesv3.dry_}"; done
+          #for folder in tradesv3.live.*; do mv "$folder" "${folder/tradesv3.live/tradesv3.live_}"; done
+          #for folder in tradesv3.dry_.*; do mv "$folder" "${folder/tradesv3.dry_/tradesv3.live}"; done
+          #for folder in tradesv3.live_.*; do mv "$folder" "${folder/tradesv3.live_/tradesv3.dry}"; done
         fi
       fi
 
