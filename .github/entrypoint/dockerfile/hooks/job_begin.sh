@@ -147,9 +147,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
         freqtrade_total_profit 8081
         TOTAL1=$TOTAL
-        echo "Total for port 8081: $TOTAL1 IDR"
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8081/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_dry || true
       fi
 
       # Setup freqtrade userdir for live mode
@@ -161,11 +158,33 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
         freqtrade_total_profit 8082
         TOTAL2=$TOTAL
-        echo "Total for port 8082: $TOTAL2 IDR"
-        #curl -s -u YourUsername:YourPassword http://172.17.0.1:8082/api/v1/daily | jq '.data | map(.abs_profit) | add'
-        #$DOCKER exec mydb supervisorctl stop freqtrade_live || true
-        #$DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+
+
+if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && [ $(echo "$TOTAL2 > $TOTAL1" | bc) -eq 1 ]; then
+    echo "Live mode is better than dry-run"
+    $DOCKER exec mydb supervisorctl stop freqtrade_dry || true    
+else
+    echo "Dry-run is better than Live mode"
+    $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+    $DOCKER exec mydb supervisorctl stop freqtrade_live || true
+    $DOCKER exec mydb supervisorctl stop monitor_freqtrade || true
+    $DOCKER exec mydb mv /home/runner/data_dry /home/runner/data_dry_
+    $DOCKER exec mydb mv /home/runner/data_live /home/runner/data_live_
+    $DOCKER exec mydb mv /home/runner/data_dry_ /home/runner/data_live
+    $DOCKER exec mydb mv /home/runner/data_live_ /home/runner/data_dry
+    $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_dry.*; do mv "$folder" "${folder/tradesv3_dry/tradesv3_dry_}"; done'
+    $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_live.*; do mv "$folder" "${folder/tradesv3_live/tradesv3_live_}"; done'
+    $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_dry_.*; do mv "$folder" "${folder/tradesv3_dry_/tradesv3_live}"; done'
+    $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_live_.*; do mv "$folder" "${folder/tradesv3_live_/tradesv3_dry}"; done'
+fi
+   
+      
+      
+      
       fi
+
+
+
 
       exit 0
     fi
