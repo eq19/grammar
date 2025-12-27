@@ -178,11 +178,18 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   NONCE=$(date +%s)
   METHOD="getInfo"
   MAX_RETRIES=3
-  DIRS=(
-    "data_dry"
-    "data_live"
-    "user_data"
-  )
+  if [[ "$RERUN_RUNNER" == "false" ]]; then
+    DIRS=(
+      "data_dry"
+      "user_data"
+    )
+  else
+    DIRS=(
+      "data_dry"
+      "data_live"
+      "user_data"
+    )
+  fi
   FILES=(
     "strategies/fibbo.py"
     "strategies/__init__.py"
