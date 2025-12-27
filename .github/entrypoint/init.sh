@@ -195,6 +195,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "strategies/__init__.py"
     "strategies/utils/__init__.py"
     "strategies/utils/indodax_patch.py"
+    "config_examples/config_freqai.example.json"
+    "config_examples/config_pairlist.example.json"
+    "config_examples/config_hyperopt.example.json"
+    "config_examples/config_exchange.example.json"
+    
   )
   PARAMS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
@@ -251,11 +256,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   EXCHANGE_PARAM="/home/runner/user_data/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
 
-  set -euo pipefail  # Strict error handling
+  # Strict handling
+  set -euo pipefail
   $DOCKER exec mydb rm -rf "$CONFIG"
-  if $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"; then
+  $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
+
+  # Case on rerun self host runner 
+  if [[ "$RERUN_RUNNER" == "false" ]]; then
     $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
-    $DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
+    #$DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
     $DOCKER exec mydb ls -al /home/runner/user_data
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
@@ -282,32 +291,32 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
 
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
+      | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+
+    # Get the config value and save to file.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+      | jq -r '.value' > _data/orgs.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+      | jq -r '.value' > _config.yml
+
+    $DOCKER exec mydb cat $HYPEROPT_PARAM
+    $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
+    $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
+
+    $DOCKER exec mydb ls -alR /home/runner/data_dry
+    $DOCKER exec mydb ls -alR /home/runner/data_live
+
     echo "🚀 All files updated (forced overwrite)!"
   fi
-
-  $DOCKER exec mydb bash -c \
-    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
-    | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-  $DOCKER exec mydb bash -c \
-    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
-    | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
-
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
-
-  $DOCKER exec mydb cat $HYPEROPT_PARAM
-  $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
-  $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
-
-  $DOCKER exec mydb ls -alR /home/runner/data_dry
-  $DOCKER exec mydb ls -alR /home/runner/data_live
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
