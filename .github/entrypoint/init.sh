@@ -262,7 +262,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
 
   # Case on rerun self host runner 
-  if [[ "$RERUN_RUNNER" == "false" ]]; then
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
     $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
     #$DOCKER exec mydb sed -i "s|config_examples|/home/runner/user_data/config_examples|g" $CONFIG
 
@@ -312,11 +312,20 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
 
-    $DOCKER exec mydb ls -alR /home/runner/data_dry
-    $DOCKER exec mydb ls -alR /home/runner/data_live
+  # Case Dry-run is better than live mode
+  elif [[ "$RERUN_RUNNER" == "false" ]] && \
+    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
+    echo "Live mode is worse than dry-run"
 
-    echo "🚀 All files updated (forced overwrite)!"
+  # Case Live mode is better than dry-run
+  elif [[ "$RERUN_RUNNER" == "false" ]] && \
+    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+    echo "Live mode is better than dry-run"
   fi
+
+  $DOCKER exec mydb ls -alR /home/runner/data_dry
+  $DOCKER exec mydb ls -alR /home/runner/data_live
+  echo "🚀 All files updated (forced overwrite)!"
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
