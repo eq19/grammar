@@ -323,7 +323,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
     echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
 
-
+  else
+    echo "RERUN_RUNNER=$RERUN_RUNNER"
+    $DOCKER exec mydb supervisorctl status freqtrade_live
+    
   fi
 
   $DOCKER exec mydb ls -alR /home/runner/data_dry
