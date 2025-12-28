@@ -312,21 +312,99 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
     $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
 
-  # Case Dry-run is better than live mode
-  elif [[ "$RERUN_RUNNER" == "false" ]] && \
-    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
-    echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
-
-
-  # Case Live mode is better than dry-run
-  elif [[ "$RERUN_RUNNER" == "false" ]] && \
-    $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-    echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
-
   else
-    echo "RERUN_RUNNER=$RERUN_RUNNER"
-    $DOCKER exec mydb supervisorctl status freqtrade_live
-    
+
+    # Case Dry-run is better than live mode
+    if $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
+      echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
+
+
+
+
+
+
+
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
+
+    # Get the config value and save to file.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+      | jq -r '.value' > _data/orgs.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+      | jq -r '.value' > _config.yml
+
+    # Get the values
+    ID=$(yq '.id' _config.yml)
+    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
+    TOKEN=$(cat /tmp/token)
+
+    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+
+    $DOCKER exec mydb rm "$HYPEROPT_PARAM"
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+    $DOCKER exec mydb cat "$HYPEROPT_PARAM"
+
+
+
+
+
+
+
+    # Case Live mode is better than dry-run
+    elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+      echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
+
+
+
+
+
+
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
+      | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
+
+    # Get the config value and save to file.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+      | jq -r '.value' > _data/orgs.json
+    curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+      "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+      | jq -r '.value' > _config.yml
+
+    # Get the values
+    ID=$(yq '.id' _config.yml)
+    $GCLOUD auth application-default print-access-token > /tmp/token || { echo "Failed to get token"; exit 1; }
+    TOKEN=$(cat /tmp/token)
+
+    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+
+    $DOCKER exec mydb rm "$HYPEROPT_PARAM"
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+    $DOCKER exec mydb cat "$HYPEROPT_PARAM"
+
+
+
+
+
+
+    fi    
   fi
 
   $DOCKER exec mydb ls -alR /home/runner/data_dry
