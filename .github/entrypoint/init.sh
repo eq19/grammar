@@ -245,7 +245,16 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
   # Setup freqtrade config.json
+  ID=$(yq '.id' _config.yml)
   CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
@@ -257,6 +266,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
+  ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   # Strict handling
   set -euo pipefail
@@ -264,33 +275,26 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
-
   $DOCKER exec mydb bash -c \
     "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-    | jq -r '.value' > /home/runner/data_dry/ft_client/test_client/results/orgs.json"
+    | jq -r '.value' > $ARTIFACT"
   $DOCKER exec mydb bash -c \
     "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
     https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
     | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-  $DOCKER exec mydb bash -c \
-    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
-    | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+
+  HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
+  $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+  $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     $DOCKER exec mydb ls -al /home/runner/user_data
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
-  
+    ARTIFACT="/home/runner/data_live/ft_client/test_client/results/orgs.json"
+
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
     #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
@@ -312,22 +316,20 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
 
-    $DOCKER exec mydb cat $HYPEROPT_PARAM
-    $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_dry/strategies/hyperopt_params.json
-    $DOCKER exec mydb cp $HYPEROPT_PARAM /home/runner/data_live/strategies/hyperopt_params.json
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > $ARTIFACT"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
+      | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
+
+    HYPEROPT_PARAM="/home/runner/data_live/strategies/hyperopt_params.json"
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
   else
-
-    # Get the values
-    ID=$(yq '.id' _config.yml)
-    $DOCKER exec mydb rm "$HYPEROPT_PARAM"
-    HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
-    ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
-       
-    TOKEN=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $TOKEN' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
-    $DOCKER exec mydb cat "$HYPEROPT_PARAM"
 
     # Case Dry-run is better than live mode
     if $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "STOPPED"; then
@@ -350,8 +352,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
     # Case Live mode is better than dry-run
-    elif [[ "$RERUN_RUNNER" == "false" ]] && \
-      $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
+    elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
       echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
 
       $DOCKER exec mydb rm -rf $CONFIG_DRY
