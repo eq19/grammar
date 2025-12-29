@@ -334,7 +334,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb rm -rf $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
 
-    STATUS=($DOCKER exec mydb supervisorctl status freqtrade_live)
+    STATUS="$($DOCKER exec mydb supervisorctl status freqtrade_live)"
     FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF)
 
     # Case Dry-run is better than live mode
