@@ -331,16 +331,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   else
 
-    echo "rm $CONFIG_DRY"
-    $DOCKER exec mydb rm $CONFIG_DRY
 
-    echo "telegram.enabled = true"
+    $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
 
-    STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live)
-    echo "$STATUS"
-    FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF)
-    echo "$FREQAIMODEL"
+    STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
+    FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF) && echo "$FREQAIMODEL"
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
