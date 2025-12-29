@@ -244,6 +244,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
+  echo -e "\n🚀 All files updated (forced overwrite)!\n"
+
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
@@ -366,10 +368,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   
     fi    
   fi
-
-  $DOCKER exec mydb ls -alR /home/runner/data_dry
-  $DOCKER exec mydb ls -alR /home/runner/data_live
-  echo "🚀 All files updated (forced overwrite)!"
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
