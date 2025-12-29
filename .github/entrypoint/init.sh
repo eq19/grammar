@@ -56,6 +56,7 @@ export RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: ap
 export TARGET_REPOSITORY=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/TARGET_REPOSITORY" | jq -r '.value')
 
+
 echo 'RERUN_RUNNER='${RERUN_RUNNER} >> ${GITHUB_ENV}
 echo 'DEFAULT_BRANCH='${DEFAULT_BRANCH} >> ${GITHUB_ENV}
 echo 'TARGET_REPOSITORY='${TARGET_REPOSITORY} >> ${GITHUB_ENV}
@@ -244,8 +245,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     done
   done
 
-  echo -e "\n🚀 All files updated (forced overwrite)!\n"
-
   # Get the config value and save to file.json
   curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
     "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
@@ -291,6 +290,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
+    $DOCKER exec mydb ls -al /home/runner/user_data
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
     ARTIFACT="/home/runner/data_live/ft_client/test_client/results/orgs.json"
@@ -326,7 +326,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
 
     HYPEROPT_PARAM="/home/runner/data_live/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
   else
@@ -368,6 +368,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   
     fi    
   fi
+
+  $DOCKER exec mydb ls -alR /home/runner/data_dry
+  $DOCKER exec mydb ls -alR /home/runner/data_live
+  echo "🚀 All files updated (forced overwrite)!"
 
   echo -e "\n$hr\nCONFIG\n$hr" && cat _config.yml
   echo -e "\n$hr\nENVIRONTMENT\n$hr" && printenv | sort
