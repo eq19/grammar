@@ -217,17 +217,33 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
+  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   for idx in "${!DIRS[@]}"; do
     echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
-    for REL_PATH in "${FILES[@]}"; do
-      DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-      DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
+    ARTIFACT="/home/runner/${DIRS[$idx]}/ft_client/test_client/results/orgs.json"
 
-      # Ensure parent directory exists (no file existence check)
-      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
-      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
-      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > $ARTIFACT"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAMS[$idx]} \
+      | jq -r '.value' > /home/runner/${DIRS[$idx]}/strategies/fibbo.json"
+
+    HYPEROPT_PARAM="/home/runner/${DIRS[$idx]}/strategies/hyperopt_params.json"
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/${DIRS[$idx]} "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
+
+   for REL_PATH in "${FILES[@]}"; do
+     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
+     DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
+
+     # Ensure parent directory exists (no file existence check)
+     $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
+     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
+     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
 
       # Download with retries (always overwrite
       for attempt in $(seq 1 $MAX_RETRIES); do
@@ -277,8 +293,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
   PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
-  ARTIFACT="/home/runner/data_dry/ft_client/test_client/results/orgs.json"
-  BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   # Strict handling
   set -euo pipefail
@@ -286,24 +300,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   $DOCKER exec mydb curl -sf -o "$CONFIG" "$CONFIG_BASIC"
   $DOCKER exec mydb sed -i "s|your_telegram_chat_id|$TELEGRAM_CHAT_ID|g" $CONFIG
 
-  $DOCKER exec mydb bash -c \
-    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-    | jq -r '.value' > $ARTIFACT"
-  $DOCKER exec mydb bash -c \
-    "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-    https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY \
-    | jq -r '.value' > /home/runner/data_dry/strategies/fibbo.json"
-
-  HYPEROPT_PARAM="/home/runner/data_dry/strategies/hyperopt_params.json"
-  $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_dry "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-  $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
-
   # Case on rerun self host runner 
   if [[ "$RERUN_RUNNER" == "true" ]]; then
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
     if [[ "${ASSET_COUNT}" == "1" ]]; then echo $WALLET; fi
-    ARTIFACT="/home/runner/data_live/ft_client/test_client/results/orgs.json"
 
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
@@ -326,21 +326,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
 
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-      | jq -r '.value' > $ARTIFACT"
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE \
-      | jq -r '.value' > /home/runner/data_live/strategies/fibbo.json"
-
-    HYPEROPT_PARAM="/home/runner/data_live/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/data_live "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
-    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
-
   else
-
 
     $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
