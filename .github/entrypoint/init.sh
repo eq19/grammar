@@ -231,7 +231,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   for idx in "${!DIRS[@]}"; do
     PARAM_NAME="${PARAMS[$idx]}"
-    DIR_PATH="/home/runner/${DIR[$idx]}"
+    DIR_PATH="/home/runner/${DIRS[$idx]}"
     ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
     echo "Folder: ${DIR_PATH} → Params: ${PARAM_NAME}"
@@ -251,7 +251,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-      DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
+      DEST_PATH="/home/runner/${DIR_PATH}/$REL_PATH"
 
       # Ensure parent directory exists (no file existence check)
       $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
