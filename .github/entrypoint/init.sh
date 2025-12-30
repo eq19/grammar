@@ -250,8 +250,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
     for REL_PATH in "${FILES[@]}"; do
-      DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-      DEST_PATH="/home/runner/${DIR_PATH}/$REL_PATH"
+      DOWNLOAD_URL="${BASE_URL}/${REL_PATH}"
+      DEST_PATH="${DIR_PATH}/${REL_PATH}"
 
       # Ensure parent directory exists (no file existence check)
       $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
