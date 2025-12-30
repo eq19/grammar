@@ -230,9 +230,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
 
   for idx in "${!DIRS[@]}"; do
-    echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
-    ARTIFACT="/home/runner/${DIRS[$idx]}/ft_client/test_client/results/orgs.json"
+    PARAM_NAME="${PARAMS[$idx]}"
+    DIR_PATH="/home/runner/${DIR[$idx]}"
+    ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
+    echo "Folder: ${DIR_PATH} → Params: ${PARAM_NAME}"
 
     $DOCKER exec mydb bash -c \
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
@@ -240,11 +242,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       | jq -r '.value' > $ARTIFACT"
     $DOCKER exec mydb bash -c \
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAMS[$idx]} \
-      | jq -r '.value' > /home/runner/${DIRS[$idx]}/strategies/fibbo.json"
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
+      | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
 
-    HYPEROPT_PARAM="/home/runner/${DIRS[$idx]}/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py "/home/runner/${DIRS[$idx]}" "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
+    $DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
     for REL_PATH in "${FILES[@]}"; do
@@ -333,7 +335,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
 
     STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
-    FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF) && echo "$FREQAIMODEL"
+    #FREQAIMODEL=$($DOCKER exec mydb sed -n '/^\[program freqtrade_dry\]/,/^\[/ {/--freqaimodel/s/.*--freqaimodel[[:space:]]\+\([^[:space:]]\+\).*/\1/p}' $CONF) && echo "$FREQAIMODEL"
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
@@ -347,8 +349,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
-      $DOCKER exec mydb sed -i '/\[program freqtrade_live\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL"'/}' $CONF
-      $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
+      #$DOCKER exec mydb sed -i '/\[program freqtrade_live\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL"'/}' $CONF
+      #$DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
@@ -356,7 +358,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
+      #$DOCKER exec mydb sed -i '/\[program freqtrade_dry\]/,/^\[/{/--freqaimodel/s/--freqaimodel\s\+[^[:space:]]\+/--freqaimodel '"$FREQAIMODEL_DRY"'/}' $CONF
 
     else
 
