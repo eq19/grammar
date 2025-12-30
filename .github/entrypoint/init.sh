@@ -293,9 +293,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
-  HYPEROPT_PARAM="/home/runner/user_data/strategies/hyperopt_params.json"
   EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
-  PAIRLIST_PARAM="/home/runner/user_data/config_examples/config_pairlist.example.json"
 
   # Strict handling
   set -euo pipefail
@@ -321,8 +319,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
 
-    #$DOCKER exec mydb curl -sf -o "$PAIRLIST_PARAM" "$CONFIG_PAIRLIST"
-    #$DOCKER exec mydb curl -sf -o "$EXCHANGE_PARAM" "$CONFIG_EXCHANGE"
     $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
     $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
 
