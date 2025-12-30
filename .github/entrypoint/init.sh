@@ -244,7 +244,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       | jq -r '.value' > /home/runner/${DIRS[$idx]}/strategies/fibbo.json"
 
     HYPEROPT_PARAM="/home/runner/${DIRS[$idx]}/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/${DIRS[$idx]} "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
+    $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py "/home/runner/${DIRS[$idx]}" "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
     for REL_PATH in "${FILES[@]}"; do
