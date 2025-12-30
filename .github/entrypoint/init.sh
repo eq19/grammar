@@ -208,8 +208,18 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_pairlist.example.json"
     "config_examples/config_hyperopt.example.json"
     "config_examples/config_exchange.example.json"
-    
   )
+
+  # Get the config value and save to file.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
+    | jq -r '.value' > _data/orgs.json
+  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
+    | jq -r '.value' > _config.yml
+
+  # Setup freqtrade config.json
+  ID=$(yq '.id' _config.yml)
   METHODS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
@@ -222,6 +232,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   for idx in "${!DIRS[@]}"; do
     echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
     ARTIFACT="/home/runner/${DIRS[$idx]}/ft_client/test_client/results/orgs.json"
+    $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
 
     $DOCKER exec mydb bash -c \
       "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
@@ -236,14 +247,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c 'python /home/runner/user_data/ft_client/test_client/app.py /home/runner/${DIRS[$idx]} "${ID:-1}" "${PARAM:-nil}" "${EPOCHS:-100}"'
     $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
-   for REL_PATH in "${FILES[@]}"; do
-     DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-     DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
+    for REL_PATH in "${FILES[@]}"; do
+      DOWNLOAD_URL="$BASE_URL/$REL_PATH"
+      DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
 
-     # Ensure parent directory exists (no file existence check)
-     $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
-     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
-     $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
+      # Ensure parent directory exists (no file existence check)
+      $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
+      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/__pycache__"
+      $DOCKER exec mydb rm -rf "$(dirname "$DEST_PATH")/strategies/utils/__pycache__"
 
       # Download with retries (always overwrite
       for attempt in $(seq 1 $MAX_RETRIES); do
@@ -272,16 +283,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   echo -e "\n🚀 All files updated (forced overwrite)!\n"
 
-  # Get the config value and save to file.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/ORGS_JSON" \
-    | jq -r '.value' > _data/orgs.json
-  curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/JEKYLL_CONFIG" \
-    | jq -r '.value' > _config.yml
-
-  # Setup freqtrade config.json
-  ID=$(yq '.id' _config.yml)
   CONF="/etc/supervisor/supervisord.conf"
   CONFIG="/home/runner/user_data/config.json"
   CONFIG_DRY="/home/runner/data_dry/config.json"
