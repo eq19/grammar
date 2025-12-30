@@ -182,11 +182,20 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "data_dry"
       "user_data"
     )
+    PARAMS=(
+      "PARAMS_DRY"
+      "PARAMS_JSON"
+    )
   else
     DIRS=(
       "data_dry"
       "data_live"
       "user_data"
+    )
+    PARAMS=(
+      "PARAMS_DRY"
+      "PARAMS_LIVE"
+      "PARAMS_JSON"
     )
   fi
   FILES=(
@@ -201,11 +210,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_exchange.example.json"
     
   )
-  PARAMS="method=${METHOD}&nonce=${NONCE}"
+  METHODS="method=${METHOD}&nonce=${NONCE}"
   DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
-  SIGNATURE=$(echo -n "$PARAMS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
+  SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
   

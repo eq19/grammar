@@ -80,8 +80,9 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
     fi
 
     echo "🌀 Reload all application's configs upon the updated configuration."
-    $DOCKER exec mydb curl -s -u YourUsername:YourPassword -X POST http://127.17.0.1:8081/api/v1/reload_config
-    $DOCKER exec mydb curl -s -u YourUsername:YourPassword -X POST http://127.17.0.1:8082/api/v1/reload_config
+    if $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "STOPPED"; then       
+      $DOCKER exec mydb supervisorctl start freqtrade_dry
+    fi
 
   else
     # Optionally reload:
