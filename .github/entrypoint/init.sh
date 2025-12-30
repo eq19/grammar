@@ -217,11 +217,12 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
-  
-  for DIR_PATH in "${DIRS[@]}"; do
+
+  for idx in "${!DIR[@]}"; do
+    echo "Folder: ${DIR[$idx]} → Params: ${PARAMS[$idx]}"
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-      DEST_PATH="/home/runner/$DIR_PATH/$REL_PATH"
+      DEST_PATH="/home/runner/${DIR[$idx]}/$REL_PATH"
 
       # Ensure parent directory exists (no file existence check)
       $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
