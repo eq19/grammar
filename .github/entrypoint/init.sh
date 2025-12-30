@@ -218,11 +218,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
   ASSET_COUNT=$(echo "$BALANCE" | jq -r '.return.balance | to_entries | map(select(.value != 0 and .value != "0")) | length')
 
-  for idx in "${!DIR[@]}"; do
-    echo "Folder: ${DIR[$idx]} → Params: ${PARAMS[$idx]}"
+  for idx in "${!DIRS[@]}"; do
+    echo "Folder: ${DIRS[$idx]} → Params: ${PARAMS[$idx]}"
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="$BASE_URL/$REL_PATH"
-      DEST_PATH="/home/runner/${DIR[$idx]}/$REL_PATH"
+      DEST_PATH="/home/runner/${DIRS[$idx]}/$REL_PATH"
 
       # Ensure parent directory exists (no file existence check)
       $DOCKER exec mydb mkdir -p "$(dirname "$DEST_PATH")"
