@@ -346,8 +346,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-    $DOCKER exec mydb bash -c "curl -s -X PUT -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY -d \"\$(jq -Rs '{name:\"PARAMS_DRY\", value:.}' /home/runner/data_dry/strategies/fibbo.json)\""
-    
+
+    curl -L -s -X PATCH \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: Bearer $GH_TOKEN" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
+      --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
+
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
 
@@ -363,7 +370,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-      $DOCKER exec mydb bash -c "curl -s -X PUT -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE -d \"\$(jq -Rs '{name:\"PARAMS_LIVE\", value:.}' /home/runner/data_live/strategies/fibbo.json)\""
+
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
 
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
