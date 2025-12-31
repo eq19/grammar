@@ -99,9 +99,9 @@ if [[ "${JOBS_ID}" == "1" ]]; then
     else
       HEADER="Accept: application/vnd.github+json"
       RESPONSE=$(gh api -H "${HEADER}" repos/$TARGET_REPOSITORY/actions/runners)
-      STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "$RUNNER_TITLE" '.runners[] | select(.name == $NAME).status')
+      RUNNER_STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "$RUNNER_TITLE" '.runners[] | select(.name == $NAME).status')
 
-      if [[ "$STATUS" == "offline" ]]; then
+      if [[ "$RUNNER_STATUS" == "offline" ]]; then
         RUNNER_ID=$(gh api -H "${HEADER}" /repos/$TARGET_REPOSITORY/actions/runners --jq '.runners.[].id')
         gh api --method DELETE -H "${HEADER}" /repos/$TARGET_REPOSITORY/actions/runners/${RUNNER_ID}
       fi
@@ -177,16 +177,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   NONCE=$(date +%s)
   METHOD="getInfo"
   MAX_RETRIES=3
-  if [[ "$RERUN_RUNNER" == "false" ]]; then
-    DIRS=(
-      "data_dry"
-      "user_data"
-    )
-    PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_JSON"
-    )
-  else
+
+  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
+  STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
+
+  if [[ "$RERUN_RUNNER" == "true" ]]; then
     DIRS=(
       "data_dry"
       "data_live"
@@ -197,7 +192,30 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       "PARAMS_LIVE"
       "PARAMS_JSON"
     )
+  else
+    if echo "$STATUS" | grep -q "RUNNING"; then
+      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
+
+      DIRS=(
+        "data_dry"
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+        "PARAMS_DRY"
+      )
+    elif echo "$STATUS" | grep -q "STOPPED"; then
+      echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
+            
+      DIRS=(
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+      )
+   fi 
   fi
+
   FILES=(
     "strategies/fibbo.py"
     "strategies/__init__.py"
@@ -221,7 +239,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   # Setup freqtrade config.json
   ID=$(yq '.id' _config.yml)
   METHODS="method=${METHOD}&nonce=${NONCE}"
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
   GCLOUD="/mnt/disks/deeplearning/usr/bin/gcloud"  
   BASE_URL="https://raw.githubusercontent.com/eq19/maps/$MAP_BRANCH/user_data"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
@@ -329,11 +346,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
     $DOCKER exec mydb rm $CONFIG_DRY
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-    STATUS=$($DOCKER exec mydb supervisorctl status freqtrade_live) && echo "$STATUS"
+    $DOCKER exec mydb bash -c "curl -s -X PUT -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY -d \"\$(jq -Rs '{name:\"PARAMS_DRY\", value:.}' /home/runner/data_dry/strategies/fibbo.json)\""
     
     # Case Dry-run is better than live mode
     if echo "$STATUS" | grep -q "STOPPED"; then
-      echo "Live mode is worse than dry-run. Let dry-run to take over the live mode."
 
       $DOCKER exec mydb sed -i 's/_dry/_dry_/g' $CONF
       $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
@@ -347,10 +363,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
+      $DOCKER exec mydb bash -c "curl -s -X PUT -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE -d \"\$(jq -Rs '{name:\"PARAMS_LIVE\", value:.}' /home/runner/data_live/strategies/fibbo.json)\""
 
     # Case Live mode is better than dry-run
     elif echo "$STATUS" | grep -q "RUNNING"; then
-      echo "Live mode is better than dry-run. Let dry-run to challenge a new config."
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
