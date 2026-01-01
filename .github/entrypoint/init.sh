@@ -272,7 +272,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
 
     if echo "$STATUS" | grep -q "STOPPED"; then
-      echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
+      echo -e "$hr\nLive mode is worse than dry-run.\nLet dry-run to take over the live mode."
             
       DIRS=(
         "user_data"
@@ -292,7 +292,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
       curl -L -s -X PATCH \
         -H "Accept: application/vnd.github+json" \
@@ -303,7 +302,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
 
     elif echo "$STATUS" | grep -q "RUNNING"; then
-      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
+      echo -e "$hr\nLive mode is better than dry-run.\nLet dry-run to challenge a new config."
 
       DIRS=(
         "data_dry"
@@ -316,8 +315,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
    fi 
+   $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
   fi
 
   for idx in "${!DIRS[@]}"; do
