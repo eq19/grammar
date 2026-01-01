@@ -122,6 +122,10 @@ runs:
         bash /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
         mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
 
+        # Get all secrets from source repository
+        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
+        for secret in $secrets; do gh secret set $secret --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"; done
+
     - name: View context attributes
       uses: actions/github-script@v8
       with:
@@ -166,8 +170,9 @@ runs:
         key: ${{ runner.os }}-pip
 
     - name: 💎 Set ID Token
-      id: 'auth'
+      if:  ${{ env.RERUN_RUNNER == 'false' }}
       uses: 'google-github-actions/auth@v2'
+      id: 'auth'
       with:
         token_format: 'id_token'
         create_credentials_file: false
@@ -175,6 +180,7 @@ runs:
         id_token_audience: 'https://us-central1-marketleader.cloudfunctions.net/function'
 
     - name: Install dependencies
+      if:  ${{ env.RERUN_RUNNER == 'false' }}
       shell: bash
       env:
         ACCESS_API: ${{ inputs.api_key }}
@@ -196,7 +202,6 @@ runs:
         #python -m pip -qqq install -r ${{ inputs.action_path }}/dataFile/requirements.txt
 
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
-        #pip uninstall -y iree-base-compiler iree-base-runtime iree-compiler iree-tools-tf
         python -m pip -q install --pre iree-base-compiler iree-base-runtime iree-tools-tf -f https://iree.dev/pip-release-links.html
         python user_data/ft_client/test_client/app.py user_data ${{ env.ID }} ${{ env.PARAM || 'nil' }} ${{ env.EPOCHS || 100 }}
         bash user_data/ft_client/test_client/maps.sh
@@ -215,10 +220,6 @@ runs:
         ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
         ##python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
         ##cd ${{ inputs.action_path }}/pythonCode && python npreader.py -h && python map.py -h
-
-        # Get all secrets from source repository
-        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
-        for secret in $secrets; do gh secret set $secret --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"; done
 
     - name: Login to DockerHub
       uses: docker/login-action@v3
@@ -258,7 +259,7 @@ runs:
         HUB_PASSWORD: "${{ inputs.hub_password }}"
         MAX_DELETIONS: 15
       run: |
-        python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
+        #python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
         ./.github/entrypoint/remote.sh
                 
 
