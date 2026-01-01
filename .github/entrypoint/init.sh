@@ -245,24 +245,24 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
     $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082' $CONFIG > $CONFIG_LIVE"
     #$DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8082 | .dry_run = false' $CONFIG > $CONFIG_LIVE"
-
+echo "1"
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_live|g" $CONFIG_LIVE
     $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
     $DOCKER exec mydb sed -i "s|your_telegram_token|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
-
+echo "2"
     $DOCKER exec mydb curl -sf -o "$CONF" "$SUPERVISORD_CONF"
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
-
+echo "3"
     $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
     $DOCKER exec mydb curl -sf -o "$EXCHANGE_LIVE" "$CONFIG_EXCHANGE"
     $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_LIVE
     $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_LIVE
-
+echo "4"
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
-
+echo "5"
   else
   
     $DOCKER exec mydb rm $CONFIG_DRY
@@ -327,8 +327,9 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
    fi 
    $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-  fi
-
+echo "6"
+fi
+echo "7"
   for idx in "${!DIRS[@]}"; do
     PARAM_NAME="${PARAMS[$idx]}"
     DIR_PATH="/home/runner/${DIRS[$idx]}"
