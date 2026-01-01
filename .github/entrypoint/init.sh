@@ -182,7 +182,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "config_examples/config_freqai.example.json"
     "config_examples/config_pairlist.example.json"
     "config_examples/config_hyperopt.example.json"
-    "config_examples/config_exchange.example.json"
   )
 
   MAX_RETRIES=3
@@ -215,7 +214,8 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   CONFIG_BASIC="$BASE_URL/config_examples/config_basic.example.json"
   CONFIG_PAIRLIST="$BASE_URL/config_examples/config_pairlist.example.json"
   CONFIG_EXCHANGE="$BASE_URL/config_examples/config_exchange.example.json"
-  EXCHANGE_PARAM="/home/runner/data_live/config_examples/config_exchange.example.json"
+  EXCHANGE_DRY="/home/runner/data_dry/config_examples/config_exchange.example.json"
+  EXCHANGE_LIVE="/home/runner/data_live/config_examples/config_exchange.example.json"
   SIGNATURE=$(echo -n "$METHODS" | openssl sha512 -hmac "$API_SECRET" | cut -d' ' -f2)
   BEARER=$($GCLOUD auth print-identity-token --audiences=https://us-central1-marketleader.cloudfunctions.net/function)
   BALANCE=$(curl -s -X POST -H "Key: $API_KEY" -H "Sign: $SIGNATURE" -d "method=$METHOD" -d "nonce=$NONCE" "https://indodax.com/tapi/")
@@ -255,8 +255,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_DRY|$FREQAIMODEL_DRY|g" $CONF
     $DOCKER exec mydb sed -i "s|FREQAIMODEL_LIVE|$FREQAIMODEL_LIVE|g" $CONF
 
-    $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
-    $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
+    $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
+    $DOCKER exec mydb curl -sf -o "$EXCHANGE_LIVE" "$CONFIG_EXCHANGE"
+    $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_LIVE
+    $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_LIVE
 
     $DOCKER exec mydb sed -i "s|TELEGRAM_CHAT_ID|$TELEGRAM_CHAT_ID|g" /freqtrade.sh
     $DOCKER exec mydb sed -i "s|WARNING_BOT_TOKEN|$WARNING_BOT_TOKEN|g" /freqtrade.sh
@@ -288,12 +290,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i 's/_live/_live_/g' $CONF
       $DOCKER exec mydb sed -i 's/_dry_/_live/g' $CONF
       $DOCKER exec mydb sed -i 's/_live_/_dry/g' $CONF
+
+      $DOCKER exec mydb sed -i "s|8082|8081|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|8081|8082|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|tradesv3_live|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|tradesv3_dry|tradesv3_live|g" $CONFIG_LIVE
-      $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_PARAM
-      $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_PARAM
-      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|your_exchange_key|$API_KEY|g" $EXCHANGE_LIVE
+      $DOCKER exec mydb sed -i "s|dry_run = false|dry_run = true|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_LIVE
+      $DOCKER exec mydb sed -i "s|$TRADING_BOT_TOKEN|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 
       curl -L -s -X PATCH \
@@ -316,8 +321,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         "PARAMS_DRY"
       )
 
+      $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
       $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+      $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
    fi 
    $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
   fi
