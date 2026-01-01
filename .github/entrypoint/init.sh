@@ -271,23 +271,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
       https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
 
-    if echo "$STATUS" | grep -q "RUNNING"; then
-      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
-
-      DIRS=(
-        "data_dry"
-        "user_data"
-      )
-      PARAMS=(
-        "PARAMS_JSON"
-        "PARAMS_DRY"
-      )
-
-      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
-      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
-
-    elif echo "$STATUS" | grep -q "STOPPED"; then
+    if echo "$STATUS" | grep -q "STOPPED"; then
       echo -e "Live mode is worse than dry-run.\nLet dry-run to take over the live mode."
             
       DIRS=(
@@ -317,6 +301,22 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
+
+    elif echo "$STATUS" | grep -q "RUNNING"; then
+      echo -e "Live mode is better than dry-run.\nLet dry-run to challenge a new config."
+
+      DIRS=(
+        "data_dry"
+        "user_data"
+      )
+      PARAMS=(
+        "PARAMS_JSON"
+        "PARAMS_DRY"
+      )
+
+      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+      $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
    fi 
   fi
 
