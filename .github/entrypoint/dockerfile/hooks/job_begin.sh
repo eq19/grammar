@@ -62,6 +62,7 @@ find ${PATH//:/ } -maxdepth 1 -executable | sort
 
 freqtrade_total_profit() {
   local PORT="$1"
+  local MODE="$2"
   local USER="YourUsername"
   local PASS="YourPassword"
   local CONTAINER="mydb"
@@ -82,7 +83,7 @@ freqtrade_total_profit() {
   declare -g TOTAL
   TOTAL=$(echo "$DAILY + $OPEN" | bc -l)
   
-  echo "Port      : $PORT"
+  echo "Port      : $PORT ($MODE)"
   echo "Weekly PnL: $DAILY IDR"
   echo "Open PnL  : $OPEN IDR"
   echo "------------------------"
@@ -143,7 +144,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
         $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
       elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        freqtrade_total_profit 8081
+        echo -e "\n$hr\nTotal Profit Dry-run vs Live Mode\n$hr"
+        freqtrade_total_profit 8081 Dry
         TOTAL1=$TOTAL
       fi
 
@@ -152,7 +154,8 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_live'
         $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels'
       elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        freqtrade_total_profit 8082
+        echo -e "\n$hr\n"
+        freqtrade_total_profit 8082 Live
         TOTAL2=$TOTAL
 
         if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && [ $(echo "$TOTAL2 > $TOTAL1" | bc) -eq 1 ]; then
