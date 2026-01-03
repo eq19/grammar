@@ -163,7 +163,7 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
           $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry /home/runner/tradesv3_dry.*'
           $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
-          $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_live/freqaimodels'
+          $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
         else
           echo "Dry-run is better than Live mode"
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
