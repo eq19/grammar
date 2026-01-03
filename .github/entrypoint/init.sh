@@ -267,14 +267,6 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
   else
   
-    curl -L -s -X PATCH \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: Bearer $GH_TOKEN" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
-      --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
-
     if echo "$STATUS" | grep -q "STOPPED"; then
       echo -e "$hr\nLive mode is worse than dry-run.\nLet dry-run to take over the live mode."
             
@@ -304,6 +296,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         -H "Accept: application/vnd.github+json" \
         -H "Authorization: Bearer $GH_TOKEN" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
+        -d "$(jq -n '{name:"PARAMS_DRY", value:$value}' \
+        --arg value "$($DOCKER exec mydb cat /home/runner/data_dry/strategies/fibbo.json)")" \
+        https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_DRY
+
+      curl -L -s -X PATCH \
+        -H "Accept: application/vnd.github+json" \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "X-GitHub-Api-Version: 2022-11-28" \
         -d "$(jq -n '{name:"PARAMS_LIVE", value:$value}' \
         --arg value "$($DOCKER exec mydb cat /home/runner/data_live/strategies/fibbo.json)")" \
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
@@ -322,8 +322,10 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
 
       $DOCKER exec mydb rm $CONFIG_DRY
       $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
-      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|your_telegram_token|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
+
+      $DOCKER exec mydb bash -c "rm -rf /home/runner/tradesv3_dry.* /home/runner/data_dry/logs"
+      $DOCKER exec mydb sed -i "s|tradesv3|tradesv3_dry|g" $CONFIG_DRY
       $DOCKER exec mydb curl -sf -o "$EXCHANGE_DRY" "$CONFIG_EXCHANGE"
       $DOCKER exec mydb sed -i "/^\[program:freqtrade_dry\]/,/^\[program:/ s/--freqaimodel[[:space:]]\+[^[:space:]]\+/--freqaimodel ${FREQAIMODEL_DRY}/" $CONF
 
