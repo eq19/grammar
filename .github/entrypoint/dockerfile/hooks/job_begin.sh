@@ -160,7 +160,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
 
         if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && \
           [ $(echo "$TOTAL1 > 0" | bc) -eq 1 ] && \
-          [ $(echo "$TOTAL2 > 0" | bc) -eq 1 ] && \
           [ $(echo "$TOTAL1 > $TOTAL2" | bc) -eq 1 ]; then
           echo "Dry-run is better than Live mode"
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
