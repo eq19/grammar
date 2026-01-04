@@ -158,13 +158,10 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
         freqtrade_total_profit 8082 Live
         TOTAL2=$TOTAL
 
-        if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && [ $(echo "$TOTAL2 > $TOTAL1" | bc) -eq 1 ]; then
-          echo "Live mode is better than dry-run"
-          $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
-          $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry /home/runner/tradesv3_dry.*'
-          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
-          $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
-        else
+        if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && \
+          [ $(echo "$TOTAL1 > 0" | bc) -eq 1 ] && \
+          [ $(echo "$TOTAL2 > 0" | bc) -eq 1 ] && \
+          [ $(echo "$TOTAL1 > $TOTAL2" | bc) -eq 1 ]; then
           echo "Dry-run is better than Live mode"
           $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
           $DOCKER exec mydb supervisorctl stop freqtrade_live || true
@@ -177,6 +174,12 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_live.*; do mv "$folder" "${folder/tradesv3_live/tradesv3_live_}"; done'
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_dry_.*; do mv "$folder" "${folder/tradesv3_dry_/tradesv3_live}"; done'
           $DOCKER exec mydb bash -c 'for folder in /home/runner/tradesv3_live_.*; do mv "$folder" "${folder/tradesv3_live_/tradesv3_dry}"; done'
+        else
+          echo "Live mode is better than dry-run"
+          $DOCKER exec mydb supervisorctl stop freqtrade_dry || true
+          $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry /home/runner/tradesv3_dry.*'
+          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry'
+          $DOCKER exec mydb bash -c 'ln -s /home/runner/user_data/freqaimodels /home/runner/data_dry/freqaimodels'
         fi
 
       fi
