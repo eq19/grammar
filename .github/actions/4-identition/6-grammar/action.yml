@@ -119,7 +119,7 @@ runs:
             if host "$DOMAIN" &> /dev/null; then
               if curl -s --head --request GET "https://$DOMAIN" | grep "200\|301\|302" > /dev/null; then
                 echo "✅ $DOMAIN is registered and responding."
-                echo "$DOMAIN" > ./docs/CNAME
+                #echo "$DOMAIN" > ./docs/CNAME
               else
                 echo "⚠️ $DOMAIN resolves but no valid HTTP response."
               fi
