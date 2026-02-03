@@ -291,7 +291,7 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
       $DOCKER exec mydb sed -i "s|your_exchange_secret|$API_SECRET|g" $EXCHANGE_LIVE
 
       $DOCKER exec mydb sed -i 's|"dry_run" = false|"dry_run" = true|g' $CONFIG_DRY
-      $DOCKER exec mydb sed -i 's|"dry_run" = true|"dry_run" = false|g' $CONFIG_LIVE
+      #$DOCKER exec mydb sed -i 's|"dry_run" = true|"dry_run" = false|g' $CONFIG_LIVE
       $DOCKER exec mydb sed -i "s|$TRADING_BOT_TOKEN|$MONITOR_BOT_TOKEN|g" $CONFIG_DRY
       $DOCKER exec mydb sed -i "s|$MONITOR_BOT_TOKEN|$TRADING_BOT_TOKEN|g" $CONFIG_LIVE
 

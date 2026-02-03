@@ -90,7 +90,7 @@ jekyll_build() {
   if [[ $1 == "Chetabahana.github.io" ]]; then
     SITEID=1
   elif [[ $1 == "eq19.github.io" ]]; then
-    SITEID=170
+    SITEID=169
   else
     SITEID=$(( $3 + 2 ))
   fi
