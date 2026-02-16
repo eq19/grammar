@@ -122,10 +122,6 @@ runs:
         bash /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
         mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
 
-        # Get all secrets from source repository
-        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
-        for secret in $secrets; do gh secret set $secret --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"; done
-
     - name: View context attributes
       uses: actions/github-script@v8
       with:
@@ -183,22 +179,12 @@ runs:
       if:  ${{ env.RERUN_RUNNER == 'false' }}
       shell: bash
       env:
-        ACCESS_API: ${{ inputs.api_key }}
-        ACCESS_KEY: ${{ inputs.api_secret }}
-        ACCESS_TOKEN: ${{ inputs.token }}
-        MESSAGE_API: ${{ inputs.chat_id }}
-        MONITOR_TOKEN: ${{ inputs.bot_token }}
-        WARNING_TOKEN: ${{ inputs.logs_token }}
-        PYPI_TOKEN: ${{ inputs.pypi_token }}        
-        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
-        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
-        GCP_CREDENTIALS: ${{ inputs.credentials }}
         BEARER: ${{ steps.auth.outputs.id_token }}
         HYPEROPT_PARAM: "user_data/strategies/hyperopt_params.json"
         ARTIFACT: "user_data/ft_client/test_client/results/orgs.json"
       run: |
         python -m pip -q install --upgrade pip
-        python -m pip -qqq install tensorflow-cpu
+        python -m pip -qqq install "tensorflow-cpu==2.20.0"
         #python -m pip -qqq install -r ${{ inputs.action_path }}/dataFile/requirements.txt
 
         ##Ref: https://iree.dev/guides/ml-frameworks/tensorflow/
