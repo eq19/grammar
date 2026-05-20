@@ -1,11 +1,11 @@
-id: 7
+id: 36
 user: eq19
-span: span12
+span: span-17
 title: eQuantum
 baseurl: /grammar
 repository: eq19/grammar
-action: eq19/syntax/actions/runs/15314248685
-description: An attempt to discover the Final Theory
+action: eq19/syntax/actions/runs/26173706841
+description: An endeavor to discover the Final Theory
 
 debug:
   dist: false
@@ -47,6 +47,6 @@ plugins:
   - jekyll-optional-front-matter
 
 track:
-  spin: [0, 6]
+  spin: [13, 6]
   pinned: [maps, feed, lexer, parser, syntax, grammar]
   organization: [Chetabahana, FeedMapping, GlobalZones, HybridModels, JunctionTerms, KernelPatterns, MappingSystem, NeuralSystem, ObjectModules, VirtualNetworks, WeakNegative, WeakPositive, ZeroWeak]

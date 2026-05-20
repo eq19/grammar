@@ -1,6 +1,6 @@
 # Prime Unit Identity
 
-We are going to assign prime identity as the _[Standard Model](https://en.wikipedia.org/wiki/Standard_Model)_ to stimulate a quantum field model called ***[eQuantum](https://github.com/eq19)*** for _[the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction)_
+We are going to assign prime identity as the _[Standard Model](https://en.wikipedia.org/wiki/Standard_Model)_ to stimulate a quantum field model denoted ***[eQuantum](https://github.com/eq19)*** for _[the four (4) known fundamental forces](https://en.wikipedia.org/wiki/Fundamental_interaction)_.
 
 {% include list.liquid all=true %}
 
@@ -556,7 +556,7 @@ The boson, photon and gravity forces are assigned to ***30, 31 and 32***. Gluon 
 
 This lead to a consequence of _[SU(5) grand unification](https://github.com/eq19/maps/files/14394752/MWmassShiftTalk.pdf)_ ***(assigned to 35)*** showing a complex scalar Higgs boson of 24 gauge groups _[observe mass of W boson](https://www.sciencedirect.com/science/article/pii/S0370269322004403)_ ***(assigned to 36)***.
 
-```tip
+```note
 The eight (8) steps between id:30 to 37 represents the _[Eightfold Way](https://en.wikipedia.org/wiki/Eightfold_way_(physics))_ in the context of [E8 Theory](https://en.wikipedia.org/wiki/An_Exceptionally_Simple_Theory_of_Everything), a pattern developing in physics to represent the fundamental particles.
 - E8 is at the heart of many bits of physics. One interpretation of why we have such a quirky list of fundamental particles is because they all result from different facets of the symmetries of E8.
 - ***The enigmatic E8 is the largest and most complicated of the five exceptional Lie groups, and contains four subgroups that are related to the four fundamental forces of nature***: the electromagnetic force; the strong force (which binds quarks); the weak force (which controls radioactive decay); and the gravitational force.
