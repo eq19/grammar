@@ -106,12 +106,6 @@ F11 (89): The decimal expansion of 89's reciprocal (1/89) is period-44 (see grap
 ](https://www.primesdemystified.com/First1000Primes.html)
 
 ```note
-1092 − 892 = 3960 and 3960 x 2 = 7920; which equates to 8,363,520/(1092 − 892) = 2112, and when you plug 7919 into the formula for triangular numbers you generate 31,359,240 = 7919 x (1092 − 892). And here's another grouping that relates to these ratios: (672 − 232) = (1092 − 892) and (672 + 1092) − (232 + 892) = 7920 = 2(1092 − 892). And here we correlate 11's additive sums with 3960, 7920 and the first 1000 prime numbers. _([PrimesDemystified](https://www.primesdemystified.com/First1000Primes.html))_
-```
-
-[![11_3960_1st_1000_primes](https://github.com/eq19/maps/assets/8466209/46a23e95-fc39-47e8-9ea0-cfd349217538)](https://www.primesdemystified.com/First1000Primes.html)
-
-```note
 The symmetry of this supergravity theory is given by the supergroup OSp(1❕32) which gives the subgroups O(1) for the bosonic symmetry and Sp(32) for the fermion symmetry. ***This is because spinors need 32 components in 11 dimensions***. 11D supergravity can be compactified down to 4 dimensions which then has OSp(8❕4) symmetry. (We still have 8 × 4 = 32 so there are still the same number of components.) Spinors need 4 components in 4 dimensions. This gives O(8) for the gauge group which is too small to contain the Standard Model gauge group U(1) × SU(2) × SU(3) ***which would need at least O(10)***.
 _([Wikipedia](https://en.wikipedia.org/wiki/Higher-dimensional_supergravity#The_mathematics))_ 👈 π(10)
 ```

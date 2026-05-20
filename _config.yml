@@ -1,11 +1,11 @@
-id: 176
+id: 36
 user: eq19
-span: span-157
+span: span-17
 title: eQuantum
 baseurl: /grammar
 repository: eq19/grammar
-action: eq19/syntax/actions/runs/22103868166
-description: An attempt to discover the Final Theory
+action: eq19/syntax/actions/runs/26173706841
+description: An endeavor to discover the Final Theory
 
 debug:
   dist: false

@@ -485,10 +485,6 @@ So they are `4 folders (1, 7, 11, 12)` remain inviolable by the gist.
 
 ## Section Layers
 
-The above scheme is also applied in to our project sections which is consists of four (4) zones, the 1st- layer covers addition and multiplication zones, the rest are single zones.
-
-[![Section layers](https://user-images.githubusercontent.com/8466209/260024883-f0246ce7-0a26-40a6-bc6f-4fcca4a6f1a4.png)](https://eq19.github.io/#eulers-identity)
-
 Dayson introduced the idea of rank of a partition to accomplish the task he set for himself. He made the following conjectures which were proved in 1954 by _[Peter Swinnerton-Dyer](https://en.wikipedia.org/wiki/Peter_Swinnerton-Dyer)_ an English mathematician specialising in _[number theory](https://gist.github.com/eq19/e9832026b5b78f694e4ad22c3eb6c3ef#number-theory)_.
 
 ```note

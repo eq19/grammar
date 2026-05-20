@@ -474,10 +474,6 @@ Conclusion:
 
 [![The seven (7) groups](https://github.com/eq19/maps/assets/8466209/4f03d4e4-c6de-479d-b930-b060610b49a3)](https://eq19.github.io/identition/span12/#the-27-parameters)
 
-```tip
-The number of primes less than or equal to a thousand [`π(1000) = 168`](https://eq19.github.io/addition/#prime-hexagon) equals the number of hours in a week [`24 × 7 = 168`](https://eq19.github.io/#addition-zones). The tessellating field of equilateral triangles fills with numbers, with spin orientation flipping with each prime number encountered, creating ***three (3)*** minor hexagons.
-```
-
 ***∆28 - ∆27 = 1000 - 900 + π(27/9) = 100 + 2 = 102 (Recycled to original state)***
 
 ```txt

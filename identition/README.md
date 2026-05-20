@@ -158,22 +158,6 @@ For every lepton flavor, there is a corresponding type of [antiparticle](https:/
 
 ![force_chart](https://github.com/eq19/maps/assets/8466209/dd7cc532-a84e-4921-834c-1e9939937f66)
 
-When we take all the forces that we understand, i.e., ***[not including gravity](https://youtu.be/NsUm9mNXrX4)***, and write down the QFT version of them, we arrive at the predictions of the Standard Model.
-
-```note
-This is where the idea of ***12 fermion fields and 12 boson fields*** come from. These fields are excitations of the underlying theories (the Standard Model) that describe the known Universe in its entirety, and include:
-- The six (6): up-, down-, strange-, charm-, bottom-, top-quarks, and their antiquark counterparts,
-- The three (3) charged (electron, muon, tau) and three (3) neutral (electron neutrino, muon neutrino, tau neutrino) leptons, and their antimatter counterparts,
-- The eight (8) gluons (because of the eight possible color combinations),
-- The one (1) electromagnetic (photon) boson,
-- The two (2) weak (W-and-Z) bosons,
-- And the Higgs boson.
-
-The quarks and leptons are fermions, which is why they have antimatter counterparts, and the W boson comes in two equal-and-opposite varieties (positively and negatively charged), but all told, ***there are 24 unique, fundamental excitations of quantum fields possible***. This is where the 24 fields idea comes from. _([Forbes](https://www.forbes.com/sites/startswithabang/2018/11/17/ask-ethan-are-quantum-fields-real/?sh=32c398b3777a))_
-```
-
-[![SM-particles](https://github.com/eq19/maps/assets/36441664/37b9ddf0-8069-4786-ac49-d918aff20aec)](https://www.forbes.com/sites/startswithabang/2018/11/17/ask-ethan-are-quantum-fields-real/?sh=32c398b3777a)
-
 So there are thought to be ***[24 separate quantum fields](https://youtu.be/euNr9PozCmg?t=41m25s)*** that permit the universe. It consists of 12 various [fundamental forces](https://eq19.github.io/exponentiation/#fundamental-forces) including mass, 9 quarks, and 3 leptons.
 
 ```note
@@ -1311,24 +1295,6 @@ The present particle physics or standard model based on the "unreal gauge transf
 
 Thus it appears that the [cosmological models](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/#RSPA20200786C24) derived from compactification of 11d supergravity on a manifold with [G2 holonomy](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7897631/) have some ***[hidden E7 symmetry](https://eq19.github.io/identition/span12/#the-seven-7-groups).***
 
-## The 77 Principles
-
-Using this concept we are going to stimulate a model of [the 11 dimensions](https://eq19.github.io/identition/span12/#the-11-dimensions) through the rank of their partition using github organizations of 13 repositories each.
-
-```tip
-Each of the user profiles will have ***seven (7) user repositories*** consist of one (1) main of [`github.io`](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll) and six (6) user pinned repositories. Meanwhile each of organizations will have one (1) profile of [`.github`](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#adding-a-public-organization-profile-readme) repository and thirteen (13) organization repositories consist of one (1) main of [`github.io`](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), and ***twelve (12) pinned repositories*** under [`member and public view`](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#pinning-repositories-to-your-organizations-profile) that represents _[6 by 6 flavors](https://eq19.github.io/identition/span12/#three-3-layers)_.
-```
-
-***[®main](https://github.com/eq19) + [®gist](https://gist.github.com/eq19) + [®orgs](https://github.com/settings/organizations) = 7 + (7+11) + (11x13) = 7 + 18 + 143 = 24 x 7 = 168 = π(1000)***
-
-{% for item in site.data.orgs %}
-  1. {{ item.name | jsonify }}
-     - {{ item.key1 | jsonify }}
-     - {{ item.key2 | jsonify }}
-{% endfor %}
-
-The _[Root Function](https://eq19.github.io/exponentiation/#root-functions)_ of ***13 repositories*** per each of organization above is not arranged to directly follow the _[partition function](https://eq19.github.io/identition/#partition-function)_ but through _[the 18 gists](https://gist.github.com/eq19)_ via their _[.github profiles](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#adding-a-public-organization-profile-readme)_.
-
 ```tip
 By this tabulation you may see that all the numbers between 37 and 102 are located within ***11 columns*** where the 31 behave as a _[new axis](https://eq19.github.io/exponentiation/#parsering-structure)_.
 - This 11 is reflecting the ***19 to 29***. Since the 11 is bonding with 19 so it would go to another cycles starting with ***the 26th dimension*** which will bring them by ***four (4) compactification (26 to 29)*** to the 30.
@@ -1390,13 +1356,97 @@ By the tabulation, here you can see that _[the layout](https://gist.github.com/e
 
 The gist contain prime data called 77 Principles that used to organize the 7 groups vs 11 dimensions in [Eightfold Way](https://eq19.github.io/identition/span12/#three-3-layers).
 
-```tip
+```note
 Base on the _[11s and 7s](https://eq19.github.io/addition/#structure-true-prime-pairs)_ distribution of the 18s  structure of The True Prime Pairs, the 7s will be reflected by _[seven (7) repositories](https://eq19.github.io/exponentiation/#parsering-structure)_ of user profile with id: 30 to id: 36 meanwhile the 11s will be reflected by _[eleven (11) organizations](https://eq19.github.io/identition/#the-powers-of-pi)_.
 ```
 
 [![114 Nodes](https://github.com/eq19/maps/assets/8466209/f49b93f6-a00e-4f66-81c8-8e9d1e33f4e1)](https://eq19.github.io/exponentiation/#parsering-structure).
 
 So when they are _[combined as eighteen (18)](https://eq19.github.io/addition/#structure-true-prime-pairs)_ then the ∆1 is recycled by 8th-prime and generate the pattern of ***6 by 6 flavors*** implemented to all of the repositories.
+
+## The 77 Principles
+
+Using this concept we are going to stimulate a model of [the 11 dimensions](https://eq19.github.io/identition/span12/#the-11-dimensions) through the rank of their partition using github organizations of 13 repositories each.
+
+```tip
+The _[Root Function](https://eq19.github.io/exponentiation/#root-functions)_ of ***13 repositories*** per each of organization above is not arranged to directly follow the _[partition function](https://eq19.github.io/identition/#partition-function)_ but through _[the 18 gists](https://gist.github.com/eq19)_ via their _[.github profiles](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#adding-a-public-organization-profile-readme)_. Each of the user profiles will have ***seven (7) user repositories*** consist of one (1) main of [`github.io`](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll) and six (6) user pinned repositories. Meanwhile each of organizations will have one (1) profile of [`.github`](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#adding-a-public-organization-profile-readme) repository and thirteen (13) organization repositories consist of one (1) main of [`github.io`](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site), and ***twelve (12) pinned repositories*** under [`member and public view`](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/customizing-your-organizations-profile#pinning-repositories-to-your-organizations-profile) that represents _[6 by 6 flavors](https://eq19.github.io/identition/span12/#three-3-layers)_.
+```
+
+***[®main](https://github.com/eq19) + [®gist](https://gist.github.com/eq19) + [®orgs](https://github.com/settings/organizations) = 7 + (7+11) + (11x13) = 7 + 18 + 143 = 24 x 7 = 168 = π(1000)***
+
+{% for item in site.data.orgs %}
+  1. {{ item.name | jsonify }}
+     - {{ item.key1 | jsonify }}
+     - {{ item.key2 | jsonify }}
+{% endfor %}
+
+This model proposes not only a logical order of optimization but also a coherent conceptual narrative. 
+
+```note
+The [Standard Model](https://en.wikipedia.org/wiki/Standard_Model) presently recognizes seventeen distinct particles—twelve [fermions](https://en.wikipedia.org/wiki/Fermion) and ***five [bosons](https://en.wikipedia.org/wiki/Boson)***. As a consequence of [flavor](https://en.wikipedia.org/wiki/Flavour_(particle_physics)) and [color](https://en.wikipedia.org/wiki/Quantum_chromodynamics) combinations and [antimatter](https://en.wikipedia.org/wiki/Antimatter), the fermions and bosons are known to have 48 and ***13 variations***, respectively.[[](https://en.wikipedia.org/wiki/Elementary_particle#cite_note-braibant-2) _([Wikipedia](https://en.wikipedia.org/wiki/Elementary_particle))_
+```
+
+```txt
+$True Prime Pairs:
+(5,7), (11,13), (17,19)
+
+Prime Loops:
+π(10) = 4 (node)
+π(100) = 25 (partition)
+π(1000) - 29 = 139 (section)
+π(10000) - 29th - 29 = 1091 (segment)
+π(100000) - 109th - 109 = 8884 (texture)
+Sum: 4 + 25 + 139 + 1091 + 8884 = 10143 (object)
+
+     |    168    |    618    |
+-----+-----+-----+-----+-----+                                             ---
+ 19¨ |  2  |  3  |  5  |  7  | 4¤  ----->  assigned to "id:30"             19¨
+-----+-----+-----+-----+-----+                                             ---
+ 17¨ |  11 |  13 |  17 |  19 | 4¤  ----->  assigned to "id:31"              |
+     +-----+-----+-----+-----+                                              |
+{12¨}|  23 |  29 |  2¤ (M & F)     ----->  assigned to "id:32"              |
+     +-----+-----+-----+                                                    |
+ 11¨ |  31 |  37 |  41 | 3¤  --->  Np(33)  assigned to "id:33"   ----->    77¨ ✔️
+-----+-----+-----+-----+-----+                                              |
+ 19¨ |  43 |  47 |  53 |  57 | 4¤  ----->  assigned to "id:34"              |
+     +-----+-----+-----+-----+                                              |
+{18¨}|  61 |  63 |  71 | 3¤        ----->  assigned to "id:35"              |
+     +-----+-----+-----+-----+-----+-----+-----+-----+-----+               ---
+ 43¨ |  73 |  79 |  87 |  89 |  97 | 101 | 103 | 107 | 109 | 9¤ (C1 & C2)  43¨
+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+               ---
+139¨ |-----  13¨  -----|------ 15¨ ------|------ 15¨ ------|
+     |  1     2     3  |  4     5     6  |  7     8     9  |
+                    Δ                 Δ                 Δ
+                  Mod 30            Mod 60            Mod 90
+```
+
+Both scheme are carrying a correlation between two (2) number of 89 and 109 which provide the bilateral of 12 to the 24 cells of prime hexagon.
+
+```note
+Every repository on GitHub.com comes equipped with a section for hosting documentation, called a wiki. You can use your repository's wiki to share long-form content about your project, such as how to use it, how you designed it, or its core principles. _([GitHub](https://docs.github.com/en/communities/documenting-your-project-with-wikis/about-wikis))_
+```
+
+***7 x π(89) = 7 x 24 = 168 = π(1000)***
+
+![](https://user-images.githubusercontent.com/8466209/244855108-b80b3c2e-1a13-4b55-828a-72ed15b448dd.png)
+
+Further observation of this _13 vs 17 phenomenon_ also introduces a _[lower bound](https://www.primesdemystified.com/Factorization.html)_ of Mod 90 to four (4) of possible length scales in the structure of prime recycling.
+
+[![Modulo_90_Congruency_Matrix_Twin_Prime_Page](https://github.com/eq19/maps/assets/8466209/aaea3897-5503-4142-b59a-f2f690d59927)](https://www.primesdemystified.com/Factorization.html)
+
+It appears that the triangulations and magic squares structuring the distribution of all prime numbers involving symmetry groups rotated by ***[the 8-dimensional algorithms](https://eq19.github.io/addition/#dimensional-algorithms)***.
+
+```note
+In sum, we're positing that ***Palindromagon + {9/3} Star Polygon = Regular Enneazetton***.
+- The significance of this 'chain-of-events' is that we can state with deterministic certainty that cycling the period-24 digital root dyads of both twin primes and the modulo 90 factorization sequences of numbers not divisible by 2, 3, or 5 generates an infinite progression of these complex polygons possessing stunning reflectional and translational symmetries.
+- Lastly, let's compare the above-pictured 'enneazetton' to an 18-gon 9-point star generated by the first three primes; 2, 3 and 5 (pictured below), and we see that they are identical, save for the number of sides (9 vs. 18). They are essentially convex and concave versions of each other. 
+
+This is geometric confirmation of the deep if not profound connection between the three twin prime distribution channels (which remember have 2, 3, and 5 encoded in their Prime Spiral Sieve angles) and the first three primes, 2, 3, and 5. _([PrimesDemystified](https://www.primesdemystified.com/twinprimes.html))_
+```
+
+[![Theory of Everything](https://github.com/eq19/maps/assets/8466209/6e26ada0-c545-4771-810b-9f721512a03c)](https://eq19.github.io/identition/span12/)
+
+The symmetries that come into focus when the lense aperature, of ***the Prime Spiral Sieve is tripled to modulo 90***, synchronizing its modulus with its _[period-24 digital root](https://eq19.github.io/addition/#the-24-cells-hexagon)_.
 
 ## Visualizing TOE
 
