@@ -23,11 +23,212 @@ GUT is also successful in describing a system of carrier particles for all four 
 
 ![Electroweak svg (1)](https://github.com/eq19/maps/assets/8466209/ee076e8d-f300-472b-b9f3-08ffc989483e)
 
-![image](https://github.com/eq19/maps/assets/36441664/67e4cc85-97e2-4e67-8b69-793a382e7149)
+You may learn that sets of algebraic objects has a multilinear relationship related to a vector space called _[tensor](https://en.wikipedia.org/wiki/Tensor)_. Tensors may map between different objects such as vectors, scalars, and even other tensors.
 
-![image](https://github.com/eq19/maps/assets/36441664/37c92ad8-99ee-4137-a7e3-3273d973cf1b)
+```note
+Tensors are multi-dimensional arrays with a uniform type (e.g. int32, float32) and a shape. Shapes consist of a rank and a list of dimensions and may be static (i.e. fully known and fixed) or varying degrees of dynamic. See these references:
+- PyTorch: [Compiler dynamic shapes](https://pytorch.org/docs/stable/torch.compiler_dynamic_shapes.html), [torch.Tensor](https://pytorch.org/docs/stable/tensors.html)
+- TensorFlow: [Introduction to Tensors](https://www.tensorflow.org/guide/tensor)
+
+All tensors are immutable like Python numbers and strings: you can never update the contents of a tensor, only create a new one. [Dynamic shapes](https://github.com/iree-org/iree/tree/main/samples/dynamic_shapes) are useful for passing variable sized batches as input, receiving variable length sentences of text as output.
+```
+
+[![300px-Components_stress_tensor svg](https://user-images.githubusercontent.com/8466209/211590875-9cae3c47-bbdc-43d8-acc5-d8c64c802967.png)](https://en.wikipedia.org/wiki/Tensor)
+
+Although seemingly different, the various approaches to defining tensors describe the same geometric concept using different levels of abstraction.
+
+<img width="400" height="250" alt="17811486385125201724301876605934" src="https://github.com/user-attachments/assets/9e31f417-20a8-4c5f-8695-316c66d9eee3" />
+
+This diagram outlines the algebraic gauge structure of particle physics, which is mathematically formulated as the product group {U}(1) x {SU}(2) x {SU}(3).
+
+![1591890434759](https://github.com/eq19/maps/assets/8466209/f70d88d5-6d21-42ce-baea-131a52b0fcaf)
+
+A number of other GUT models are based upon subgroups of SO(10). ***They are the minimal [left-right model](https://eq19.github.io/identition/span12/#the-quantum-gravity), [SU(5)](https://en.wikipedia.org/wiki/SU(5)), [flipped SU(5)](https://en.wikipedia.org/wiki/Flipped_SU(5)) and the Pati–Salam model***.
+
+```note
+SU(5) fermions of standard model in 5+10 representations. The sterile neutrino singlet's 1 representation is omitted. Neutral bosons are omitted, but would occupy diagonal entries in complex superpositions. X and Y bosons as shown are the opposite of the conventional definition
+```
+
+[![SO(10)](https://github.com/eq19/maps/assets/8466209/b1d3bccd-a423-4ebb-a397-e973b2cc8e6e)
+](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
+
+[![SU(5)_representation_of_fermions](https://github.com/eq19/maps/assets/8466209/2b1aa8f5-0028-4549-a091-eee291ed4890)
+](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
+
+The graphic illustrates how these group symmetries dictate the fundamental interactions, gauge bosons, and associated quantum charges.
+
+```note
+The SM was basically developed in 1970-s. It describes the electromagnetic, weak and strong fundamental interactions.
+- At ordinary energies (a few eV or less), the forces differ greatly. However, at energies available in accelerators, the weak nuclear and electromagnetic (EM) forces become unified. Unfortunately, the energies at which the strong nuclear and electroweak forces become the same are unreachable.[![The Four Fundamental Forces](https://github.com/user-attachments/assets/731865b0-7033-4e1b-a587-0c75c0dcae36)](https://eq19.github.io/#prime-unit-identity)
+- The relative strengths of the four basic forces vary with distance, and, hence, energy is needed to probe small distances.[![T. Morii, C.S. Lim, and S.N. Mukherjee. The Physics of the Standard Model and
+Beyond. World Scientific, 2004](https://user-images.githubusercontent.com/36441664/89119081-a172cf80-d4d5-11ea-9bd2-35e95f419f30.jpg)](https://github.com/eq19/maps/files/13793234/the-physics-of-the-standard-model-and-beyond.pdf)
+- [The (3) layers](https://github.com/eq19/eq19/blob/v1/.github/entrypoint/artifact/python/manual_v2.ipynb) represents generation in the _[particle objects](https://github.com/eq19/eq19/blob/v1/.github/entrypoint/artifact/python/manual_v2.ipynb)_ of flavor that counts ***six (6) flavours of [quarks](https://en.wikipedia.org/wiki/Quark)*** and ***six (6) flavours of [leptons](https://en.wikipedia.org/wiki/Lepton)***.[![Testing Explanations of Short Baseline Neutrino Anomalies](https://github.com/eq19/maps/assets/8466209/9ebbb332-7818-496f-a50e-7beb707fc644)](https://github.com/eq19/maps/files/13777171/Testing_Explanations_of_Short_Baseline_Neutrino_An_compressed.1.pdf)
+- The newly discovered Higgs Boson interacts with all the Quarks and the first group of Leptons (electron, muon and tau) providing them with their mass. The neutrinos which are the other Leptons originally were thought to have zero mass, but recent discoveries argue that this is not the case.[![fundamental interaction in nature](https://user-images.githubusercontent.com/8466209/284403402-a0ba27e5-1964-46c2-b7d8-72758eb0944d.png)](https://en.wikipedia.org/wiki/Talk:Standard_Model/Archive_2#Error_in_diagram,_proposed_replacement)
+
+The Weak bosons interact with both Leptons and Quarks, these are responsible for the Weak nuclear forces. The exchange of photon is responsible for the Electromagnetic Force.
+```
+
+_Rearrangement of [StandardModel](https://github.com/bin-wu-phys/StandardModel/blob/master/python/manual_v2.ipynb) originally developed by [Bin Wu](https://github.com/bin-wu-phys) from [CERN](https://theory.cern/roster/wu-bin)_
+
+|6 QUARKS|no|6 LEPTONS|no|7 BOSONS (GAUGE AND HIGGS)|no|
+|------|---|------|----|--|--|
+|d: Down|19|$$e^-$$: electron|13|$$γ$$: photon|7|
+|u: Up|18|$$ν_e$$: $$e$$ neutrino|12|$$g$$: gluons|5(6)|
+|s: Strange|17|$$μ^-$$: muon|11|$$H^0$$: Higgs boson|4|
+|c: Charm|16|$$ν_μ$$: $$μ$$ neutrino|10|$$W^+$$: positively charged weak boson|3|
+|b: Bottom|15|$$τ^-$$: tau|9|$$W^-$$: negatively charged weak boson|2|
+|t: Top|14|$$ν_τ$$: $$τ$$ neutrino|8|$$Z^0$$: neutral weak boson|1|
+
+This results in a fundamental causal relation to the primes, systemically the products are entered into the position system.
 
 ## Unification
+
+```
+Overall Priority
+
+CRITICAL
+- Profit Factor
+- Max Drawdown
+- Profit Total
+- Expectancy Ratio
+
+MEDIUM
+- SQN
+- Win Rate
+- Trade Count
+- Profit Mean
+
+DIAGNOSTIC ONLY
+- Sortino
+- Sharpe
+- Calmar
+- CAGR
+```
+
+![image](https://github.com/eq19/maps/assets/36441664/67e4cc85-97e2-4e67-8b69-793a382e7149)
+
+```
+Profit Factor (PF)
+
+PF                Quality
+< 1.0             Losing
+1.0 – 1.10        Weak
+1.10 – 1.25       Acceptable
+1.25 – 1.50       Good
+1.50 – 2.00       Strong
+> 2.00            Exceptional
+
+SQN (System Quality Number)
+
+SQN               Rating
+< 1.6             Poor
+1.6 – 2.0         Average
+2.0 – 3.0         Good
+3.0 – 5.0         Excellent
+5.0 – 7.0         Superb
+> 7.0             Exceptional
+
+Max Drawdown (DD)
+
+DD                Rating
+< 5%              Excellent
+5% – 10%          Good
+10% – 20%         Acceptable
+20% – 30%         Risky
+30% – 50%         Dangerous
+> 50%             Unacceptable
+
+Sharpe Ratio
+
+Sharpe            Interpretation
+< 0               Losing
+0 – 1             Weak
+1 – 2             Good
+2 – 3             Excellent
+3 – 5             Exceptional
+5 – 8             Extremely Rare
+> 8               Investigate Further
+
+Sortino Ratio
+
+Sortino           Interpretation
+< 1               Weak
+1 – 2             Acceptable
+2 – 3             Good
+3 – 5             Excellent
+5 – 10            Exceptional
+> 10              Investigate Robustness
+
+Calmar Ratio
+
+Calmar            Interpretation
+< 0.5             Poor
+0.5 – 1.0         Weak
+1.0 – 2.0         Acceptable
+2.0 – 3.0         Good
+3.0 – 5.0         Excellent
+> 5.0             Exceptional
+> 10              Verify Time Horizon
+> 20              Annualization Artifact / Extraordinary
+
+Expectancy Ratio
+
+Expectancy Ratio  Rating
+< 0              Losing
+0 – 0.10         Very Weak
+0.10 – 0.25      Weak
+0.25 – 0.50      Acceptable
+0.50 – 1.00      Good
+1.00 – 2.00      Strong
+> 2.00           Exceptional
+
+Win Rate
+
+Win Rate          Interpretation
+< 30%             Low
+30% – 40%         Moderate
+40% – 55%         Healthy
+55% – 70%         High
+> 70%             Verify PF and RR
+
+Trade Count
+
+Trades            Confidence Level
+< 50              Very Low
+50 – 100          Low
+100 – 200         Moderate
+200 – 500         Good
+500 – 1000        High
+> 1000            Very High
+
+Profit Mean per Trade
+
+Profit Mean       Quality
+< 0%              Losing
+0% – 0.10%        Very Small Edge
+0.10% – 0.25%     Small Edge
+0.25% – 0.50%     Good Edge
+0.50% – 1.00%     Strong Edge
+> 1.00%           Exceptional Edge
+
+CAGR (for backtests longer than 1 year)
+
+CAGR              Rating
+< 0%              Losing
+0% – 10%          Weak
+10% – 20%         Acceptable
+20% – 40%         Good
+40% – 60%         Strong
+> 60%             Exceptional
+
+CAGR (for backtests shorter than 6 months)
+
+CAGR              Interpretation
+Any Value         Informational Only
+Use with caution due to annualization effects.
+```
+
+![image](https://github.com/eq19/maps/assets/36441664/37c92ad8-99ee-4137-a7e3-3273d973cf1b)
 
 ```txt
 $True Prime Pairs:
@@ -162,11 +363,32 @@ $True Prime Pairs:
                     Δ                 Δ                 Δ       
 ```
 
+This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the [30 to 36' cells](https://eq19.github.io/#exponentiation-zones).
+
+[![30 to 36' cells](https://user-images.githubusercontent.com/8466209/200475393-f3e42f0b-d291-4f17-93c4-9bec6e6943de.png)](https://eq19.github.io/#exponentiation-zones)
+
+This also introduces a _[lower bound](https://www.primesdemystified.com/Factorization.html)_ of Mod 90 originated from the 4th coupling of MEC30 which is holded by ***five (5) cells between 13 and 17***.
+
+```note
+The Minimal Supersymmetric Standard Model (MSSM) contains two Higgs doublets, leading to _five (5) physical [Higgs bosons](https://www.sciencedirect.com/topics/physics-and-astronomy/higgs-bosons)_:
+- one (1) neutral CP-odd (A) 👈 ***degenerated with (h or H)*** 
+- two (2) charged states ***(H+ and H−)***,
+- Two (2) neutral CP-even states ***(h and H)***.
+
+_At tree-level, the masses are [governed](https://github.com/eq19/maps/files/14066329/76104_ANGELESCU_2017_diffusion.pdf)
+ by two parameters, often taken to be mA and tan β [3]. When tan β >> 1, A is nearly [degenerated](https://github.com/eq19/maps/files/14066343/epjconf_qfthep2019_04006.pdf)
+ with one of the CP-even states (denoted ϕ)_. _([ScienceDirect](https://www.sciencedirect.com/topics/mathematics/higgs-mechanism))_
+```
+
+[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://eq19.github.io/multiplication/18.html#higgs-mechanism)
+
+These waves have phase offsets, meaning they peak at different times. This all relates to _[Zitterbewegung](https://github.com/eq19/maps/files/13791680/Zitterbewegung_in_Quantum_Mechanics_a_re.pdf)_, a term describing [the jittery motion](https://www.quora.com/What-is-jittery-motion/answer/Emad-Noujeim) of particles in quantum mechanics.
+
+[![96 perfect squares](https://github.com/eq19/maps/assets/8466209/d9b8410b-796f-4720-8393-1bd9398589be)](https://primesdemystified.com/#Distribution_of_Perfect_Squares)
+
 ## Black Hole
 
 ![main-qimg-6874830a97ce37b0b02cc3ae3d2268f1](https://github.com/eq19/maps/assets/8466209/d2e19618-dbba-4c29-b03c-8a4a3bdc0bcd)
-
-![1591890434759](https://github.com/eq19/maps/assets/8466209/f70d88d5-6d21-42ce-baea-131a52b0fcaf)
 
 ![I4dae](https://github.com/eq19/maps/assets/8466209/646da007-9322-4468-b36a-d73016a129b0)
 
@@ -291,8 +513,6 @@ This would even close to the similar ability of human brain without undertanding
 ![EU4RYL7UcAAzZN2](https://github.com/eq19/maps/assets/8466209/8430c02a-fb45-41cb-807d-b606f0619973)
 
 ![final-theory](https://github.com/eq19/maps/assets/8466209/b08ba16b-921d-4602-8d57-b5b2974ccec8)
-
-![](https://user-images.githubusercontent.com/8466209/200475393-f3e42f0b-d291-4f17-93c4-9bec6e6943de.png)
 
 ![HEXAHEDRONTORUS1](https://github.com/eq19/maps/assets/8466209/ce33a44d-7431-44b9-9073-902cbbcfc68b)
 
