@@ -90,14 +90,14 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     #git clone --single-branch --branch gh-pages $REMOTE_REPO gh-pages && cd gh-pages
     #git add . && git commit --allow-empty -m "rerun due to job update" && git push
-    gh workflow run "main.yml" --raw-field "RUN_MODE=$RUN_MODE"
+    gh workflow run "main.yml" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER"
 
   else
 
     if [[ ! -f $RUNNER_TEMP/_config.yml ]]; then set_config $1; fi
     if [[ "$(yq '.repository' $RUNNER_TEMP/_config.yml)" != "$TARGET_REPOSITORY" ]]; then
       echo "$(yq '.repository' $RUNNER_TEMP/_config.yml) != $TARGET_REPOSITORY"
-      gh workflow run "main.yml" --raw-field "RUN_MODE=$RUN_MODE"
+      gh workflow run "main.yml" --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER"
     else
       HEADER="Accept: application/vnd.github+json"
       RESPONSE=$(gh api -H "${HEADER}" repos/$TARGET_REPOSITORY/actions/runners)
@@ -111,7 +111,7 @@ if [[ "${JOBS_ID}" == "1" ]]; then
 
     cd $GITHUB_WORKSPACE
     mv -f $1/pythonCode $1/user_data/ft_client/test_client/
-    gcc -Wall -Wextra $1/gccCode/src/decoder.c -o float_decoder
+    gcc -Wall -Wextra $1/gccCode/src/decoder.c -o $1/user_data/ft_client/test_client/float_decoder
 
     #Ref: https://github.com/tsoding/JelloVM
     javac -d $1/user_data/ft_client/test_client $1/javaCode/Main.java
@@ -181,8 +181,11 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
     "strategies/utils/__init__.py"
     "strategies/utils/ccxt_patch.py"
     "strategies/utils/indodax_patch.py"
+    "strategies/utils/dataprovider_patch.py"
     "freqaimodels/custom_models.py"
     "freqaimodels/traditional_models.py"
+    "ft_client/test_client/app.py"
+    "ft_client/test_client/maps.sh"
     "ft_client/test_client/supervisor.sh"
     "ft_client/test_client/results/results.txt"
     "config_examples/config_freqai.example.json"
@@ -241,14 +244,14 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
   if ! $DOCKER exec mydb ls "$LIVE_LOG" &>/dev/null; then
 
     DIRS=(
-      "data_dry"
-      "data_live"
       "user_data"
+      "data_live"
+      "data_dry"
     )
     PARAMS=(
-      "PARAMS_DRY"
-      "PARAMS_LIVE"
       "PARAMS_JSON"
+      "PARAMS_LIVE"
+      "PARAMS_DRY"
     )
 
     WALLET=$(echo $BALANCE | jq '.return.balance.idr')
@@ -326,15 +329,15 @@ elif [[ "${JOBS_ID}" == "3" ]]; then
         https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/PARAMS_LIVE
 
     elif echo "$STATUS" | grep -q "RUNNING"; then
-      echo -e "$hr\nLive mode is better than dry-run.\nLet dry-run to challenge a new config."
+      echo -e "$hr\nDry-run is not better than Live mode.\nLet dry-run to challenge a new config."
 
       DIRS=(
-        "data_dry"
         "user_data"
+        "data_dry"
       )
       PARAMS=(
-        "PARAMS_JSON"
         "PARAMS_DRY"
+        "PARAMS_JSON"
       )
 
       $DOCKER exec mydb bash -c "jq '.telegram.enabled = true | .api_server.listen_port = 8081' $CONFIG > $CONFIG_DRY"
@@ -350,22 +353,13 @@ fi
   for idx in "${!DIRS[@]}"; do
     PARAM_NAME="${PARAMS[$idx]}"
     DIR_PATH="/home/runner/${DIRS[$idx]}"
+    APP_PATH="${DIR_PATH}/ft_client/test_client/app.py"
+    SCRIPT_PATH="${DIR_PATH}/ft_client/test_client/maps.sh"
+    HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
     ARTIFACT="${DIR_PATH}/ft_client/test_client/results/orgs.json"
+
     $DOCKER exec mydb mkdir -p "$(dirname "$ARTIFACT")"
     echo -e "$hr\nFolder: ${DIR_PATH} → Params: ${PARAM_NAME}"
-
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
-      | jq -r '.value' > $ARTIFACT"
-    $DOCKER exec mydb bash -c \
-      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
-      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
-      | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
-
-    HYPEROPT_PARAM="${DIR_PATH}/strategies/hyperopt_params.json"
-    $DOCKER exec mydb bash -c "python /home/runner/user_data/ft_client/test_client/app.py \"$DIR_PATH\" \"${ID:-1}\" \"${PARAM_NAME:-nil}\" \"${EPOCHS:-100}\""
-    $DOCKER exec mydb bash -c "curl -s -X POST -H 'Authorization: Bearer $BEARER' -H 'Content-Type: application/json' https://us-central1-marketleader.cloudfunctions.net/function --data @'$ARTIFACT' | jq '.' > '$HYPEROPT_PARAM'"
 
     for REL_PATH in "${FILES[@]}"; do
       DOWNLOAD_URL="${BASE_URL}/${REL_PATH}"
@@ -383,6 +377,7 @@ fi
         if $DOCKER exec mydb curl -sf -o "$DEST_PATH" "$DOWNLOAD_URL"; then
           if $DOCKER exec mydb test -s "$DEST_PATH"; then
             [[ "$DEST_PATH" == *.sh ]] && $DOCKER exec mydb chmod +x "$DEST_PATH"
+            [[ "$DEST_PATH" == *config_pairlist* ]] && "$DOCKER" exec mydb bash -c "jq '.pairlists = [{\"method\": \"StaticPairList\"}]' \"$DEST_PATH\" > tmp.json && mv tmp.json \"$DEST_PATH\""
             echo "✅ [SUCCESS] Downloaded: $DEST_PATH"
             break
           else
@@ -400,16 +395,21 @@ fi
         sleep 2
       done
     done
+
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/ORGS_JSON \
+      | jq -r '.value' > $ARTIFACT"
+    $DOCKER exec mydb bash -c \
+      "curl -s -H 'Authorization: token $GH_TOKEN' -H 'Accept: application/vnd.github.v3+json' \
+      https://api.github.com/repos/$GITHUB_REPOSITORY/actions/variables/${PARAM_NAME} \
+      | jq -r '.value' > ${DIR_PATH}/strategies/fibbo.json"
+    $DOCKER exec -e BEARER="$BEARER" mydb bash -c \
+      "bash ${SCRIPT_PATH} ${ID:-30} $JOBS_ID $APP_PATH $DIR_PATH $PARAM_NAME $ARTIFACT $HYPEROPT_PARAM"
+
   done
 
   echo -e "\n🚀 All files updated (forced overwrite)!"
-
-  gist.sh ${BASE} $(pwd)
-  if [[ "${WIKI}" != "${BASE}" ]]; then
-    find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
-  fi
-
-  echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR .
 
 else
 
