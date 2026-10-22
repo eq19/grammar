@@ -1,0 +1,244 @@
+# 💎 Main Workflow: eQuantum MEC30
+name: COmpendium of RElations Modulo 6
+run-name: >
+  COmpendium of RElations: ${{
+    format('{0}{1}',
+      inputs.RUN_MODE != 'false' && inputs.RUN_MODE || 'Hyperopt',
+      inputs.REDUCE_EPOCH == '2' && '¹' ||
+      inputs.REDUCE_EPOCH == '4' && '²' ||
+      inputs.REDUCE_EPOCH == '8' && '³' ||
+      inputs.REDUCE_EPOCH == '16' && '⁴' ||
+      inputs.REDUCE_EPOCH == '32' && '⁵' ||
+      inputs.REDUCE_EPOCH == '64' && '⁶' ||
+      inputs.REDUCE_EPOCH == '128' && '⁷' ||
+      inputs.REDUCE_EPOCH == '256' && '⁸' ||
+      inputs.REDUCE_EPOCH == '512' && '⁹' || ''
+    )
+  }}
+
+on:
+  #push:
+  workflow_run:
+    types: [completed]
+    #workflows: ["pages-build"]
+    workflows: ["pages-build-deployment"]
+  repository_dispatch:
+    types: [trigger_action, retry_workflow]
+  workflow_dispatch:
+    inputs:
+      RUN_MODE:
+        description: 'the mode to run'
+        default: 'false'
+        required: false
+        type: string
+      REDUCE_EPOCH:
+        description: 'reduce epoch if is set true'
+        default: 'false'
+        required: false
+        type: string
+      REMOVE_RUNNER:
+        description: 'remove runner if is set true'
+        default: 'false'
+        required: false
+        type: string
+      BYPASS_LEXERING:
+        description: 'bypass lexering if is set true'
+        default: 'false'
+        required: false
+        type: string
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}
+
+permissions: write-all
+        
+# 🕸️ Global Environment
+env:
+  REPO_NAME: ${{ github.repository }}
+  GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+  RERUN_RUNNER: ${{ vars.RERUN_RUNNER }}
+  RUNNER_TITLE: "Google-optimized-instance"
+  TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
+  SCORE: ${{ !(inputs.RUN_MODE == 'FreqAI') && 100 || vars.SCORE }}
+  RUN_MODE: ${{ inputs.RUN_MODE != 'false' && inputs.RUN_MODE || 'Hyperopt' }}
+
+jobs:
+  lexering:
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        config:
+          - { os: ubuntu-latest, jobs_id: 1 }
+          - { os: macos-latest, jobs_id: 2 }
+    env:
+      JOBS_ID: ${{ matrix.config.jobs_id }}
+      DOC: '${{ vars.TARGET_REPOSITORY }}.wiki'
+      REDUCE_EPOCH: ${{ github.event.inputs.REDUCE_EPOCH || 'false' }}
+      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER || 'false' }}
+      BYPASS_LEXERING: ${{ github.event.inputs.BYPASS_LEXERING || 'false' }}
+
+    runs-on: ${{ matrix.config.os }}
+    continue-on-error: ${{ matrix.config.jobs_id != 1 }}
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: ${{ env.JOBS_ID != 1 && env.DOC || '' }}
+          submodules: ${{ env.JOBS_ID != 1 && 'recursive' || false }}
+        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+          
+      - name: ⚙️ Build Maps
+        uses: eq19/maps@v8
+        id: build-parser
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          gcp_account: ${{ secrets.GCP_ACCOUNT }}
+          gcp_id_rsa: ${{ secrets.GCP_ID_RSA }}
+          gcp_sa_key: ${{ secrets.GCP_SA_KEY }}
+          jekyll_github_owner: ${{ secrets.JEKYLL_GITHUB_OWNER }}
+          jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
+          repo_source: ${{ secrets.REPO_SOURCE }}
+        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+
+      - name: 🪂 Feed Mapping
+        uses: eq19/feed@v6
+        id: feed-mapping
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
+        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+
+      - name: 🏃‍♂️ Lexering Runner
+        uses: eq19/lexer@v4
+        id: set-lexering
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          config: ${{ secrets.CONFIG_JSON }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
+        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+
+      - name: 📋 Generate Outputs
+        shell: bash
+        id: gen_outputs
+        run: |
+          output=${{ steps.feed-mapping.outputs.addition || steps.set-lexering.outputs.multiplication }}
+          bash /Users/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/gcp.sh
+          echo "output_${id}=${output}" >> "${GITHUB_OUTPUT}"
+        if: ${{ env.JOBS_ID == 2 }}
+
+    outputs:
+      # ♻️ Simulate Gell-Mann Matrices
+      target: ${{ steps.gen_outputs.outputs.output_1 }}
+      address: ${{ steps.gen_outputs.outputs.output_2 }}
+      function: ${{ steps.set-lexering.outputs.function }}
+
+  parsering:
+    strategy:
+      matrix:
+        config:
+          - { os: self-hosted, jobs_id: 3 }
+          - { os: windows-latest, jobs_id: 4 }
+
+      # 💢 Completeness relations
+      max-parallel: 1
+      fail-fast: false
+
+    env:
+      JOBS_ID: ${{ matrix.config.jobs_id }}
+      IP_ADDRESS: '${{ needs.lexering.outputs.address }}'
+      REDUCE_EPOCH: ${{ github.event.inputs.REDUCE_EPOCH }}
+      REMOVE_RUNNER: ${{ github.event.inputs.REMOVE_RUNNER }}
+      PASS: ${{ contains(needs.lexering.result, 'success') }}
+      BYPASS_LEXERING: ${{ github.event.inputs.BYPASS_LEXERING }}
+
+    ## ✔️ Completeness status
+    needs: lexering
+    runs-on: ${{ matrix.config.os }}
+    continue-on-error: ${{ matrix.config.jobs_id == 3 && true || false }}
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v6
+        id: check-out
+        with:
+          submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: ${{ env.TARGET_REPOSITORY }}
+          ref: ${{ env.JOBS_ID == 3 && 'gh-source' || 'gh-pages' }}                  
+
+      - name: 🚀 Setup Parser
+        #if: ${{ env.PASS == 'true' }}
+        uses: eq19/parser@v2
+        id: set-parser
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          pauli_sum: ${{ needs.lexering.outputs.function }}
+          failure_status: ${{ contains(steps.check-out.conclusion, 'failure') ||
+            (env.JOBS_ID == 4 && contains(needs.lexering.result, 'failure')) }}
+       
+      - name: 🌀 Evaluate Syntax
+        #if: ${{ env.PASS == 'true' }}
+        uses: eq19/syntax@v2
+        id: eval-syntax
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          pauli_sum: ${{ toJSON(steps.set-parser.outputs) }}
+          failure_status: ${{ contains(steps.set-parser.conclusion, 'failure') ||
+            (env.JOBS_ID == 4 && contains(needs.lexering.result, 'failure')) }}
+  
+      - name: ⚧️ Set Grammar Rules
+        uses: eq19/grammar@v1
+        id: grammar-rules
+        if: always()
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          pauli_sum: ${{ toJSON(steps.eval-syntax.outputs) }}
+          failure_status: ${{ contains(steps.eval-syntax.conclusion, 'failure') ||
+            (env.JOBS_ID == 4 && contains(needs.lexering.result, 'failure')) }}
+          #manual_force_cancel: gh run cancel 19411342256 --repo eq19/grammar --force

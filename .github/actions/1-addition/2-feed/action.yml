@@ -1,0 +1,213 @@
+name: 'Docker Deploy Action'
+
+description: >
+  🪂  A Github Action to deploy pages conveniently
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  id:
+    description: The deploy id
+    required: false
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}       
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  action_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: Tag to use for the new image
+    default: ${{ github.action_repository }}
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  repository:
+    description: 'The deploy repository'
+    default: ${{ github.repository }}
+    required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
+
+outputs:
+  artifact:
+    description: Collect artifact outputs
+    value: ${{ toJSON(steps.artifact.outputs.repo) }}
+  set_output:
+    description: Collect set_output outputs
+    value: ${{ toJSON(steps.set_output.outputs) }}
+
+runs:
+  using: composite
+  steps:
+    - name: 💎 Set Artifact
+      id: artifact
+      shell: bash
+      run: |      
+        shopt -s dotglob
+        rm -rf ${{ inputs.action_path }}/.git
+        mv -f ${{ inputs.action_path }} ${{ github.workspace }}/_site
+        mkdir -p ${{ inputs.action_path }} && cp -R ${{ github.workspace }}/_site/. ${{ inputs.action_path }}/
+  
+    - uses: ikalnytskyi/action-setup-postgres@v7
+      if: env.REMOVE_RUNNER == 'false'
+      id: postgres
+      with:
+        username: yoda
+        password: GrandMaster
+        database: jedi_order
+        port: 34837
+        postgres-version: "17"
+        ssl: true
+
+    - name: 🪂 Install Freqtrafe
+      if: env.REMOVE_RUNNER == 'false'
+      shell: bash
+      env:
+        VERSION: "2025.12"
+      run: |
+        cd user_data/build_helpers
+        ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
+
+        # Download requirement files from Freqtrade
+        for f in requirements.txt requirements-dev.txt requirements-hyperopt.txt requirements-plot.txt requirements-freqai.txt requirements-freqai-rl.txt; do
+          curl -fsSLO --retry 5 --retry-delay 2 \
+          https://raw.githubusercontent.com/freqtrade/freqtrade/$VERSION/$f || true
+        done
+
+        pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
+        pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
+        if [[ "$RUN_MODE" == "FreqAI" ]]; then
+          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
+          pip install -qq --no-cache-dir "torch==2.5.1" "torchvision==0.20.1" --force-reinstall
+        fi
+
+        pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==$VERSION"
+        cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
+
+    - name: Upload downloaded data as artifact
+      uses: actions/upload-artifact@v6
+      if: env.REMOVE_RUNNER == 'false'
+      with:
+        name: freqtrade-data
+        path: user_data/data/
+
+    - name: 🪂 Test postgres
+      if: env.REMOVE_RUNNER == 'false'
+      shell: bash
+      env:
+        CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
+        CERTIFICATE_PATH: ${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/jedi_order?sslmode=verify-ca&sslrootcert=${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_SERVICE_NAME: yoda
+        EXPECTED_SERVER_VERSION: 17
+        EXPECTED_SSL: true
+      run: |
+        bash user_data/ft_client/test_client/feed.sh $RUN_MODE
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/tensorflow
+        ##pip install -e python_projects/* && iree-import-tflite -h && iree-import-tf -h
+
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/pjrt
+        ##pip install -e ctstools python_packages/iree_cpu_plugin
+  
+        ##pip install -r requirements.txt && cd python_packages/iree_cpu_plugin/build/cmake && ninja
+        ##JAX_PLATFORMS=iree-cpu pytest -n4 --max-worker-restart=9999 -p openxla_pjrt_artifacts --openxla-pjrt-artifact-dir=/tmp/foobar test/test_simple.py
+
+        #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
+        #python ${{ github.workspace }}/web_programming/cc_exchanges.py
+
+    - name: 🚀 Initiate Feed Container
+      if: env.REMOVE_RUNNER == 'true'
+      uses: devcontainers/ci@v0.3
+      id: set_output
+      with:
+        imageTag: spin-${{ env.ID }}
+        skipContainerUserIdUpdate: true
+        imageName: ${{ inputs.image_name }}
+        configFile: _site/.devcontainer.json
+        #runCmd: bash user_data/ft_client/test_client/feed.sh
+        push: ${{ env.REMOVE_RUNNER == 'true' && 'always' || 'never' }}
+        env: |
+          ID=${{ env.ID }}
+          GH_TOKEN=${{ env.GH_TOKEN }}
+          REMOTE_REPO=${{ inputs.repository }}
+          REMOVE_RUNNER=${{ env.REMOVE_RUNNER }}
+          BYPASS_LEXERING=${{ env.BYPASS_LEXERING }}
+          TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
+          
+    - name: 🪂 Remove existing images
+      if: env.REMOVE_RUNNER == 'true'
+      id: variables
+      shell: bash
+      run: |
+        BASE_NAME=$(basename ${{ inputs.image_name }})
+        IFS=', '; array=($(curl -L -s 'https://registry.hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags?page_size=1024' | jq -rc '."results"[]["name"]' | yq eval -P | sed "s/ /, /g")) 
+        for ((i=0; i < ${#array[@]}; i++)); do
+          if [[ "${array[$i]}" != "latest" ]]; then
+            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"${{ inputs.hub_username }}\", \"password\": \"${{ inputs.hub_password }}\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            curl -s -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/${{ inputs.hub_username }}/repositories/$BASE_NAME/tags/${array[$i]}
+            echo "deleted: ${{ inputs.image_name }}:${array[$i]}"
+          fi
+        done
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

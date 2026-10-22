@@ -1,0 +1,131 @@
+name: 'Jekyll Deploy Action'
+
+description: >
+  A Github Action to deploy the Jekyll site conveniently for GitHub Pages
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  id:
+    description: The deploy id
+    required: false
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}       
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  action_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: Tag to use for the new image
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  api_key:
+    description: 'The api key'
+    required: true
+  api_secret:
+    description: 'The api secret'
+    required: true
+  token:
+    description: 'The deploy token'
+    required: false
+  workspace:
+    description: 'The deploy repository'
+    required: false
+  failure_status:
+    description: 'The deploy branch'
+    required: false
+
+outputs:
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
+
+runs:
+  #using: 'node20'
+  #main: '.github/run/main.js'
+  #post: '.github/run/post.js'
+  #post-if: 'success()'
+  using: composite
+  
+  steps:
+    #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
+    - name: Run identity
+      shell: bash
+      env:
+        BASE: "https://github.com/eq19/eq19.github.io.wiki.git"
+        WIKI: "https://github.com/${{ env.TARGET_REPOSITORY }}.wiki.git"      
+      run: |
+        # Bring GitHub Env Variables in to the config file on another container usong docker from the attached deeplearning image
+        export PATH=/home/runner/_work/_actions/eq19/eq19/v2/.github/entrypoint:$PATH && gist.sh ${BASE} $(pwd)
+        if [[ "${WIKI}" != "${BASE}" ]]; then
+          find . -type d -name "$(yq '.span' _config.yml)" -prune -exec sh -c 'gist.sh ${WIKI} "$1"' sh {} \;
+        fi
+        echo -e "\n$hr\nWORKSPACE\n$hr" && ls -alR .
+
+    - name: 💎 Connect to Redis
+      # Runs a script that creates a Redis client, populates
+      # the client with data, and retrieves data
+      if: runner.os == 'Redis'
+      env:
+        # The hostname used to communicate with the Redis client service container
+        # Ref: https://gitlab.com/NamingThingsIsHard/crypto/freqtrade/clients
+        # Ref: https://stackoverflow.com/a/48547074/4058484
+        REDIS_PORT: 6379
+        REDIS_HOST: 172.17.0.1
+      shell: bash
+      run: |
+        npm run test
+        echo '${{ inputs.pauli_sum }}'
+    
+    - name: 💎 Connect to postgres
+      if: runner.os == 'Redis'
+      env:
+        # use the internal host here because we have specified a container for the job.
+        # If we were running the job on the VM this would be localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_HOST: 172.17.0.1
+      shell: bash
+      run: |
+        node /home/runner/scripts/post.js
+        echo '${{ inputs.pauli_sum }}'
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

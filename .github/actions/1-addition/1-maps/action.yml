@@ -1,0 +1,309 @@
+name: 'Docker Deploy Action'
+
+description: >
+  🪂  A Github Action to deploy pages conveniently
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  id:
+    description: The deploy id
+    required: false
+  run_id:
+    description: 'The run_id'
+    default: ${{ github.run_id }}
+    required: false
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: "Name for the container to be created. Example: nginx"
+    required: false
+  image_tag:
+    description: Tag to use for the new image
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  build_args:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  provider:
+    description: 'The deploy provider'
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  action_path:
+    description: 'The action path'
+    required: false
+  repository:
+    description: 'The deploy repository'
+    default: ${{ github.repository }}
+    required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  live_token:
+    description: The trading token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  gcp_account:
+    description: The GCP account
+    required: false
+  gcp_id_rsa:
+    description: The GCP ID RSA key
+    required: false
+  gcp_sa_key:
+    description: The GCP service account key
+    required: false
+  jekyll_github_owner:
+    description: The Jekyll GitHub owner
+    required: false
+  jekyll_github_token:
+    description: The Jekyll GitHub token
+    required: false
+  repo_source:
+    description: The repository source
+    required: false
+
+outputs:
+  artifact:
+    description: Collect artifact outputs
+    value: ${{ toJSON(steps.artifact.outputs) }}
+  variables:
+    description: Collect variables outputs
+    value: ${{ toJSON(steps.variables.outputs) }}
+
+runs:
+  using: composite
+  steps:
+    - name: Remove Existing Connection
+      shell: bash
+      env:
+        RUN: ${{ github.run_id }}
+        USER: ${{ github.actor }}
+        REPO: ${{ github.repository }}
+        ACTOR: ${{ github.triggering_actor }}
+        OWNER: ${{ github.repository_owner }}
+        RUNNER_TITLE: ${{ env.RUNNER_TITLE }}
+        REMOVE_RUNNER: ${{ env.REMOVE_RUNNER }}
+      run: |
+        if [[ "$GITHUB_JOB" == "lexering" ]]; then
+          gh variable set RERUN_RUNNER --body "false"
+          HEADER="Accept: application/vnd.github+json"
+          
+          # Fetch runner data
+          RESPONSE=$(gh api -H "${HEADER}" /repos/${{ github.repository }}/actions/runners)
+          TOTAL_COUNT=$(echo "$RESPONSE" | jq '.total_count')
+          
+          # Get status of specific runner
+          STATUS=$(echo "$RESPONSE" | jq -r --arg NAME "${RUNNER_TITLE}" '.runners[] | select(.name == $NAME).status')
+          
+          if [[ "$TOTAL_COUNT" -ne 0 ]]; then
+            export "RUNNER_COUNT=$TOTAL_COUNT"
+            gh variable set RERUN_RUNNER --body "true"
+          fi
+          
+          # Check if runner is offline or marked for removal
+          if [[ "$STATUS" == "offline" || "$REMOVE_RUNNER" == "true" ]]; then
+            export "RUNNER_STATUS=$STATUS"
+            gh variable set RERUN_RUNNER --body "true"
+            
+            # Get the specific runner ID by name
+            RUNNER_ID=$(echo "$RESPONSE" | jq -r --arg NAME "${RUNNER_TITLE}" '.runners[] | select(.name == $NAME) | .id')
+            
+            if [[ -n "$RUNNER_ID" && "$RUNNER_ID" != "null" ]]; then
+              gh api --method DELETE -H "${HEADER}" /repos/${{ github.repository }}/actions/runners/${RUNNER_ID}
+            else
+              echo "Warning: Could not find runner ID for '${RUNNER_TITLE}'"
+            fi
+          fi
+        fi
+
+        bash /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh ${{ inputs.action_path }}
+        mv -f /home/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/dockerfile/* ${{ inputs.action_path }}/
+
+    - name: View context attributes
+      uses: actions/github-script@v8
+      with:
+        script: console.log(context)
+
+    - name: Setup Workspace
+      shell: bash
+      run: |
+        echo "🧹 Free disk"
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf /usr/local/lib/android
+        sudo rm -rf /usr/lib/google-cloud-sdk
+        docker system prune -af || true
+        docker builder prune -af || true
+
+        echo "⏫ Setting up 100GB tmpfs"
+        sudo mkdir -p /mnt/extra
+        sudo mount -t tmpfs -o size=100G tmpfs /mnt/extra
+          
+        echo "➡️ Syncing workspace"
+        sudo rsync -a "$GITHUB_WORKSPACE/" /mnt/extra/
+
+        echo "➡️ Switching workspace"
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_ENV
+        echo "GITHUB_WORKSPACE=/mnt/extra" >> $GITHUB_OUTPUT
+
+        # optional symlink to avoid tool breakage
+        sudo rm -rf "$GITHUB_WORKSPACE"
+        sudo ln -s /mnt/extra "$GITHUB_WORKSPACE"
+
+        echo "📌 Workspace successfully expanded." && df -h
+
+    - uses: actions/setup-python@v6
+      with:
+        python-version: 3.11
+        allow-prereleases: true
+
+    - uses: actions/cache@v5
+      if: runner.os == 'Redis'
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip
+
+    - name: 💎 Set ID Token
+      if:  ${{ env.REMOVE_RUNNER == 'false' }}
+      uses: 'google-github-actions/auth@v3'
+      id: 'auth'
+      with:
+        token_format: 'id_token'
+        create_credentials_file: false
+        credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-marketleader.cloudfunctions.net/function'
+
+    - name: Install dependencies
+      if: ${{ env.REMOVE_RUNNER == 'false' }}
+      shell: bash
+      env:
+        BEARER: ${{ steps.auth.outputs.id_token }}
+        APP_PATH: "user_data/ft_client/test_client/app.py"
+        HYPEROPT_PARAM: "user_data/strategies/hyperopt_params.json"
+        ARTIFACT: "user_data/ft_client/test_client/results/orgs.json"
+      run: |
+        python -m pip -q install --upgrade pip
+
+        # Retry install TensorFlow
+        for i in {1..20}; do
+          python -m pip -qqq install "tensorflow-cpu==2.20.0" && break
+          echo "TensorFlow install failed. retry $i..."
+          sleep 5
+        done
+
+        # Retry install IREE packages
+        for i in {1..20}; do
+          python -m pip -q install --pre iree-base-compiler iree-base-runtime iree-tools-tf -f https://iree.dev/pip-release-links.html && break
+          ##python ${{ inputs.action_path }}/pythonCode/testIREE.py   
+          echo "IREE install failed. retry $i..."
+          sleep 5
+        done
+
+        # Run your pipeline
+        ##Ref: https://github.com/eq19/maps/tree/v3/pythonCode
+        ##python ${{ github.workspace }}/.github/entrypoint/artifact/python/gellmann.py
+        ##cd ${{ inputs.action_path }}/pythonCode && python npreader.py -h && python map.py -h
+        bash user_data/ft_client/test_client/maps.sh $ID $JOBS_ID $APP_PATH ${DIR_PATH:-user_data} ${PARAM_NAME:-nil} $ARTIFACT $HYPEROPT_PARAM 
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v4
+      if:  ${{ env.REMOVE_RUNNER == 'true' }}
+      with:
+        username: ${{ inputs.hub_username }}
+        password: ${{ inputs.hub_token }}
+
+    - name: 🚀 Initiate Lexer
+      uses: devcontainers/ci@v0.3
+      if:  ${{ env.REMOVE_RUNNER == 'true' }}
+      with:
+        skipContainerUserIdUpdate: true
+        imageName: ${{ inputs.image_name }}
+        imageTag: target-${{ github.run_number }}
+        configFile: ${{ inputs.action_path }}/.devcontainer.json
+        push: ${{ env.REMOVE_RUNNER == 'true' && 'always' || 'never' }}
+        #runCmd: bash user_data/ft_client/test_client/maps.sh            
+        env: |
+          ID=${{ env.ID }}
+          GH_TOKEN=${{ env.GH_TOKEN }}
+          REMOTE_REPO=${{ env.REMOTE_REPO }}
+          BEARER=${{ steps.auth.outputs.id_token }}
+          GITHUB_REPOSITORY=${{ github.repository }}
+          TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
+          HYPEROPT_PARAM=user_data/strategies/hyperopt_params.json
+          WORKSPACE=/workspaces/${{ github.event.repository.name }}
+          ARTIFACT=user_data/ft_client/test_client/results/orgs.json
+
+    - name: 🗑️ Delete Docker Tags AND Images
+      if:  ${{ env.REMOVE_RUNNER == 'true' }}
+      id: delete_images
+      shell: bash
+      env:
+        IMAGE_NAME: "${{ inputs.image_name }}"
+        HUB_USERNAME: "${{ inputs.hub_username }}"
+        HUB_PASSWORD: "${{ inputs.hub_password }}"
+        MAX_DELETIONS: 15
+      run: |
+        #python -m pip -qqq uninstall -y tensorflow tensorflow-cpu keras keras-preprocessing keras-nightly
+        ./.github/entrypoint/remote.sh
+                
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

@@ -1,0 +1,260 @@
+name: 'Docker Deploy Action'
+
+description: >
+  🪂  A Github Action to deploy pages conveniently
+
+inputs:
+  id:
+    description: The deploy id
+    required: false
+  run_id:
+    description: 'The run_id'
+    default: ${{ github.run_id }}
+    required: false
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: "Name for the container to be created. Example: nginx"
+    required: false
+  image_tag:
+    description: Tag to use for the new image
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  build_args:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  provider:
+    description: 'The deploy provider'
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  action_path:
+    description: 'The action path'
+    required: false
+  repository:
+    description: 'The deploy repository'
+    default: ${{ github.repository }}
+    required: false
+  api_key:
+    description: The key of api application
+    required: true
+  api_secret:
+    description: The secret of api application
+    required: true
+  pypi_token:
+    description: The pypi token
+    required: true
+  bot_token:
+    description: The monitor token
+    required: true
+  live_token:
+    description: The trading token
+    required: true
+  logs_token:
+    description: The warning token
+    required: true
+  chat_id:
+    description: The telegram chat id
+    required: true
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  gcp_account:
+    description: The GCP account
+    required: false
+  gcp_id_rsa:
+    description: The GCP ID RSA key
+    required: false
+  gcp_sa_key:
+    description: The GCP service account key
+    required: false
+  jekyll_github_owner:
+    description: The Jekyll GitHub owner
+    required: false
+  jekyll_github_token:
+    description: The Jekyll GitHub token
+    required: false
+  repo_source:
+    description: The repository source
+    required: false
+    
+branding:
+  icon: 'command'
+  color: 'yellow'
+
+outputs:
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect if jobs_id=1 was cancelled
+      shell: bash
+      run: |
+        echo "Checking if job 1 was cancelled…"
+        run_id=${{ inputs.run_id }}
+
+        for i in {1..12}; do
+          echo "Polling attempt $i…"
+
+          curl -s -H "Authorization: Bearer ${{ inputs.token }}" \
+            "https://api.github.com/repos/${{ inputs.repository }}/actions/runs/$run_id/jobs" \
+            > jobs.json
+
+          job1_status=$(jq -r '.jobs[] | select(.labels[]?=="ubuntu-latest") | .conclusion' jobs.json)
+          echo "Job 1 conclusion = $job1_status"
+
+          if [ "$job1_status" != "null" ]; then
+            break
+          fi
+
+          sleep 10
+        done
+
+        if [ "$job1_status" = "cancelled" ]; then
+          echo "Job 1 was cancelled (timeout confirmed)."
+
+          if [ "$REDUCE_EPOCH" = "false" ]; then
+            REDUCE_EPOCH="2"
+          else
+            REDUCE_EPOCH=$((REDUCE_EPOCH * 2))
+          fi
+
+          gh workflow run "main.yml" --repo "$REPO_NAME" \
+            --raw-field "RUN_MODE=$RUN_MODE" \
+            --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH"
+
+          echo "SKIP_REMAINING_STEPS=true" >> "$GITHUB_ENV"
+        else
+          echo "Job 1 was NOT cancelled."
+        fi
+
+    - name: Set secrets on target
+      if: ${{ env.RUN_MODE == 'MEC30' }}
+      shell: bash
+      env:
+        ACCESS_API: ${{ inputs.api_key }}
+        ACCESS_KEY: ${{ inputs.api_secret }}
+        ACCESS_TOKEN: ${{ inputs.token }}
+        MESSAGE_API: ${{ inputs.chat_id }}
+        LIVE_TOKEN: ${{ inputs.live_token }}
+        MONITOR_TOKEN: ${{ inputs.bot_token }}
+        WARNING_TOKEN: ${{ inputs.logs_token }}
+        PYPI_TOKEN: ${{ inputs.pypi_token }}
+        DOCKER_HUB_TOKEN: ${{ inputs.hub_token }}
+        DOCKER_HUB_PASSWORD: ${{ inputs.hub_password }}
+        GCP_CREDENTIALS: ${{ inputs.credentials }}
+        GCP_ACCOUNT: ${{ inputs.gcp_account }}
+        GCP_ID_RSA: ${{ inputs.gcp_id_rsa }}
+        GCP_SA_KEY: ${{ inputs.gcp_sa_key }}
+        JEKYLL_GITHUB_OWNER: ${{ inputs.jekyll_github_owner }}
+        JEKYLL_GITHUB_TOKEN: ${{ inputs.jekyll_github_token }}
+        REPO_SOURCE: ${{ inputs.repo_source }}
+
+      run: |
+        secrets=$(curl -s -H "Authorization: token $GH_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/actions/secrets" | jq -r '.secrets[].name')
+
+        errors=0
+
+        for secret in $secrets; do
+          echo "${!secret}" | sed -n '/./p' > .validated_secret_temp
+
+          if [ ! -s .validated_secret_temp ]; then
+            echo "❌ Error: Secret '$secret' is empty or contains only whitespace" >&2
+            ((errors++))
+          else
+            gh secret set "$secret" --repo ${{ env.TARGET_REPOSITORY }} --body "${!secret}"
+            echo "✅ Secret '$secret' successfully set"
+          fi
+        done
+
+        rm -f .validated_secret_temp
+
+        if [ $errors -gt 0 ]; then
+          echo "❌ $errors secrets failed validation"
+          gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+        fi
+
+    - name: 👉 Initial Setup
+      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
+      shell: bash
+      run: |
+        bash /Users/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/init.sh
+
+    - name: View context attributes
+      if: ${{ env.SKIP_REMAINING_STEPS != 'true' }}
+      uses: actions/github-script@v8
+      with:
+        script: console.log(context)
+
+    - name: 💎 Set ID Token
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
+      uses: google-github-actions/auth@v3
+      with:
+        credentials_json: ${{ inputs.credentials }}
+
+    - name: ♻️ Setup Gcloud
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
+      uses: google-github-actions/setup-gcloud@v3
+
+    - name: 🧲 Remove Existing Self-Hosted Runner
+      if: ${{ env.REMOVE_RUNNER == 'true' }}
+      shell: bash
+      run: |
+        for instance_uri in $(gcloud compute instances list --uri 2> /dev/null); do
+          instance_name=${instance_uri##*/}
+          instance_zone_uri=${instance_uri/\/instances\/${instance_name}/}
+          instance_zone=${instance_zone_uri##*/}
+          gcloud compute instances update "${instance_name}" --zone "${instance_zone}" --no-deletion-protection
+          if [ -n "${instance_name}" ] && [ -n "${instance_zone}" ] && gcloud compute instances delete ${instance_name} --zone ${instance_zone} --quiet; then
+            echo "deleted: ${instance_zone}/${instance_name}"
+          fi
+        done
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() && env.SKIP_REMAINING_STEPS != 'true' }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" \
+          --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" \
+          --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

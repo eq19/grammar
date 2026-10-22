@@ -1,0 +1,255 @@
+name: 'Docker Deploy Action'
+
+description: >
+  🪂  A Github Action to deploy pages conveniently
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  id:
+    description: The deploy id
+    required: false
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: "Name for the container to be created. Example: nginx"
+    required: false
+  image_tag:
+    description: Tag to use for the new image
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  build_args:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  provider:
+    description: 'The deploy provider'
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  chat_id:
+    description: 'The telegram chat id'
+    required: false
+  bot_token:
+    description: 'The monitor token'
+    required: false
+  live_token:
+    description: 'The trading token'
+    required: false
+  logs_token:
+    description: 'The warning token'
+    required: false
+  action_path:
+    description: 'The action path'
+    required: false
+  repository:
+    description: 'The deploy repository'
+    default: ${{ github.repository }}
+    required: false
+  initiate_pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+
+outputs:
+  variables:
+    description: Collect variables outputs
+    value: ${{ toJSON(steps.variables.outputs) }}
+  metadata:
+    description: Collect metadata outputs
+    value: ${{ toJSON(steps.metadata.outputs) }}
+
+runs:
+  using: composite
+  steps:
+    - name: 🪂 Get tag of dependencies
+      id: variables
+      shell: bash
+      run: |
+        brew update --quiet && brew uninstall cmake
+        brew install --quiet coreutils doxygen pandoc gsl cmake ninja lcov gcc@12 qt@5 texlive
+        brew info qt@5 && brew info gsl
+        IFS=', '; array=($(curl -L -s 'https://registry.hub.docker.com/v2/repositories/${{ inputs.image_name }}/tags?page_size=1024' | jq -rc '."results"[]["name"]' | yq eval -P | sed "s/ /, /g")) 
+        for ((i=0; i < ${#array[@]}; i++)); do
+          if [[ "${array[$i]}" != "latest" ]]; then
+            image_tag="${array[$i]}"
+            echo 'IMAGE_TAG='${image_tag##*-} >> ${GITHUB_ENV}
+          fi
+        done
+
+    # See https://github.com/thesofproject/sof/blob/main/zephyr/docker-run.sh
+    - name: 🪂 Cloud Config
+      if: env.REMOVE_RUNNER == 'true'
+      id: metadata
+      shell: bash
+      run: |
+        cat << EOL >> cloud-config
+        #cloud-config
+        users:
+        - default
+
+        write_files:
+        - path: /home/runner/.docker/.keep
+          permissions: "0755"
+          owner: root
+          content: ""
+
+        - path: /etc/systemd/system/firewall.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=Configures the host firewall
+
+            [Service]
+            Type=oneshot
+            RemainAfterExit=true
+            ExecStart=/sbin/iptables -A INPUT -p tcp --match multiport --dports 80,5432,6379,8080,8081,8082 -j ACCEPT
+
+        - path: /etc/systemd/system/runner1.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=Runner service
+            After=docker.service firewall.service
+            Wants=docker.service firewall.service
+
+            [Service]
+            RestartSec=5s
+            Restart=on-failure
+            Environment="HOME=/home/runner"
+            ExecStop=/usr/bin/docker stop runner1
+            ExecStopPost=/usr/bin/docker rm runner1
+            ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+            ExecStart=/usr/bin/docker run -e REPOSITORY=${{ inputs.repository }} -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_TITLE }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ env.TARGET_REPOSITORY }} -e GH_TOKEN=${{ inputs.token }} -e CONTAINER_NAME=runner1 -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --memory=256M --memory-swap=2G --name runner1 --pull=always eq19/maps:target-${{ github.run_number }}
+
+        - path: /etc/systemd/system/mydb.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=MyDB service
+            After=runner1.service
+            Wants=runner1.service
+
+            [Service]
+            Restart=always
+            Environment="HOME=/home/runner"
+            ExecStop=/usr/bin/docker exec mydb -s quit
+            ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+            ExecStart=/usr/bin/docker run -e REPOSITORY=${{ inputs.repository }} -e GH_TOKEN=${{ inputs.token }} -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -v /mnt:/mnt --memory=1G --memory-swap=10G --name=mydb -p 5432:5432 -p 8080:8080 -p 8081:8081 -p 8082:8082 --pull=always eq19/feed:spin-${{ env.IMAGE_TAG }}
+
+        - path: /etc/systemd/system/runner2.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=gcloud compute
+            Wants=mydb.service
+            After=mydb.service
+
+            [Service]
+            RestartSec=5s
+            Restart=on-failure
+            Environment="HOME=/home/runner"
+            ExecStop=/usr/bin/docker stop runner2
+            ExecStopPost=/usr/bin/docker rm runner2
+            ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+            ExecStart=/usr/bin/docker run -e REPOSITORY=${{ inputs.repository }} -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_TITLE }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ inputs.repository }} -e GH_TOKEN=${{ inputs.token }} -e CONTAINER_NAME=runner2 -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --memory=256M --memory-swap=2G --name runner2 --pull=always eq19/maps:target-${{ github.run_number }}
+
+        - path: /etc/systemd/system/myredis.service
+          permissions: "0644"
+          owner: root
+          content: |
+            [Unit]
+            Description=gcloud compute
+            Wants=myrunner2.service
+            After=myrunner2.service
+
+            [Service]
+            RestartSec=5s
+            Restart=on-failure
+            Environment="HOME=/home/runner"
+            ExecStop=/usr/bin/docker stop myredis
+            ExecStopPost=/usr/bin/docker rm myredis
+            ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+            ExecStart=/usr/bin/docker run -e REPOSITORY=${{ inputs.repository }} -e RUNNER_REPLACE_EXISTING=true -e RUNNER_NAME=${{ env.RUNNER_TITLE }} -e RUNNER_REPOSITORY_URL=https://github.com/${{ inputs.repository }} -e GH_TOKEN=${{ inputs.token }}  -e CONTAINER_NAME=runner2 -v /home/runner/.docker:/home/runner/.docker -v /mnt:/mnt -v /var/log:/host/var/log -v /etc/systemd:/host/etc/systemd -v /var/run/docker.sock:/var/run/docker.sock --memory=256M --memory-swap=2G --name myredis --pull=always eq19/lexer:id-${{ env.IMAGE_TAG }}
+
+        bootcmd:
+        - fsck.ext4 -tvy /dev/sdb1
+        - mkdir -p /mnt/disks/deeplearning
+        - mount -o nosuid,nodev,commit=30,defaults -t ext4 /dev/sdb1 /mnt/disks/deeplearning
+
+        runcmd:
+        - systemctl stop docker
+        - fallocate -l 10G /mnt/disks/deeplearning/swapfile || dd if=/dev/zero of=/mnt/disks/deeplearning/swapfile bs=1M count=10240
+        - chmod 600 /mnt/disks/deeplearning/swapfile
+        - mkswap /mnt/disks/deeplearning/swapfile
+        - swapon /mnt/disks/deeplearning/swapfile
+        - echo '/mnt/disks/deeplearning/swapfile none swap sw 0 0' >> /etc/fstab
+        - mkdir -p /mnt/disks/deeplearning/var/lib/docker/cos
+        - mv /var/lib/docker/* /mnt/disks/deeplearning/var/lib/docker/cos/ || true
+        - find /var/lib/docker -mindepth 1 -delete
+        - rmdir /var/lib/docker || true
+        - chattr +i /var/lib/docker
+        - mount --bind /mnt/disks/deeplearning/var/lib/docker/cos /var/lib/docker
+        - systemctl daemon-reload
+        - systemctl start docker
+        - systemctl start runner2.service
+        EOL
+        
+    # Ref: https://stackoverflow.com/a/47018417/4058484
+    - name: 🪂 Setup Runner by Gcloud
+      if: env.REMOVE_RUNNER == 'true'
+      id: instances
+      shell: bash
+      run: >
+        gcloud compute instances create grid-${{ env.IMAGE_TAG }}
+        --service-account=project-owner@marketleader.iam.gserviceaccount.com
+        --scopes=https://www.googleapis.com/auth/cloud-platform --deletion-protection
+        --zone=us-central1-a --machine-type=e2-micro --enable-display-device --tags=https-server
+        --boot-disk-device-name=cos --image-project cos-cloud --image-family cos-stable --metadata-from-file=user-data=cloud-config
+        --create-disk=boot=no,auto-delete=yes,name=tensorflow,device-name=deeplearning,mode=rw,size=50,type=pd-standard,image=projects/ml-images/global/images/c0-deeplearning-common-cpu-v20250325-debian-11-py310-conda
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

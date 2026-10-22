@@ -1,0 +1,122 @@
+name: 'Jekyll Deploy Action'
+
+description: >
+  A Github Action to deploy the Jekyll site conveniently for GitHub Pages
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  hub_username:
+    description: Username for Docker Hub
+    default: ${{ github.actor }}       
+    required: true
+  hub_password:
+    description: Docker Hub authentication token
+    required: true
+  hub_token:
+    description: Docker Hub authentication token
+    required: true
+  action_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  image_name:
+    description: Tag to use for the new image
+    required: true
+  dockerfile_path:
+    description: Path to the dockerfile from which to build the image
+    required: true
+  pauli_sum:
+    description: Build args
+    required: false
+    default: ""
+  docker_hub_repo_short_description:
+    description: Short description text for the docker hub repo
+    required: true
+  docker_hub_repo_readme_file_path:
+    description: |
+      Path of the md file which will be used as the docker hub repo readme
+    required: true
+  cache_src:
+    description: Path for the docker cache source
+    required: false
+    default: /tmp/.buildx-cache
+  cache_dest:
+    description: Path for the docker cache destination
+    required: false
+    default: /tmp/.buildx-cache-new
+  provider:
+    description: 'The deploy provider'
+    required: true
+  owner:
+    description: 'The deploy owner'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  workspace:
+    description: 'The deploy repository'
+    required: false
+  failure_status:
+    description: 'The deploy branch'
+    required: false
+
+outputs:
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
+
+runs:
+  #using: 'node20'
+  #main: '.github/run/main.js'
+  #post: '.github/run/post.js'
+  #post-if: 'success()'
+  using: composite
+  
+  steps:
+    # See: https://github.com/svopper/munaiah-analyser/blob/18cb09be3a343a051239d5b6378ed7524dad3147/out/groonga/grntest/.github_workflows_windows.yml#L50
+    - name: 💎 Setup Ruby
+      uses: ruby/setup-ruby@v1
+      if: runner.os == 'Windows'
+      with:
+        cache-version: 1
+        rubygems: default
+        bundler-cache: true
+        ruby-version: '3.3.4'
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: 💎 Set ID Token
+      id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        token_format: 'id_token'
+        create_credentials_file: false
+        credentials_json: ${{ inputs.credentials }}
+        id_token_audience: 'https://us-central1-marketleader.cloudfunctions.net/function'
+
+    #Fill in metadata with ${{ steps.artifact.outputs.orgs_json }}
+    - name: Run identity
+      if: runner.os != 'Windows'
+      shell: bash
+      env:
+        GCP_TOKEN: ${{ steps.auth.outputs.id_token }}
+      run: |
+        curl -s -X POST https://us-central1-marketleader.cloudfunctions.net/function \
+          -H "Authorization: Bearer ${GCP_TOKEN}" -H "Content-Type: application/json" \
+          --data @${{ inputs.workspace }}/_data/orgs.json | jq '.'                
+
+    - name: ⚧️ Rerun workflow if failed
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

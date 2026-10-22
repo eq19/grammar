@@ -1,0 +1,138 @@
+name: Freqtrade Matrix Jobs
+run-name: "Freqtrade Matrix: ${{ inputs.RUN_MODE }} (${{ vars.SCORE }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      RUN_MODE:
+        description: 'Custom run name'
+        default: 'Hyperopt'
+        required: false
+        type: string
+      MATRIX_JSON:
+        description: "Matrix JSON (as string)"
+        required: true
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}
+
+permissions:
+  actions: read
+
+jobs:
+  feeding:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        FIELDS: ${{ fromJson(inputs.MATRIX_JSON).fields }}
+
+    env:
+      REMOVE_RUNNER: 'false'
+      SCORE: ${{ vars.SCORE }}
+      RUN_MODE: ${{ inputs.RUN_MODE }}
+      GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      RUNNER_TITLE: "Google-optimized-instance"
+      TARGET_REPOSITORY: ${{ vars.TARGET_REPOSITORY }}
+
+    steps:
+      - name: 📥 Checkout Repo
+        uses: actions/checkout@v6
+
+      - name: ⚙️ Build Maps
+        uses: eq19/maps@v8
+        id: build-parser
+        env:
+          JOBS_ID: 1
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: 🪂 Install freqtrade
+        shell: bash
+        env:
+          VERSION: "2025.12"
+        run: |
+          cd user_data/build_helpers
+          ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
+
+          # Download requirement files from Freqtrade 2025.10 (corrected)
+          for f in requirements.txt requirements-dev.txt requirements-hyperopt.txt requirements-plot.txt requirements-freqai.txt requirements-freqai-rl.txt; do
+            curl -fsSLO --retry 5 --retry-delay 2 \
+            https://raw.githubusercontent.com/freqtrade/freqtrade/$VERSION/$f || true
+          done          
+
+          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
+          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
+          [[ "$RUN_MODE" == "FreqAI" ]] && pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
+
+          #pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
+          pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==$VERSION"
+
+      - name: ⚙️ Get artifact ID
+        id: get-artifact-id
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const matrix = JSON.parse(context.payload.inputs.MATRIX_JSON);
+            const artifactName = 'freqtrade-data';
+            const runId = matrix.run_id;
+
+            for (let i = 0; i < 20; i++) {
+              try {
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: runId,
+                });
+
+                const match = artifacts.data.artifacts.find(a => a.name === artifactName);
+
+                if (match) {
+                  core.setOutput('artifact_id', match.id);
+                  return;
+                }
+
+              } catch (e) {
+                console.log(`Attempt ${i + 1} failed: ${e.message}`);
+                await new Promise(r => setTimeout(r, 2000));
+              }
+            }
+
+            throw new Error("Artifact lookup failed after retries");
+
+      - name: Download artifact zip using curl
+        run: |
+          curl -L \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/artifacts/${{ steps.get-artifact-id.outputs.artifact_id }}/zip \
+            -o freqtrade-data.zip            
+               
+      - name: Extract artifact
+        run: unzip -o freqtrade-data.zip -d user_data/data/
+
+      - name: Show contents
+        run: ls -R user_data/data
+
+      - name: 🧠 Run Script
+        timeout-minutes: 360
+        env:
+          MATRIX_INPUT: ${{ matrix.FIELDS }}
+          ID: ${{ fromJson(inputs.MATRIX_JSON).repo_id }}
+          REDUCE_EPOCH: ${{ fromJson(inputs.MATRIX_JSON).reduce_epoch }}
+        run: |
+          echo "Score: $SCORE"
+          echo "Running $RUN_MODE..."
+          echo "Reduce epoch: $REDUCE_EPOCH"
+          bash user_data/ft_client/test_client/feed.sh $RUN_MODE
