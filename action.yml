@@ -1,0 +1,70 @@
+name: 'Jekyll Deploy Action'
+
+description: >
+  A Github Action to deploy the Jekyll site conveniently for GitHub Pages
+
+branding:
+  icon: 'command'
+  color: 'red'
+
+inputs:
+  owner:
+    description: 'The deploy owner'
+    required: false
+  actor:
+    description: 'The github username creating the commit'
+    required: false
+  token:
+    description: 'The deploy token'
+    required: false
+  provider:
+    description: 'The deploy provider'
+    required: true
+  credentials:
+    description: 'The gcloud credentials'
+    required: true
+  pauli_sum:
+    description: 'The pre-build configuration'
+    required: true
+  failure_status:
+    description: 'The deploy branch'
+    required: false
+
+outputs:
+  all_outputs:
+    description: Collect all outputs
+    value: ${{ toJSON(steps.*.outputs) }}
+
+runs:
+  #using: 'node20'
+  #main: '.github/run/main.js'
+  #post: '.github/run/post.js'
+  #post-if: 'success()'
+  using: composite
+  
+  steps:
+    - name: Target Configuration
+      uses: eq19/eq19/.github/actions/3-exponentiation/6-grammar@v2
+      if: ${{ env.JOBS_ID == 3 && env.PASS == 'true' }}
+      id: exponentiation
+      with:
+        hub_username: ${{ inputs.docker_hub_username }}
+        hub_password: ${{ inputs.docker_hub_password }}
+        failure_status: ${{ inputs.failure_status }}
+        hub_token: ${{ inputs.docker_hub_token }}
+        credentials: ${{ inputs.credentials }}
+        action_path: ${{ github.action_path }}
+        image_name: ${{ inputs.image_name }}
+        token: ${{ inputs.token }}
+
+    - name: Profiling Feedback
+      uses: eq19/eq19/.github/actions/4-identition/6-grammar@v2
+      if: ${{ env.JOBS_ID == 4 }}
+      id: identition
+      with:
+        token: ${{ inputs.token }}
+        image_name: ${{ inputs.image_name }}
+        credentials: ${{ inputs.credentials }}
+        hub_token: ${{ inputs.docker_hub_token }} 
+        failure_status: ${{ inputs.failure_status }}
+        hub_username: ${{ inputs.docker_hub_username }}
