@@ -90,7 +90,7 @@ jobs:
           ref: ${{ env.JOBS_ID == 2 && 'gh-source' || '' }}
           submodules: ${{ env.JOBS_ID != 1 && 'recursive' || false }}
           repository: ${{ env.JOBS_ID == 2 && env.TARGET_REPOSITORY || '' }}
-        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+        #if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
           
       - name: ⚙️ Build Maps
         uses: eq19/maps@v8
@@ -113,7 +113,7 @@ jobs:
           jekyll_github_owner: ${{ secrets.JEKYLL_GITHUB_OWNER }}
           jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           repo_source: ${{ secrets.REPO_SOURCE }}
-        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
+        #if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
 
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v6
