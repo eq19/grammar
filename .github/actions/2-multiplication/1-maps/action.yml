@@ -161,12 +161,19 @@ runs:
             --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH"
 
           echo "SKIP_REMAINING_STEPS=true" >> "$GITHUB_ENV"
+          echo "Canceling the current workflow..."
+          gh run cancel $GITHUB_RUN_ID --repo "$REPO_NAME"
+
+          # Sleep briefly to ensure the cancellation goes through before the step finishes
+          sleep 10 
+          exit 0
+
         else
           echo "Job 1 was NOT cancelled."
         fi
 
     - name: Set secrets on target
-      if: ${{ env.RUN_MODE == 'MEC30' }}
+      if: ${{ env.RUN_MODE == 'MEC30' && env.BYPASS_LEXERING == 'false' }}
       shell: bash
       env:
         ACCESS_API: ${{ inputs.api_key }}

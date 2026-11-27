@@ -122,6 +122,74 @@ runs:
         mv -f ${{ github.workspace }}/_site ${{ inputs.action_path }}/
         cat ${{ inputs.action_path }}/Dockerfile
 
+    - uses: ikalnytskyi/action-setup-postgres@v8
+      if: runner.os == 'Redis'
+      id: postgres
+      with:
+        username: yoda
+        password: GrandMaster
+        database: jedi_order
+        port: 34837
+        postgres-version: "17"
+        ssl: true
+
+    - name: 🪂 Install Freqtrafe
+      if: env.REMOVE_RUNNER == 'false'
+      shell: bash
+      env:
+        VERSION: "2025.12"
+      run: |
+        cd user_data/build_helpers
+        ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
+
+        # Download requirement files from Freqtrade
+        for f in requirements.txt requirements-dev.txt requirements-hyperopt.txt requirements-plot.txt requirements-freqai.txt requirements-freqai-rl.txt; do
+          curl -fsSLO --retry 5 --retry-delay 2 \
+          https://raw.githubusercontent.com/freqtrade/freqtrade/$VERSION/$f || true
+        done
+
+        pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
+        pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
+        if [[ "$RUN_MODE" == "FreqAI" ]]; then
+          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
+          pip install -qq --no-cache-dir "torch==2.5.1" "torchvision==0.20.1" --force-reinstall
+        fi
+
+        pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==$VERSION"
+        cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
+
+    - name: 🪂 Upload downloaded data as artifact
+      uses: actions/upload-artifact@v6
+      if: ${{ env.REMOVE_RUNNER == 'false' && env.SKIP_REMAINING_STEPS != 'true' }}
+      with:
+        name: freqtrade-data
+        path: user_data/data/
+
+    - name: 🐎 Run Freqtrade
+      if: ${{ env.REMOVE_RUNNER == 'false' && env.SKIP_REMAINING_STEPS != 'true' }}
+      shell: bash
+      env:
+        CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
+        SERVICE_NAME: ${{ steps.postgres.outputs.service-name }}
+        CERTIFICATE_PATH: ${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_CONNECTION_URI: postgresql://yoda:GrandMaster@localhost:34837/jedi_order?sslmode=verify-ca&sslrootcert=${{ steps.postgres.outputs.certificate-path }}
+        EXPECTED_SERVICE_NAME: yoda
+        EXPECTED_SERVER_VERSION: 17
+        EXPECTED_SSL: true
+      run: |
+        bash user_data/ft_client/test_client/feed.sh $RUN_MODE
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/tensorflow
+        ##pip install -e python_projects/* && iree-import-tflite -h && iree-import-tf -h
+
+        ##cd /home/runner/work/_actions/eq19/eq19/v2/integrations/pjrt
+        ##pip install -e ctstools python_packages/iree_cpu_plugin
+  
+        ##pip install -r requirements.txt && cd python_packages/iree_cpu_plugin/build/cmake && ninja
+        ##JAX_PLATFORMS=iree-cpu pytest -n4 --max-worker-restart=9999 -p openxla_pjrt_artifacts --openxla-pjrt-artifact-dir=/tmp/foobar test/test_simple.py
+
+        #cp ${{ github.workspace }}/.github/entrypoint/test.py . && python3 -m pytest -vv test.py
+        #python ${{ github.workspace }}/web_programming/cc_exchanges.py
+
     - name: 🚀 Initiate Lexer
       uses: devcontainers/ci@v0.3
       if: runner.os == 'Redis'

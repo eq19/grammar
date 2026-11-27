@@ -84,6 +84,19 @@ runs:
   using: composite
   
   steps:
+    - name: ⏩ Next wiki's jobs on applying
+      shell: bash
+      env:
+        BASE: "D:/a/_actions/eq19/eq19/v2/.github"
+      run: |
+        if [[ '${{ inputs.failure_status }}' == 'false' ]]; then
+
+          TARGET_WIKI="https://${{ github.actor }}:${{ inputs.token }}@github.com/$TARGET_REPOSITORY.wiki.git"
+          rm -rf $RUNNER_TEMP/wiki && git clone $TARGET_WIKI $RUNNER_TEMP/wiki
+          cat $RUNNER_TEMP/wiki/_Sidebar.md
+  
+        fi
+
     - name: ⏪ Rewind all jobs on failure
       if: runner.os == 'Windows'
       shell: bash
@@ -105,7 +118,7 @@ runs:
         else
 
           echo -e "\n$hr\nSource Pages\n$hr"
-          rm -rf _user && ls -al .
+          rm -rf docs _user && ls -al .
 
           FILE=$(find . -name "plugin_manager.rb")
           sed -i 's|unless site.safe|if site.safe|g' $FILE
@@ -205,7 +218,8 @@ runs:
         fi
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: runner.os == 'Linux'
+      #if: ${{ failure() }}
       shell: bash
       run: |
         [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \

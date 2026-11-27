@@ -60,13 +60,21 @@ dpkg -l | sort
 echo -e "\n$hr\nExecutables\n$hr"
 find ${PATH//:/ } -maxdepth 1 -executable | sort
 
+# Path to docker binary
+DOCKER=/mnt/disks/deeplearning/usr/bin/docker
+
 freqtrade_total_profit() {
   local PORT="$1"
   local MODE="$2"
+  local CONTAINER="mydb"
   local USER="YourUsername"
   local PASS="YourPassword"
-  local CONTAINER="mydb"
+  local CONFIG="/home/runner/data_$2/config.json"
   
+  $DOCKER exec mydb bash -c "jq '.telegram.enabled = false' '$CONFIG' > /tmp/c && mv /tmp/c '$CONFIG'"
+  $DOCKER exec mydb supervisorctl start "freqtrade_$MODE"
+  sleep 120
+
   # Get daily profit
   local DAILY
   DAILY=$(curl -s -u "$USER:$PASS" \
@@ -81,13 +89,16 @@ freqtrade_total_profit() {
   
   # Calculate total and set as global variable
   declare -g TOTAL
+
   TOTAL=$(echo "$DAILY + $OPEN" | bc -l)
-  
   echo "Port      : $PORT ($MODE)"
   echo "Weekly PnL: $DAILY IDR"
   echo "Open PnL  : $OPEN IDR"
   echo "------------------------"
   echo "TOTAL     : $TOTAL IDR"
+
+  $DOCKER exec mydb supervisorctl stop "freqtrade_$MODE"
+  sleep 10
 }
 
 if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
@@ -124,11 +135,6 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
   # Interval between checks (10 retries in 10 minutes -> 60s each)
   interval=60
 
-  # Path to docker binary
-  DOCKER="/mnt/disks/deeplearning/usr/bin/docker"
-  RERUN_RUNNER=$(curl -s -H "Authorization: token $GH_TOKEN" -H "Accept: application/vnd.github.v3+json" \
-    "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/variables/RERUN_RUNNER" | jq -r '.value')
-
   for ((i=1; i<=max_retries; i++)); do
     echo "Check $i of $max_retries..."
 
@@ -140,34 +146,39 @@ if [ -d /mnt/disks/deeplearning/usr/local/sbin ]; then
       echo -e "\n$hr\nDeepLearning Docker info\n$hr" && $DOCKER info
       echo -e "\n$hr\n" && $DOCKER container ls -a
 
-      # Setup freqtrade userdir for dry mode
-      if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
-        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry 2>/dev/null'
-        $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
-        $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
-        $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
-      elif $DOCKER exec mydb supervisorctl status freqtrade_dry | grep -q "RUNNING"; then
-        echo -e "\n$hr\nTotal Profit Dry-run vs Live Mode\n$hr"
-        freqtrade_total_profit 8081 Dry
-        TOTAL1=$TOTAL
-      fi
+      if ! $DOCKER exec mydb sh -c 'test -d /home/runner/data_dry && test -d /home/runner/data_live'; then
 
-      # Setup freqtrade userdir for live mode
-      if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
-        $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_live 2>/dev/null'
-        $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_live/freqaimodels /home/runner/data_live/ft_client'
-        $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_live/'
-        $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_live/'
-      elif $DOCKER exec mydb supervisorctl status freqtrade_live | grep -q "RUNNING"; then
-        echo -e "\n$hr\n"
-        freqtrade_total_profit 8082 Live
-        TOTAL2=$TOTAL
+        # Setup freqtrade userdir for dry mode
+        if ! $DOCKER exec mydb test -d "/home/runner/data_dry"; then
+          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_dry 2>/dev/null'
+          $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_dry/freqaimodels /home/runner/data_dry/ft_client'
+          $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_dry/'
+          $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_dry/'
+        fi
+
+        # Setup freqtrade userdir for live mode
+        if ! $DOCKER exec mydb test -d "/home/runner/data_live"; then
+          $DOCKER exec mydb bash -c 'freqtrade create-userdir --userdir /home/runner/data_live 2>/dev/null'
+          $DOCKER exec mydb bash -c 'rm -rf /home/runner/data_live/freqaimodels /home/runner/data_live/ft_client'
+          $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/freqaimodels /home/runner/data_live/'
+          $DOCKER exec mydb bash -c 'cp -a /home/runner/user_data/ft_client /home/runner/data_live/'
+        fi
+
+      else
 
         echo -e "\n$hr\nRestart mydb container\n$hr"
         $DOCKER restart mydb
 
         echo "Waiting container stabilization..."
         sleep 20
+
+        echo -e "\n$hr\nTotal Profit Dry-run vs Live Mode\n$hr"
+        freqtrade_total_profit 8081 dry
+        TOTAL1=$TOTAL
+
+        echo -e "\n$hr\n"
+        freqtrade_total_profit 8082 live
+        TOTAL2=$TOTAL
 
         if [ -n "$TOTAL1" ] && [ -n "$TOTAL2" ] && \
           [ $(echo "$TOTAL1 > 0" | bc) -eq 1 ] && \
