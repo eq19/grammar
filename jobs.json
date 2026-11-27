@@ -1,0 +1,189 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 140751595843,
+      "run_id": 46072210525,
+      "workflow_name": "COmpendium of RElations: MEC30",
+      "head_branch": "v2",
+      "run_url": "https://api.github.com/repos/eq19/syntax/actions/runs/46072210525",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOJwzdM88AAAAgxXLpQw",
+      "head_sha": "be63403687bb21bcb2be5bd3c27980a0810a9146",
+      "url": "https://api.github.com/repos/eq19/syntax/actions/jobs/140751595843",
+      "html_url": "https://github.com/eq19/syntax/actions/runs/46072210525/job/140751595843",
+      "status": "in_progress",
+      "conclusion": null,
+      "created_at": "2026-11-27T21:44:18Z",
+      "started_at": "2026-11-27T21:45:22Z",
+      "completed_at": null,
+      "name": "lexering (macos-latest, 2)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T21:45:22Z",
+          "completed_at": "2026-11-27T21:45:56Z"
+        },
+        {
+          "name": "📥 Checkout",
+          "status": "in_progress",
+          "conclusion": null,
+          "number": 2,
+          "started_at": "2026-11-27T21:45:56Z",
+          "completed_at": null
+        },
+        {
+          "name": "⚙️ Build Maps",
+          "status": "pending",
+          "conclusion": null,
+          "number": 3,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "🪂 Feed Mapping",
+          "status": "pending",
+          "conclusion": null,
+          "number": 4,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "🏃‍♂️ Lexering Runner",
+          "status": "pending",
+          "conclusion": null,
+          "number": 5,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "📋 Generate Outputs",
+          "status": "pending",
+          "conclusion": null,
+          "number": 6,
+          "started_at": null,
+          "completed_at": null
+        },
+        {
+          "name": "Post 📥 Checkout",
+          "status": "pending",
+          "conclusion": null,
+          "number": 12,
+          "started_at": null,
+          "completed_at": null
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/eq19/syntax/check-runs/140751595843",
+      "labels": [
+        "macos-latest"
+      ],
+      "runner_id": 1000054808,
+      "runner_name": "GitHub Actions 1000054808",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 140751596105,
+      "run_id": 46072210525,
+      "workflow_name": "COmpendium of RElations: MEC30",
+      "head_branch": "v2",
+      "run_url": "https://api.github.com/repos/eq19/syntax/actions/runs/46072210525",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOJwzdM88AAAAgxXLqSQ",
+      "head_sha": "be63403687bb21bcb2be5bd3c27980a0810a9146",
+      "url": "https://api.github.com/repos/eq19/syntax/actions/jobs/140751596105",
+      "html_url": "https://github.com/eq19/syntax/actions/runs/46072210525/job/140751596105",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-27T21:44:18Z",
+      "started_at": "2026-11-27T21:44:21Z",
+      "completed_at": "2026-11-27T21:45:19Z",
+      "name": "lexering (ubuntu-latest, 1)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-11-27T21:44:22Z",
+          "completed_at": "2026-11-27T21:44:46Z"
+        },
+        {
+          "name": "📥 Checkout",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-11-27T21:44:46Z",
+          "completed_at": "2026-11-27T21:44:48Z"
+        },
+        {
+          "name": "⚙️ Build Maps",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-11-27T21:44:48Z",
+          "completed_at": "2026-11-27T21:45:15Z"
+        },
+        {
+          "name": "🪂 Feed Mapping",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4,
+          "started_at": "2026-11-27T21:45:15Z",
+          "completed_at": "2026-11-27T21:45:15Z"
+        },
+        {
+          "name": "🏃‍♂️ Lexering Runner",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-11-27T21:45:15Z",
+          "completed_at": "2026-11-27T21:45:15Z"
+        },
+        {
+          "name": "📋 Generate Outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-11-27T21:45:15Z",
+          "completed_at": "2026-11-27T21:45:15Z"
+        },
+        {
+          "name": "Post ⚙️ Build Maps",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-11-27T21:45:15Z",
+          "completed_at": "2026-11-27T21:45:16Z"
+        },
+        {
+          "name": "Post 📥 Checkout",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-11-27T21:45:16Z",
+          "completed_at": "2026-11-27T21:45:16Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-11-27T21:45:16Z",
+          "completed_at": "2026-11-27T21:45:16Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/eq19/syntax/check-runs/140751596105",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000054807,
+      "runner_name": "GitHub Actions 1000054807",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
