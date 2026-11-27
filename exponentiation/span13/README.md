@@ -23,11 +23,28 @@ GUT is also successful in describing a system of carrier particles for all four 
 
 ![Electroweak svg (1)](https://github.com/eq19/maps/assets/8466209/ee076e8d-f300-472b-b9f3-08ffc989483e)
 
-![image](https://github.com/eq19/maps/assets/36441664/67e4cc85-97e2-4e67-8b69-793a382e7149)
 
-![image](https://github.com/eq19/maps/assets/36441664/37c92ad8-99ee-4137-a7e3-3273d973cf1b)
+This diagram outlines the algebraic gauge structure of particle physics, which is mathematically formulated as the product group {U}(1) x {SU}(2) x {SU}(3).
+
+![1591890434759](https://github.com/eq19/maps/assets/8466209/f70d88d5-6d21-42ce-baea-131a52b0fcaf)
+
+A number of other GUT models are based upon subgroups of SO(10). ***They are the minimal [left-right model](https://eq19.github.io/identition/span12/#the-quantum-gravity), [SU(5)](https://en.wikipedia.org/wiki/SU(5)), [flipped SU(5)](https://en.wikipedia.org/wiki/Flipped_SU(5)) and the Pati–Salam model***.
+
+```note
+SU(5) fermions of standard model in 5+10 representations. The sterile neutrino singlet's 1 representation is omitted. Neutral bosons are omitted, but would occupy diagonal entries in complex superpositions. X and Y bosons as shown are the opposite of the conventional definition
+```
+
+[![SO(10)](https://github.com/eq19/maps/assets/8466209/b1d3bccd-a423-4ebb-a397-e973b2cc8e6e)
+](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
+
+[![SU(5)_representation_of_fermions](https://github.com/eq19/maps/assets/8466209/2b1aa8f5-0028-4549-a091-eee291ed4890)
+](https://en.wikipedia.org/wiki/Grand_Unified_Theory)
+
+This results in a fundamental causal relation to the primes, systemically the products are entered into the position system.
 
 ## Unification
+
+![image](https://github.com/eq19/maps/assets/36441664/37c92ad8-99ee-4137-a7e3-3273d973cf1b)
 
 ```txt
 $True Prime Pairs:
@@ -162,11 +179,32 @@ $True Prime Pairs:
                     Δ                 Δ                 Δ       
 ```
 
+This scheme goes to the unification of 11s with 7s to 18s meanwhile the 11th it self behave as residual by the 5th minor hexagon between the [30 to 36' cells](https://eq19.github.io/#exponentiation-zones).
+
+[![30 to 36' cells](https://user-images.githubusercontent.com/8466209/200475393-f3e42f0b-d291-4f17-93c4-9bec6e6943de.png)](https://eq19.github.io/#exponentiation-zones)
+
+This also introduces a _[lower bound](https://www.primesdemystified.com/Factorization.html)_ of Mod 90 originated from the 4th coupling of MEC30 which is holded by ***five (5) cells between 13 and 17***.
+
+```note
+The Minimal Supersymmetric Standard Model (MSSM) contains two Higgs doublets, leading to _five (5) physical [Higgs bosons](https://www.sciencedirect.com/topics/physics-and-astronomy/higgs-bosons)_:
+- one (1) neutral CP-odd (A) 👈 ***degenerated with (h or H)*** 
+- two (2) charged states ***(H+ and H−)***,
+- Two (2) neutral CP-even states ***(h and H)***.
+
+_At tree-level, the masses are [governed](https://github.com/eq19/maps/files/14066329/76104_ANGELESCU_2017_diffusion.pdf)
+ by two parameters, often taken to be mA and tan β [3]. When tan β >> 1, A is nearly [degenerated](https://github.com/eq19/maps/files/14066343/epjconf_qfthep2019_04006.pdf)
+ with one of the CP-even states (denoted ϕ)_. _([ScienceDirect](https://www.sciencedirect.com/topics/mathematics/higgs-mechanism))_
+```
+
+[![the 5 cells](https://github.com/eq19/maps/assets/8466209/d3c8e7cb-2239-4b93-a4be-97e3ddbc8c94)](https://eq19.github.io/multiplication/18.html#higgs-mechanism)
+
+These waves have phase offsets, meaning they peak at different times. This all relates to _[Zitterbewegung](https://github.com/eq19/maps/files/13791680/Zitterbewegung_in_Quantum_Mechanics_a_re.pdf)_, a term describing [the jittery motion](https://www.quora.com/What-is-jittery-motion/answer/Emad-Noujeim) of particles in quantum mechanics.
+
+[![96 perfect squares](https://github.com/eq19/maps/assets/8466209/d9b8410b-796f-4720-8393-1bd9398589be)](https://primesdemystified.com/#Distribution_of_Perfect_Squares)
+
 ## Black Hole
 
 ![main-qimg-6874830a97ce37b0b02cc3ae3d2268f1](https://github.com/eq19/maps/assets/8466209/d2e19618-dbba-4c29-b03c-8a4a3bdc0bcd)
-
-![1591890434759](https://github.com/eq19/maps/assets/8466209/f70d88d5-6d21-42ce-baea-131a52b0fcaf)
 
 ![I4dae](https://github.com/eq19/maps/assets/8466209/646da007-9322-4468-b36a-d73016a129b0)
 
@@ -291,8 +329,6 @@ This would even close to the similar ability of human brain without undertanding
 ![EU4RYL7UcAAzZN2](https://github.com/eq19/maps/assets/8466209/8430c02a-fb45-41cb-807d-b606f0619973)
 
 ![final-theory](https://github.com/eq19/maps/assets/8466209/b08ba16b-921d-4602-8d57-b5b2974ccec8)
-
-![](https://user-images.githubusercontent.com/8466209/200475393-f3e42f0b-d291-4f17-93c4-9bec6e6943de.png)
 
 ![HEXAHEDRONTORUS1](https://github.com/eq19/maps/assets/8466209/ce33a44d-7431-44b9-9073-902cbbcfc68b)
 

@@ -75,19 +75,6 @@ The indistinguishability criterion in (a) is very important: it means that there
 
 They are related to our everyday ideas of probability by the simple rule that the probability of an event is the square of the length of the corresponding amplitude arrow.
 
-```note
-Feynman replaces complex numbers with spinning arrows, which start at emission and end at detection of a particle.
-
-[![Feynmans_QED_probability_amplitudes](https://github.com/user-attachments/assets/df7b0132-ccc2-4372-8f4e-ca2211b7956c)](https://en.wikipedia.org/wiki/Quantum_electrodynamics#probability-amplitudes)
-
-- The sum of all resulting arrows gives a final arrow whose length squared equals the probability of the event.
-- In this diagram, light emitted by the source S can reach the detector at P by bouncing off the mirror (in blue) at various points.
-- Each one of the paths has an arrow associated with it (whose direction changes uniformly with the time taken for the light to traverse the path).
-- To correctly calculate the total probability for light to reach P starting at S, one needs to sum the arrows for all such paths.
-
-The graph below depicts the total time spent to traverse each of the paths above.
-```
-
 ![008869256_1-75ca18aad2faf65f52f4c7706d7d8bd3-768x994](https://github.com/eq19/maps/assets/8466209/7c7f069f-dcfb-439e-961e-68c63c76dc9d)
 
 Finally, one has to compute P(A to B) and E(C to D) corresponding to the probability amplitudes for the photon and the electron respectively.
@@ -257,7 +244,41 @@ Decoded complex numbers:
 [13] (r13.0 + i13.0j)
 ```
 
+```note
+Feynman replaces complex numbers with spinning arrows, which start at emission and end at detection of a particle.
+
+[![Feynmans_QED_probability_amplitudes](https://github.com/user-attachments/assets/df7b0132-ccc2-4372-8f4e-ca2211b7956c)](https://en.wikipedia.org/wiki/Quantum_electrodynamics#probability_amplitudes)
+
+- The sum of all resulting arrows gives a final arrow whose length squared equals the probability of the event.
+- In this diagram, light emitted by the source S can reach the detector at P by bouncing off the mirror (in blue) at various points.
+- Each one of the paths has an arrow associated with it (whose direction changes uniformly with the time taken for the light to traverse the path).
+- To correctly calculate the total probability for light to reach P starting at S, one needs to sum the arrows for all such paths.
+
+The graph depicts the total time spent to traverse each of the paths above. _([Wikipedia](https://en.wikipedia.org/wiki/Quantum_electrodynamics#probability_amplitudes))_
+```
+
 [![16 squares](https://github.com/eq19/maps/assets/8466209/efe55c6d-926c-47bb-80db-7d892eb3f103)](https://eq19.github.io/#exponentiation-zones)
+
+## New Generation
+
+<img width="466" height="351" alt="IMG_20260524_132443 (1)" src="https://github.com/user-attachments/assets/e4938d34-530e-4763-a569-417cfb705da0" />
+
+The Golden Ratio "symbolically links each new generation to its ancestors, preserving the continuity of relationship as the means for retracing its lineage."
+
+```note
+There is a fascinating connection between prime numbers and the Golden ratio.
+- The Golden ratio is an irrational number, which means that it cannot be expressed as a ratio of two integers. However, it can be approximated by dividing consecutive Fibonacci numbers.
+- Additionally, it has been observed that the frequency of prime numbers in certain sequences related to the Golden ratio (such as the continued fraction expansion of the Golden ratio) appears to be higher than in other sequences.
+- Interestingly, the Fibonacci sequence is closely related to prime numbers, as any two consecutive Fibonacci numbers are always coprime.
+
+However, the exact nature of the relationship between primes and the Golden ratio is still an active area of research.
+```
+
+***π(Φ x (329 + 289)) = π(Φ x 618) = π(1000) = 168 = 169 - 1***
+
+[![default](https://user-images.githubusercontent.com/8466209/195963923-0796217c-7a87-4b2d-ba93-f47465304c03.png)](https://www.nausetschools.org/cms/lib/MA02212418/Centricity/Domain/204/Linkage%20Map%20Worksheet%20Genetics%202017.pdf)
+
+The mathematically significant Fibonacci sequence defines a set of ratios which can be used to determine probable entry and exit points.
 
 ```
 └── compiler/src/iree/compiler/
