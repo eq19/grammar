@@ -100,6 +100,7 @@ runs:
   using: composite
   steps:
     - name: 🪂 Adapt feed mapping
+      if: env.GITHUB_JOB == 'lexering'
       shell: bash
       run: |
         gh variable set ORGS_JSON --body "$(cat $RUNNER_TEMP/orgs.json)"
@@ -154,19 +155,21 @@ runs:
           pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
           pip install -qq --no-cache-dir "torch==2.5.1" "torchvision==0.20.1" --force-reinstall
         fi
-
         pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==$VERSION"
-        cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
 
+        if [[ "$GITHUB_JOB" == "lexering" ]]; then
+          cd ${{ github.workspace }} && bash user_data/ft_client/test_client/feed.sh
+        fi
+   
     - name: 🪂 Upload downloaded data as artifact
       uses: actions/upload-artifact@v6
-      if: ${{ env.REMOVE_RUNNER == 'false' && env.SKIP_REMAINING_STEPS != 'true' }}
+      if: ${{ env.REMOVE_RUNNER == 'false' && env.GITHUB_JOB == 'lexering' }}
       with:
         name: freqtrade-data
         path: user_data/data/
 
     - name: 🐎 Run Freqtrade
-      if: ${{ env.REMOVE_RUNNER == 'false' && env.SKIP_REMAINING_STEPS != 'true' }}
+      if: ${{ env.REMOVE_RUNNER == 'false' && env.GITHUB_JOB == 'lexering' }}
       shell: bash
       env:
         CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
@@ -208,7 +211,8 @@ runs:
           BEARER=${{ steps.auth.outputs.id_token }}
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
 
-    - name: 💎 Variables
+    - name: 💎 Delete Docker Images
+      if: env.GITHUB_JOB == 'lexering'
       id: variables
       shell: bash
       env:
@@ -227,9 +231,9 @@ runs:
         done
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: ${{ failure() && env.GITHUB_JOB == 'lexering' }}
       shell: bash
       run: |
-        [[ "$GITHUB_JOB" == "lexering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
+        gh workflow run "main.yml" --repo "$REPO_NAME" \
           --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
           --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

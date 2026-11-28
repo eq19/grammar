@@ -29,6 +29,7 @@ jobs:
         FIELDS: ${{ fromJson(inputs.MATRIX_JSON).fields }}
 
     env:
+      JOBS_ID: 1
       REMOVE_RUNNER: 'false'
       SCORE: ${{ vars.SCORE }}
       RUN_MODE: ${{ inputs.RUN_MODE }}
@@ -43,8 +44,6 @@ jobs:
       - name: ⚙️ Build Maps
         uses: eq19/maps@v8
         id: build-parser
-        env:
-          JOBS_ID: 1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
@@ -60,8 +59,6 @@ jobs:
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v6
         id: feed-mapping
-        env:
-          JOBS_ID: 1
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           chat_id: ${{ secrets.MESSAGE_API }}
@@ -75,26 +72,22 @@ jobs:
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: 🪂 Install freqtrade
-        shell: bash
-        env:
-          VERSION: "2025.12"
-        run: |
-          cd user_data/build_helpers
-          ./install_ta-lib.sh > /dev/null 2>&1 && rm -rf *.txt
-
-          # Download requirement files from Freqtrade 2025.10 (corrected)
-          for f in requirements.txt requirements-dev.txt requirements-hyperopt.txt requirements-plot.txt requirements-freqai.txt requirements-freqai-rl.txt; do
-            curl -fsSLO --retry 5 --retry-delay 2 \
-            https://raw.githubusercontent.com/freqtrade/freqtrade/$VERSION/$f || true
-          done          
-
-          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-plot.txt
-          pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-hyperopt.txt
-          [[ "$RUN_MODE" == "FreqAI" ]] && pip install -qq --no-cache-dir -r ${{ github.workspace }}/user_data/build_helpers/requirements-freqai-rl.txt
-
-          #pip install -qq --no-cache-dir --no-build-isolation --upgrade freqtrade
-          pip install -qq --no-cache-dir ta "numpy<3.0" "aiodns<3.0" "freqtrade==$VERSION"
+      - name: 🏃‍♂️ Lexering Runner
+        uses: eq19/lexer@v4
+        id: set-lexering
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          config: ${{ secrets.CONFIG_JSON }}
+          chat_id: ${{ secrets.MESSAGE_API }}
+          api_key: ${{ secrets.ACCESS_API }}
+          api_secret: ${{ secrets.ACCESS_KEY }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          bot_token: ${{ secrets.MONITOR_TOKEN }}
+          live_token: ${{ secrets.LIVE_TOKEN }}
+          logs_token: ${{ secrets.WARNING_TOKEN }}
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+          docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: ⚙️ Get artifact ID
         id: get-artifact-id
@@ -143,7 +136,7 @@ jobs:
       - name: Show contents
         run: ls -R user_data/data
 
-      - name: 🧠 Run Script
+      - name: 🧠 Run Freqtrade
         timeout-minutes: 360
         env:
           MATRIX_INPUT: ${{ matrix.FIELDS }}
