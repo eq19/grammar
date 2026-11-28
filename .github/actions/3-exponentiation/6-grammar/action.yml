@@ -142,9 +142,11 @@ runs:
         fi
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() }}
+      if: ${{ failure() && github.job == 'parsering' && env.SKIP_REMAINING_STEPS != 'true' }}
       shell: bash
       run: |
-        [[ "$GITHUB_JOB" == "parsering" ]] && gh workflow run "main.yml" --repo "$REPO_NAME" \
-          --raw-field "RUN_MODE=$RUN_MODE" --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
-          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"
+        gh workflow run "main.yml" --repo "$REPO_NAME" \
+          --raw-field "RUN_MODE=$RUN_MODE" \
+          --raw-field "REMOVE_RUNNER=$REMOVE_RUNNER" \
+          --raw-field "REDUCE_EPOCH=$REDUCE_EPOCH" \
+          --raw-field "BYPASS_LEXERING=$BYPASS_LEXERING"

@@ -113,7 +113,6 @@ jobs:
           jekyll_github_owner: ${{ secrets.JEKYLL_GITHUB_OWNER }}
           jekyll_github_token: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
           repo_source: ${{ secrets.REPO_SOURCE }}
-        #if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
 
       - name: 🪂 Feed Mapping
         uses: eq19/feed@v6
@@ -131,7 +130,6 @@ jobs:
           docker_hub_token: ${{ secrets.DOCKER_HUB_TOKEN }}
           docker_hub_password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           initiate_pauli_sum: ${{ toJSON(steps.build-parser.outputs) }}
-        if: ${{ !(env.JOBS_ID == 1 && env.RUN_MODE == 'MEC30' && env.REMOVE_RUNNER == 'false') }}
 
       - name: 🏃‍♂️ Lexering Runner
         uses: eq19/lexer@v4
@@ -155,6 +153,24 @@ jobs:
       - name: 📋 Generate Outputs
         shell: bash
         id: gen_outputs
+        env:
+          ACCESS_API: ${{ secrets.ACCESS_API }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          MESSAGE_API: ${{ secrets.MESSAGE_API  }}
+          LIVE_TOKEN: ${{ secrets.LIVE_TOKEN }}
+          MONITOR_TOKEN: ${{ secrets.MONITOR_TOKEN }}
+          WARNING_TOKEN: ${{ secrets.WARNING_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GCP_ACCOUNT: ${{ secrets.GCP_ACCOUNT }}
+          GCP_ID_RSA: ${{ secrets.GCP_ID_RSA }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          JEKYLL_GITHUB_OWNER: ${{ secrets.JEKYLL_GITHUB_OWNER }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.JEKYLL_GITHUB_TOKEN }}
+          REPO_SOURCE: ${{ secrets.REPO_SOURCE }}
         run: |
           [[ "$JOBS_ID" == "1" ]] && BASE="/home" || BASE="/Users"
           bash "$BASE/runner/work/_actions/eq19/eq19/v2/.github/entrypoint/gcp.sh"
