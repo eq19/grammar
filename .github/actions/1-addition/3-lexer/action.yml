@@ -163,13 +163,13 @@ runs:
    
     - name: 🪂 Upload downloaded data as artifact
       uses: actions/upload-artifact@v6
-      if: ${{ env.REMOVE_RUNNER == 'false' && env.GITHUB_JOB == 'lexering' }}
+      if: ${{ env.REMOVE_RUNNER == 'false' && github.job == 'lexering' }}
       with:
         name: freqtrade-data
         path: user_data/data/
 
     - name: 🐎 Run Freqtrade
-      if: ${{ env.REMOVE_RUNNER == 'false' && env.GITHUB_JOB == 'lexering' }}
+      if: ${{ env.REMOVE_RUNNER == 'false' && github.job == 'lexering' }}
       shell: bash
       env:
         CONNECTION_URI: ${{ steps.postgres.outputs.connection-uri }}
@@ -212,7 +212,7 @@ runs:
           TARGET_REPOSITORY=${{ env.TARGET_REPOSITORY }}
 
     - name: 💎 Delete Docker Images
-      if: env.GITHUB_JOB == 'lexering'
+      if: ${{ github.job == 'lexering' }}
       id: variables
       shell: bash
       env:
@@ -231,7 +231,7 @@ runs:
         done
 
     - name: ⚧️ Rerun workflow if failed
-      if: ${{ failure() && env.GITHUB_JOB == 'lexering' }}
+      if: ${{ failure() && github.job == 'lexering' }}
       shell: bash
       run: |
         gh workflow run "main.yml" --repo "$REPO_NAME" \
